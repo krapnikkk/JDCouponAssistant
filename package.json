@@ -1,0 +1,19 @@
+{
+  "name": "JDCouponAssistant",
+  "version": "1.0.0",
+  "description": "JDCouponAssistant",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "krapnik",
+  "license": "ISC",
+  "devDependencies": {
+    "browserify": "^16.5.0",
+    "gulp": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "tsify": "^4.0.1",
+    "typescript": "^3.7.2",
+    "vinyl-source-stream": "^2.0.0"
+  }
+}

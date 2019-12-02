@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>test</title>
+    <style>
+        .container {
+            width: 100vw;
+            height: 100vh;
+            background-color: #000;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+    </div>
+    <script>
+        window.onload = function () {
+            const elem = document.querySelector('.container');
+            const resizeObserver = new ResizeObserver(entries => {
+                for (let entry of entries) {
+                    const dimensions = entry.target;
+                    alert(`resizeObserver:${dimensions.clientWidth} x ${dimensions.clientHeight}`);
+                }
+            });
+            resizeObserver.observe(elem);
+            elem.addEventListener("touchstart", () => {
+                console.log(1);
+                document.body.style.width = 0;
+                document.body.style.height = 0;
+                elem.style.width = 0;
+                elem.style.height = 0;
+            });
+            window.onresize = () => {
+                alert(`onresize:${elem.clientWidth}X${elem.clientHeight}`);
+            }
+        }
+    </script>
+</body>
+
+</html>

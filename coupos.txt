@@ -1,0 +1,363 @@
+=========
+免息券【权益中心】
+活动地址：https://m.jr.jd.com/member/rightsCenter/#/white
+领券类型: "receiveCoupons"
+
+[获取优惠券]
+url：https://ms.jr.jd.com/gw/generic/bt/h5/m/queryLimitedInfo
+method: "get"
+respone:
+{
+    "resultCode":0,
+    "resultMsg":"操作成功",
+    "resultData":{
+        "result":{
+            "code":"0000",
+            "success":true,
+            "info":"调用成功"
+        },
+        "limitedResult":[
+            {
+                "floorInfo":[
+                    {
+                        "classTag":"jr|keycount|btqyzx|mrsq001",
+                        "number":"三期免息",
+                        "text1":"白条免息券",
+                        "text2":"京东商城全品类实物可用",
+                        "couponStatus":5,
+                        "couponKey":"991781e2f99f122c411a1c9af385ec19",
+                        "company":""
+                    },
+                    {
+                        "classTag":"jr|keycount|btqyzx|mrsq002",
+                        "number":"3",
+                        "text1":"白条立减券",
+                        "text2":"京东商城全品类实物可用",
+                        "couponStatus":5,
+                        "couponKey":"09a6c8bf0a96da6ed41e6b1e9d61e09f",
+                        "company":"元"
+                    },
+                    {
+                        "classTag":"jr|keycount|btqyzx|mrsq003",
+                        "number":"6期五折",
+                        "text1":"白条息费优惠",
+                        "text2":"京东商城全品类实物可用",
+                        "couponStatus":5,
+                        "couponKey":"aefa57fcab2952d7ad67bc761b958bc8",
+                        "company":""
+                    }
+                ],
+                "timeStuts":2,
+                "time":"10:00"
+            },
+            {
+                "floorInfo":[
+                    {
+                        "classTag":"jr|keycount|btqyzx|mrsq004",
+                        "number":"6期免息",
+                        "text1":"白条免息优惠",
+                        "text2":"京东商城全品类实物可用",
+                        "couponStatus":5,
+                        "couponKey":"fa60cad8bbd64e478b395711c573049e",
+                        "company":""
+                    },
+                    {
+                        "classTag":"jr|keycount|btqyzx|mrsq005",
+                        "number":"4",
+                        "text1":"白条立减券",
+                        "text2":"京东商城全品类实物可用",
+                        "couponStatus":5,
+                        "couponKey":"54ff409f551215d656d9f0ff4871f266",
+                        "company":"元"
+                    },
+                    {
+                        "classTag":"jr|keycount|btqyzx|mrsq006",
+                        "number":"25",
+                        "text1":"满699元（限分6期）",
+                        "text2":"京东商城全品类实物可用",
+                        "couponStatus":5,
+                        "couponKey":"6ae8b5cb634c36b577bb0ef66eee28c7",
+                        "company":"元"
+                    }
+                ],
+                "timeStuts":2,
+                "time":"15:00"
+            },
+            {
+                "floorInfo":[
+                    {
+                        "classTag":"jr|keycount|btqyzx|mrsq007",
+                        "number":"12期免息",
+                        "text1":"白条息费优惠",
+                        "text2":"京东商城全品类实物可用",
+                        "couponStatus":5,
+                        "couponKey":"24edd20c6c1e74cd2cac4626b98a5f5b",
+                        "company":""
+                    },
+                    {
+                        "classTag":"jr|keycount|btqyzx|mrsq008",
+                        "number":"5",
+                        "text1":"白条立减优惠",
+                        "text2":"京东商城全品类可用",
+                        "couponStatus":5,
+                        "couponKey":"abcd423472b2b38e762cdd28aa47b750",
+                        "company":"元"
+                    },
+                    {
+                        "classTag":"jr|keycount|btqyzx|mrsq009",
+                        "number":"50",
+                        "text1":"满1500元（限分6期）",
+                        "text2":"京东商城全品类实物可用",
+                        "couponStatus":5,
+                        "couponKey":"a725193cd0a330c7b98e7dd89962a971",
+                        "company":"元"
+                    }
+                ],
+                "timeStuts":1,
+                "time":"20:00"
+            }
+        ]
+    },
+    "channelEncrypt":0
+}
+
+[领取优惠券]
+url:https://ms.jr.jd.com/gw/generic/bt/h5/m/receiveCoupons?reqData={"couponKey":"{couponKey}","eid":"1"}}
+method: "get"
+respone: 
+{
+    "resultCode":0,
+    "resultMsg":"操作成功",
+    "resultData":{
+        "originalCode":"0029",
+        "code":"0021",
+        "originalMessage":"活动当天无库存",
+        "message":"此券今日已经被抢完，请您明日再来~",
+        "isSuccess":false
+    },
+    "channelEncrypt":0
+}
+
+========= 
+白条199-100【白条中心】
+活动地址：https://m.jr.jd.com/consumer/baitiaom/index.html
+领券类型: "receiveCoupons"
+
+[获取优惠券]
+url：https://ms.jr.jd.com/gw/generic/bt/h5/m/queryBtmLimitedInfo
+method: "get" 
+respone:
+{
+    "resultCode":0,
+    "resultMsg":"操作成功",
+    "resultData":{
+        "timeEnd":1574956800000,
+        "result":{
+            "code":"0000",
+            "success":true,
+            "info":"调用成功"
+        },
+        "timeNow":1574943917782,
+        "linkUrl":"https://ms.jr.jd.com/jrpmobile/btbullion/bullion/jinTiaoIndex?sysCode=s5&sourceLink=c1",
+        "floorName":"限时抢券",
+        "jtLimitedResults":[
+            {
+                "floorInfo":[
+                    {
+                        "activeId":"ae8aa20e705a3a4da0eadaeed2e4539c",
+                        "number":"100",
+                        "text1":"",
+                        "couponType":"BT",
+                        "text2":"打白条满199减100（限领5次/月）",
+                        "couponStatus":5,
+                        "linkUrl":"https://m.jr.jd.com/member/rightsCenter/#/white?channel=16",
+                        "couponKey":"JDMJ20191025150206020738599",
+                        "company":"折",
+                        "endTime":"",
+                        "time":"10:00",
+                        "activeId1":"47544903535327"
+                    },
+                    {
+                        "activeId":"3321da09b08bdac8b83cf5539e03ad74",
+                        "number":"1",
+                        "text1":"",
+                        "couponType":"BT",
+                        "text2":"打白条立减1元（限领5次/月）",
+                        "couponStatus":5,
+                        "linkUrl":"https://m.jr.jd.com/member/rightsCenter/#/white?channel=16",
+                        "couponKey":"JDZJ20191025150051624727528",
+                        "company":"折",
+                        "endTime":"",
+                        "time":"10:00",
+                        "activeId1":"30553713960345"
+                    },
+                    {
+                        "activeId":"91be17561de1ca517c6180928c0252d0",
+                        "number":"8",
+                        "text1":"",
+                        "couponType":"BT",
+                        "text2":"打白条满299减8（限领1次/月）",
+                        "couponStatus":5,
+                        "linkUrl":"https://m.jr.jd.com/member/rightsCenter/#/white?channel=16",
+                        "couponKey":"JDMJ20191025102909275782392",
+                        "company":"折",
+                        "endTime":"",
+                        "time":"10:00",
+                        "activeId1":"3378801787865"
+                    }
+                ],
+                "time":"1574906400000"
+            },
+            {
+                "floorInfo":[
+                    {
+                        "activeId":"59438ff8ef5eadc9ccec12219cb9fa1c",
+                        "number":"100",
+                        "text1":"",
+                        "couponType":"BT",
+                        "text2":"打白条满199减100（限领5次/月）",
+                        "couponStatus":5,
+                        "linkUrl":"https://m1.jr.jd.com/zc/drawSystem/hb/index.html?contentParam=100002257&act=1&actCode=2EF663BD0F&actType=1",
+                        "couponKey":"JDMJ20191025150241103384912",
+                        "company":"折",
+                        "endTime":"",
+                        "time":"20:00",
+                        "activeId1":"13546803190548"
+                    },
+                    {
+                        "activeId":"5df34227ddf97074614d477ea9abea20",
+                        "number":"1",
+                        "text1":"",
+                        "couponType":"BT",
+                        "text2":"打白条立减1元（限领5次/月）",
+                        "couponStatus":2,
+                        "linkUrl":"https://m.jr.jd.com/member/rightsCenter/#/white?channel=16",
+                        "couponKey":"JDZJ20191025150121656845921",
+                        "company":"折",
+                        "endTime":"",
+                        "time":"20:00",
+                        "activeId1":"28563133903876"
+                    },
+                    {
+                        "activeId":"44cacb56f33caea154a7a6ddf38fe261",
+                        "number":"2",
+                        "text1":"",
+                        "couponType":"BT",
+                        "text2":"打白条满99减2（限领1次/月）",
+                        "couponStatus":2,
+                        "linkUrl":"https://m.jr.jd.com/member/rightsCenter/#/white?channel=16",
+                        "couponKey":"JDMJ20191025101502985137404",
+                        "company":"折",
+                        "endTime":"",
+                        "time":"20:00",
+                        "activeId1":"13373441324285"
+                    }
+                ],
+                "time":"1574942400000"
+            }
+        ]
+    },
+    "channelEncrypt":0
+}
+
+[领取优惠券]
+url:https://ms.jr.jd.com/gw/generic/bt/h5/m/receiveCoupons?reqData={"couponKey":"{couponKey}","eid":"1"}}
+method: "get"
+respone:
+{
+    "resultCode":0,
+    "resultMsg":"操作成功",
+    "resultData":{
+        "originalCode":"0029",
+        "code":"0021",
+        "originalMessage":"活动当天无库存",
+        "message":"此券今日已经被抢完，请您明日再来~",
+        "isSuccess":false
+    },
+    "channelEncrypt":0
+}
+
+=========
+支付199-100【小白信用】
+活动地址：https://credit.jd.com/channel/ktyh.html
+领券类型: "coupon"
+
+[获取优惠券]
+url：https://opencredit.jd.com/act/get/couponInfo?couponBusinessId=071d6089cca2022c87dd6089ebd685ad
+method: "get" 
+respone:
+{
+    "data":"{"baiCouponDetailsNext":{"couponBusinessId":"071d6089cca2022c87dd6089ebd685ad","useEndTime":1574951400000,"useEndTimeString":"Thu Nov 28 22:30:00 CST 2019","useStartTime":1574949600000,"useStartTimeString":"Thu Nov 28 22:00:00 CST 2019"},"baiCouponInfo":{"amount":"100","businessType":"9","couponType":"4","dateRange":"自领取之日起30天内有效","descs":"满199元可使用","detail":"抢券时间：10点、14点、18点、20点、22点","endTime":1577807999000,"platform":"全平台","startTime":1534408560000,"subCouponType":"20","title":"支付满减劵","unit":"¥ "}}",
+    "isSuccess":true,
+    "responseCode":"0000",
+    "responseMessage":"请求成功"
+}
+
+[领取优惠券]
+url:https://opencredit.jd.com/act/get/coupon?couponBusinessId=071d6089cca2022c87dd6089ebd685ad&actId=004
+method: "get"
+respone:
+{"isSuccess":false,"responseCode":"13003","responseMessage":""}
+
+=========
+日常活动领券页【日常领券通用页】
+地址格式：https://pro.m.jd.com/mall/active/${activityId}/index.html
+
+参考地址：https://pro.m.jd.com/mall/active/2WQVe5S5fP9V391w2SWKHcAUXHYQ/index.html
+
+使用地址：https://so.m.jd.com/list/couponSearch.action?couponbatch=264427766
+参考地址：https://so.m.jd.com/list/couponSearch.action?couponbatch=${cid}
+领券类型: "newBabelAwardCollection"
+
+[获取优惠券]
+页面自带：window.__react_data__.activityData.floorList
+respone:
+for(let i = 0;i<list.length;i++){
+    const item = list[i];
+    if(item.template == "free_coupon"){
+        for(let j = 0;j<item.couponList.length;i++){
+            const coupon = item.couponList[j];
+            const scene = item["scene];
+            const args = item["args"];//key=0329B082D55B7F1C5C4C6EB5259E5108A93E0BB805A92F6829483C938C444FCFC61E3382AEE2C9F7956A518012579964_babel,roleId=1DDCA0E95641261621CE95F46059DB3D_babel
+        }
+    }
+}
+
+[领取优惠券]
+url:https://api.m.jd.com/client.action?functionId=newBabelAwardCollection
+method: "post"
+data:body={"activityId":"{activityId}","scene":"1","args":"key={key},roleId={roleId}"}&client=wh5
+respone:
+
+
+
+
+
+
+========= 
+日常领券页【日常领券通用页，带专门领券地址】
+地址格式：https://coupon.m.jd.com/coupons/show.action?key=${key}&roleId=${roleId}
+参考地址：
+领券类型: "getcoupon"
+
+[获取优惠券]
+url：
+method:
+respone:
+
+[领取优惠券]
+url:
+method:
+data:
+respone:
+
+
+
+
+
+ var script=document.createElement('script');
+ script.type="text/javascript";
+ script.src="https://gitee.com/krapnik/codes/o9nwsxjuy6crftdi824aq79/raw?blob_name=JDCouponAssistant.js";
+ document.body.appendChild(script);
+ 
+eval(function(p,a,c,k,e,d){e=function(c){return(c<a?"":e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--)d[e(c)]=k[c]||e(c);k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1;};while(c--)if(k[c])p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c]);return p;}('8 0=1.7(\'0\');0.a="9/6";0.2="3://5.4/h/g/j/i?f=c.b";1.e.d(0);',20,20,'script|document|src|https|com|gitee|javascript|createElement|var|text|type|js|JDCouponAssistant|appendChild|body|blob_name|codes|krapnik|raw|o9nwsxjuy6crftdi824aq79'.split('|'),0,{}))
