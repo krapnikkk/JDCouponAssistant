@@ -157,6 +157,7 @@ function copyRights() {
         console.groupEnd();
     }
 }
+window.console.log = window.console.warn = window.console.error = window.console.info = window.console.trace = function () { };
 copyRights();
 getTime();
 
