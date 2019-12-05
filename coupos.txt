@@ -280,6 +280,7 @@ respone:
 =========
 支付199-100【小白信用】
 活动地址：https://credit.jd.com/channel/ktyh.html
+地址格式：https://credit.jd.com/channel/coupon.html?actId=004&cu=true&couponBusinessId={couponBusinessId}
 领券类型: "coupon"
 
 [获取优惠券]

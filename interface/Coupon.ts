@@ -4,6 +4,6 @@ export default interface Coupon {
      couponList: Array<object>;
      method: string;
      get(): void;
-     send(): void;
      list(): void;
+     send(outputTextarea: HTMLTextAreaElement): void;
 }
