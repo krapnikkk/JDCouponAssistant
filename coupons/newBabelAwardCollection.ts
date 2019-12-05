@@ -55,13 +55,14 @@ export default class NewBabelAwardCollection implements Coupon {
 
     list(): void {
         const content = document.createElement("div");
-        content.setAttribute('style', 'display:flex;flex-direction:column;padding: 5px;margin: 5px;');
+        content.innerHTML = "<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin-top: 5px;padding: 0 37.5vw 5px;'>优惠券</h3>";
+        content.setAttribute('style', 'display:flex;flex-direction:column;padding: 5px;margin-top: 5px;border: 1px solid #000;');
         for (let i = 0; i < this.couponList.length; i++) {
             const item = this.couponList[i],
                 itemDiv = document.createElement("div");
             itemDiv.setAttribute('style', 'display:flex;flex-direction:row;padding:10px 0;border-bottom:1px solid #999');
             if (item.scene == "1") {
-                itemDiv.innerHTML = `<img style="width:120px;height:100%;padding-right:10vw;" src="${item.picUrl}" />
+                itemDiv.innerHTML = `<img style="width:120px;height:100%;padding-right:10vw;display: inline-block;" src="${item.picUrl}" />
                 <div>
                     <p style="margin-bottom:10px">状态：${item.status == "0" ? "可领取" : item.status == "1" ? "已领取" : "已领光"}<br/>说明：${item.details}</p>
                     <button style="width: 80px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">
@@ -72,7 +73,7 @@ export default class NewBabelAwardCollection implements Coupon {
                     </button>
                 </div>`
             } else if (item.scene == "3") {
-                itemDiv.innerHTML = `<img style="width:120px;height:100%;padding-right:10vw;" src="${item.picUrl}" />
+                itemDiv.innerHTML = `<img style="width:120px;height:100%;padding-right:10vw;display: inline-block;" src="${item.picUrl}" />
                 <div>
                 <p style="margin-bottom:10px">状态：${item.status == "0" ? "可领取" : item.status == "1" ? "已领取" : "已领光"}</p>
                 <button style="width: 80px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">
