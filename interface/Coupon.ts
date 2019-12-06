@@ -1,8 +1,8 @@
 export default interface Coupon {
      url: string;
-     data: string;
+     couponParams:any;
      couponList: Array<object>;
-     method: string;
+     container: HTMLDivElement;
      get(): void;
      list(): void;
      send(outputTextarea: HTMLTextAreaElement): void;
