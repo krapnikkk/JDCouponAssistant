@@ -62,6 +62,12 @@ export default class Utils {
     }
 
     static formateTime(time: string): number {
-        return Math.trunc(+time.replace(/[:|：]+/ig,""));
+        return Math.trunc(+time.replace(/[:|：]+/ig, ""));
+    }
+
+    static createJsonp(callback: string) {
+        var jsonpScript = document.createElement('script');
+        document.getElementsByTagName('head')[0].appendChild(jsonpScript);
+        jsonpScript.setAttribute('src', `https://wq.jd.com/user/info/QueryJDUserInfo?sceneid=11110&sceneval=2&g_login_type=1&callback=${callback}`);
     }
 }
