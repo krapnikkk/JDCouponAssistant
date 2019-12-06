@@ -1,16 +1,18 @@
 import Coupon from "./interface/Coupon";
 import BabelAwardCollection from "./coupons/newBabelAwardCollection";
 import Utils from "./utils/utils";
+import WhiteCoupon from "./coupons/whtieCoupon";
 enum couponType {
     none,
     receiveCoupons,
     newBabelAwardCollection = "newBabelAwardCollection",
+    whiteCoupon = "whiteCoupon",
 
 }
-let coupon: Coupon, 
-    url = window.location.href, 
-    couponFlag = false, 
-    startTime = 0, 
+let coupon: Coupon,
+    url = window.location.href,
+    couponFlag = false,
+    startTime = 0,
     getTimeSpan = 500,
     t1 = window.setInterval(getTime, getTimeSpan),
     time,
@@ -38,13 +40,13 @@ function buildHTML() {
     container.setAttribute("style", "border: 1px solid #000;padding: 5px;margin: 5px;");
     title.innerHTML = `<h2>京东领券助手V0.1</h2>
                         <h3>author:krapnik</h3>
-                        <div>
+                        <div style="display: flex;flex-direction: row;justify-content: center;">
                         <iframe src="https://ghbtns.com/github-btn.html?user=krapnikkk&repo=JDCouponAssistant&type=star&count=true" frameborder="0" scrolling="0" width="80px" height="21px"></iframe>
                         <a href="tencent://message/?uin=708873725Menu=yes" target="_blank" title="发起QQ聊天"><img src="http://bizapp.qq.com/webimg/01_online.gif" alt="QQ" style="margin:0px;"></a>
                         </div>`;
     operateAreaDiv.setAttribute("style", "border: 1px solid #000;");
     operateAreaDiv.innerHTML = "<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;padding: 0 37.5vw 5px;'>操作区</h3>";
-    loginMsgDiv.innerHTML ="当前帐号：未登录";
+    loginMsgDiv.innerHTML = "当前帐号：未登录";
     timerTextInput.type = "text";
     timerTextInput.placeholder = "请输入获取时间的刷新频率【毫秒】";
     timerTextInput.setAttribute("style", "width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;");
@@ -72,6 +74,7 @@ function buildHTML() {
         } else {
             couponFlag = !couponFlag;
             startTime = time;
+            receiveTextInput.disabled = couponFlag;
             if (couponFlag) {
                 receiveTimerBtn.innerHTML = "取消全部领取";
             } else {
@@ -86,11 +89,11 @@ function buildHTML() {
         }
     });
 
-    receiveTimerBtn.setAttribute("style", "width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:10px;");
+    receiveTimerBtn.setAttribute("style", "width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px;");
     receiveAllBtn.innerHTML = "一键全部领取";
 
-    receiveAllBtn.setAttribute("style", "width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:10px;");
-    outputTextArea.setAttribute("style", "width: 90vw;height: 40vw;border: 1px solid #868686;border-radius: 10px;overflow-y: scroll;display:none");
+    receiveAllBtn.setAttribute("style", "width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px;");
+    outputTextArea.setAttribute("style", "width: 90vw;height: 40vw;border: 1px solid #868686;border-radius: 10px;overflow-y: scroll;margin:5px auto;display:none");
     outputTextArea.setAttribute("disabled", "disabled");
     document.body.append(container);
     container.append(title);
@@ -108,13 +111,13 @@ function buildHTML() {
     operateAreaDiv.append(outputTextArea);
 }
 
-let getLoginMsg = function(res:any){
-    if(res.base.nickname){
-        loginMsgDiv.innerHTML ="当前帐号："+res.base.nickname;
+let getLoginMsg = function (res: any) {
+    if (res.base.nickname) {
+        loginMsgDiv.innerHTML = "当前帐号：" + res.base.nickname;
     }
 };
 
-Object.assign(window,{"getLoginMsg":getLoginMsg});
+Object.assign(window, { "getLoginMsg": getLoginMsg });
 
 function getCouponType(): couponType {
     let type: couponType = couponType.none;
@@ -124,20 +127,25 @@ function getCouponType(): couponType {
 
     if ((window as any).__react_data__) {
         type = couponType.newBabelAwardCollection;
-    } else {
-
+    } else if ((window as any).Queries) {
+        type = couponType.whiteCoupon;
     }
 
     return type;
 }
 
 function getCouponDesc(type: couponType) {
+    let args = {};
     switch (type) {
         case couponType.none:
             break;
         case couponType.newBabelAwardCollection:
-            const args = url.match(/active\/(\S*)\/index/)![1];
+            args = url.match(/active\/(\S*)\/index/)![1];
             coupon = new BabelAwardCollection({ "activityId": args }, container);
+            break;
+        case couponType.whiteCoupon:
+            args = Utils.GetQueryString("couponBusinessId");
+            coupon = new WhiteCoupon({ "couponBusinessId": args }, container);
             break;
         default:
             break;
@@ -149,10 +157,6 @@ function getCouponDesc(type: couponType) {
     }
 
 }
-
-
-
-
 
 function getTime() {
     fetch('https://api.m.jd.com/client.action?functionId=babelActivityGetShareInfo&client=wh5')
