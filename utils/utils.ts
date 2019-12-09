@@ -1,3 +1,12 @@
+(window as any).jsonpBind = function (res: string) {
+    Utils.jsonpBind(JSON.stringify(res));
+}
+
+
+// type attributes = {
+//     innerHTML: string
+// }
+
 export default class Utils {
     static formateDate(date: string): string {
         let dateObj = new Date(+date),
@@ -56,18 +65,49 @@ export default class Utils {
     static GetQueryString(name: string): string {
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
         var r = window.location.search.substr(1).match(reg);
+        if (!r) {
+            let url = window.location.hash;
+            r = url.substr(url.indexOf("?") + 1, url.length - url.indexOf("?")).match(reg);
+        }
         if (r != null)
             return r[2];
         return "";
+    }
+
+    static getQueryStringByName(url: string) {
+        url = url.replace(/#.*/, ''); //removes hash (to avoid getting hash query)
+        var queryString = /\?[a-zA-Z0-9\=\&\%\$\-\_\.\+\!\*\'\(\)\,]+/.exec(url); //valid chars according to: http://www.ietf.org/rfc/rfc1738.txt
+        return (queryString) ? decodeURIComponent(queryString[0]) : '';
     }
 
     static formateTime(time: string): number {
         return Math.trunc(+time.replace(/[:|：]+/ig, ""));
     }
 
-    static createJsonp(callback: string) {
+    static createJsonp(url: string, bind: boolean = false) {
         var jsonpScript = document.createElement('script');
-        document.getElementsByTagName('head')[0].appendChild(jsonpScript);
-        jsonpScript.setAttribute('src', `https://wq.jd.com/user/info/QueryJDUserInfo?sceneid=11110&sceneval=2&g_login_type=1&callback=${callback}`);
+        if (bind) {
+            url += "jsonpBind";
+            document.getElementsByTagName('head')[0].appendChild(jsonpScript);
+            jsonpScript.setAttribute('src', url);
+        } else {
+            document.getElementsByTagName('head')[0].appendChild(jsonpScript);
+            jsonpScript.setAttribute('src', url);
+        }
+
     }
+
+    static jsonpBind(res: string) {
+        postMessage(res, '*');
+    }
+
+    // static HTMLfactory(type: string, attributes: any, parent: HTMLElement): HTMLElement {
+    //     let ele: any = document.createElement(type);
+    //     for (let k in attributes) {
+    //         ele[k] = attributes[k];
+    //     }
+    //     parent.append(ele);
+    //     return ele;
+
+    // }
 }

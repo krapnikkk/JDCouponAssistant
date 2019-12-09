@@ -7,6 +7,7 @@ type couponDetails = {
     scene: string
     picUrl: string
     status: string
+    flag: boolean
 }
 
 export default class NewBabelAwardCollection implements Coupon {
@@ -14,9 +15,11 @@ export default class NewBabelAwardCollection implements Coupon {
     couponList: couponDetails[] = [];
     couponParams: any;
     container: HTMLDivElement;
-    constructor(couponParams: any, containerDiv: HTMLDivElement) {
+    outputTextarea: HTMLTextAreaElement;
+    constructor(couponParams: any, containerDiv: HTMLDivElement, outputTextarea: HTMLTextAreaElement) {
         this.couponParams = couponParams;
         this.container = containerDiv;
+        this.outputTextarea = outputTextarea;
     }
 
 
@@ -42,7 +45,8 @@ export default class NewBabelAwardCollection implements Coupon {
                         "args": args,
                         "status": status,
                         "couponbatch": cid,
-                        "picUrl": picUrl
+                        "picUrl": picUrl,
+                        "flag": true
                     });
                 }
             }
@@ -53,12 +57,12 @@ export default class NewBabelAwardCollection implements Coupon {
 
     list(): void {
         const content = document.createElement("div");
-        content.innerHTML = "<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin-top: 5px;padding: 0 37.5vw 5px;'>优惠券</h3>";
+        content.innerHTML = "<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin-top: 5px;padding: 0 37.5vw 5px;'>优惠券</h3><p style='color:red'>点击列表项可以取消指定领取的券</p>";
         content.setAttribute('style', 'display:flex;flex-direction:column;padding: 5px;margin-top: 5px;border: 1px solid #000;');
         for (let i = 0; i < this.couponList.length; i++) {
             const item = this.couponList[i],
                 itemDiv = document.createElement("div");
-            itemDiv.setAttribute('style', 'display:flex;flex-direction:row;padding:10px 0;border-bottom:1px solid #999');
+            itemDiv.setAttribute('style', 'display:flex;flex-direction:row;padding:10px 0;border:1px solid red;border-radius: 10px;margin-top:5px;padding: 5px');
             if (item.scene == "1") {
                 itemDiv.innerHTML = `<img style="width:120px;height:100%;padding-right:10vw;display: block;" src="${item.picUrl}" />
                 <div>
@@ -80,12 +84,25 @@ export default class NewBabelAwardCollection implements Coupon {
                 </div>`
             }
             content.appendChild(itemDiv);
+            itemDiv.addEventListener("click", (evt) => {
+                const target = evt.target as HTMLElement;
+                if (!item.flag) {
+                    target.style.border = "1px solid red";
+                    target.style.borderRadius = "10px";
+                } else {
+                    target.style.border = "none";
+                    target.style.borderRadius = "0px";
+                }
+                item.flag = !item.flag;
+            });
         }
         this.container.appendChild(content);
+
     }
 
-    send(outputTextarea: HTMLTextAreaElement): void {
-        outputTextarea.style.display = "block";
+
+    send(): void {
+        this.outputTextarea.style.display = "block";
         for (let i = 0; i < this.couponList.length; i++) {
             let item = this.couponList[i], url = "";
             if (item.scene == "1") {
@@ -93,16 +110,19 @@ export default class NewBabelAwardCollection implements Coupon {
             } else if (item.scene == "3") {
                 url = `https://api.m.jd.com/client.action?functionId=newBabelAwardCollection&body={"activityId":"${this.couponParams.activityId}","scene":${item.scene},"actKey":"${item.args}"}&client=wh5`;
             }
-            fetch(url,{credentials: "include"})
-                .then((res) => { return res.json() })
-                .then((json) => {
-                    if (json.errmsg) {
-                        outputTextarea.value = `第${i+1}张 领券结果:${json.errmsg}\n` + outputTextarea.value;
-                    } else {
-                        outputTextarea.value = `第${i+1}张 领券结果:${json.subCodeMsg}\n` +outputTextarea.value;
-                    }
+            if (item.flag) {
+                fetch(url, { credentials: "include" })
+                    .then((res) => { return res.json() })
+                    .then((json) => {
+                        if (json.errmsg) {
+                            this.outputTextarea.value = `第${i + 1}张 领券结果:${json.errmsg}\n` + this.outputTextarea.value;
+                        } else {
+                            this.outputTextarea.value = `第${i + 1}张 领券结果:${json.subCodeMsg}\n` + this.outputTextarea.value;
+                        }
 
-                });
+                    });
+            }
+
         }
     }
 }

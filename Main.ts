@@ -2,12 +2,13 @@ import Coupon from "./interface/Coupon";
 import BabelAwardCollection from "./coupons/newBabelAwardCollection";
 import Utils from "./utils/utils";
 import WhiteCoupon from "./coupons/whtieCoupon";
+import Purchase from "./coupons/purchase";
 enum couponType {
     none,
     receiveCoupons,
     newBabelAwardCollection = "newBabelAwardCollection",
     whiteCoupon = "whiteCoupon",
-
+    purchase = "purchase",
 }
 let coupon: Coupon,
     url = window.location.href,
@@ -38,7 +39,7 @@ function buildHTML() {
     document.body.style.backgroundColor = "#ffffff";
     document.body.style.textAlign = "center";
     container.setAttribute("style", "border: 1px solid #000;padding: 5px;margin: 5px;");
-    title.innerHTML = `<h2>京东领券助手V0.1</h2>
+    title.innerHTML = `<h2>京东领券助手V0.2</h2>
                         <h3>author:krapnik</h3>
                         <div style="display: flex;flex-direction: row;justify-content: center;">
                         <iframe src="https://ghbtns.com/github-btn.html?user=krapnikkk&repo=JDCouponAssistant&type=star&count=true" frameborder="0" scrolling="0" width="80px" height="21px"></iframe>
@@ -129,6 +130,8 @@ function getCouponType(): couponType {
         type = couponType.newBabelAwardCollection;
     } else if ((window as any).Queries) {
         type = couponType.whiteCoupon;
+    } else if (url.includes('gcmall/index.html#/details?pid=')) {
+        type = couponType.purchase;
     }
 
     return type;
@@ -141,18 +144,22 @@ function getCouponDesc(type: couponType) {
             break;
         case couponType.newBabelAwardCollection:
             args = url.match(/active\/(\S*)\/index/)![1];
-            coupon = new BabelAwardCollection({ "activityId": args }, container);
+            coupon = new BabelAwardCollection({ "activityId": args }, container, outputTextArea);
             break;
         case couponType.whiteCoupon:
             args = Utils.GetQueryString("couponBusinessId");
-            coupon = new WhiteCoupon({ "couponBusinessId": args }, container);
+            coupon = new WhiteCoupon({ "couponBusinessId": args }, container, outputTextArea);
+            break;
+        case couponType.purchase:
+            args = Utils.GetQueryString("pid");
+            coupon = new Purchase({ "pid": args }, container, outputTextArea);
             break;
         default:
             break;
     }
     if (coupon) {
         buildHTML();
-        Utils.createJsonp('getLoginMsg');
+        Utils.createJsonp('https://wq.jd.com/user/info/QueryJDUserInfo?sceneid=11110&sceneval=2&g_login_type=1&callback=getLoginMsg');
         coupon.get();
     }
 

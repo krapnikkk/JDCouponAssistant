@@ -12,9 +12,11 @@ export default class WhiteCoupon implements Coupon {
     couponList: couponDetails[] = [];
     container: HTMLDivElement;
     couponParams: any;
-    constructor(couponParams: any, containerDiv: HTMLDivElement) {
+    outputTextarea: HTMLTextAreaElement;
+    constructor(couponParams: any, containerDiv: HTMLDivElement, outputTextarea: HTMLTextAreaElement) {
         this.couponParams = couponParams;
         this.container = containerDiv;
+        this.outputTextarea = outputTextarea;
     }
     get(): void {
         this.couponList = [];
@@ -52,17 +54,17 @@ export default class WhiteCoupon implements Coupon {
         }
         this.container.appendChild(content);
     }
-    send(outputTextarea: HTMLTextAreaElement): void {
-        outputTextarea.style.display = "block";
+    send(): void {
+        this.outputTextarea.style.display = "block";
         for (let i = 0; i < this.couponList.length; i++) {
             let item = this.couponList[i], url = this.url.replace("{couponBusinessId}",item.couponBusinessId);
             fetch(url)
                 .then((res) => { return res.json() })
                 .then((json) => {
                     if (json.isSuccess) {
-                        outputTextarea.value = `第${i + 1}张 领券结果:领取成功！}\n` + outputTextarea.value;
+                        this.outputTextarea.value = `第${i + 1}张 领券结果:领取成功！}\n` + this.outputTextarea.value;
                     } else {
-                        outputTextarea.value = `第${i + 1}张 领券结果:领取失败！\n` + outputTextarea.value;
+                        this.outputTextarea.value = `第${i + 1}张 领券结果:领取失败！\n` + this.outputTextarea.value;
                     }
                 });
         }
