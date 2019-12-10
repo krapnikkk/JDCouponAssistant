@@ -3,12 +3,14 @@ import BabelAwardCollection from "./coupons/newBabelAwardCollection";
 import Utils from "./utils/utils";
 import WhiteCoupon from "./coupons/whtieCoupon";
 import Purchase from "./coupons/purchase";
+import ReceiveDayCoupon from "./coupons/receiveDayCoupon";
 enum couponType {
     none,
     receiveCoupons,
     newBabelAwardCollection = "newBabelAwardCollection",
     whiteCoupon = "whiteCoupon",
     purchase = "purchase",
+    receiveDayCoupon = "receiveDayCoupon"
 }
 let coupon: Coupon,
     url = window.location.href,
@@ -38,6 +40,7 @@ function buildHTML() {
     document.body.innerHTML = "";
     document.body.style.backgroundColor = "#ffffff";
     document.body.style.textAlign = "center";
+    document.body.style.maxWidth = "100vw";
     container.setAttribute("style", "border: 1px solid #000;padding: 5px;margin: 5px;");
     title.innerHTML = `<h2>京东领券助手V0.2</h2>
                         <h3>author:krapnik</h3>
@@ -132,6 +135,8 @@ function getCouponType(): couponType {
         type = couponType.whiteCoupon;
     } else if (url.includes('gcmall/index.html#/details?pid=')) {
         type = couponType.purchase;
+    } else if (url.includes("plus.m.jd.com/coupon/")) {
+        type = couponType.receiveDayCoupon
     }
 
     return type;
@@ -153,6 +158,9 @@ function getCouponDesc(type: couponType) {
         case couponType.purchase:
             args = Utils.GetQueryString("pid");
             coupon = new Purchase({ "pid": args }, container, outputTextArea);
+            break;
+        case couponType.receiveDayCoupon:
+            coupon = new ReceiveDayCoupon(null, container, outputTextArea);
             break;
         default:
             break;
@@ -193,8 +201,19 @@ function copyRights() {
     }
 }
 
+var _hmt:any = _hmt || [];
+function statistical() {
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?d86d4ff3f6d089df2b41eb0735194c0d";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode!.insertBefore(hm, s);
+    })();
+}
+
 getCouponDesc(getCouponType());
 copyRights();
+statistical();
 
 
 

@@ -21,7 +21,6 @@ export default class Purchase implements Coupon {
         window.addEventListener("message", this.jsonp.bind(this), false);
     }
     get(): void {
-        console.log('get');
         let url = this.detailurl.replace("{pid}", this.couponParams.pid);
         Utils.createJsonp(url, true);
     }

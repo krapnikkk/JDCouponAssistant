@@ -365,5 +365,16 @@ eval(function(p,a,c,k,e,d){e=function(c){return(c<a?"":e(parseInt(c/a)))+((c=c%a
 
 
 
-jsonp3({"code":"0000","data":{"exchangeStatus":2,"hits":[]},"msg":"请求成功","success":true})
+测试：
 
+https://prodev.m.jd.com/mall/active/34J4g9o8Wz9qZgZkq1XXLpUSSN3L/index.html?utm_source=Android*url*1575334905852&utm_medium=jrappshare&utm_term=qqfriends
+
+https://pro.m.jd.com/mall/active/24v2toX3nJbcsPdyySH6oc5WhM7r/index.html?cu=true&utm_source=just998.com&utm_medium=tuiguang&utm_campaign=t_239371284_&utm_term=5856ede2846447d28f1677c397bcbf3c
+
+http://credit.jd.com/channel/coupon.html?couponBusinessId=db694e050cabc6d1c113042bb5d615c0&cu=true&actId=004
+
+http://credit.jd.com/channel/coupon.html?couponBusinessId=db694e050cabc6d1c113042bb5d615c0&cu=true&actId=004
+
+https://m.jr.jd.com/member/gcmall/index.html#/details?pid=1522&babelChannel=ttt2&utm_source=uep_58637&uep_p=6BF401F52C00812408C63EDB54E85D3A&timer=1575884683961
+
+https://plus.m.jd.com/coupon/index#/

@@ -46,7 +46,7 @@ export default class NewBabelAwardCollection implements Coupon {
                         "status": status,
                         "couponbatch": cid,
                         "picUrl": picUrl,
-                        "flag": true
+                        "flag": false
                     });
                 }
             }
@@ -57,16 +57,17 @@ export default class NewBabelAwardCollection implements Coupon {
 
     list(): void {
         const content = document.createElement("div");
-        content.innerHTML = "<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin-top: 5px;padding: 0 37.5vw 5px;'>优惠券</h3><p style='color:red'>点击列表项可以取消指定领取的券</p>";
+        content.innerHTML = "<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin-top: 5px;padding: 0 37.5vw 5px;'>优惠券</h3><p style='margin: 5px 0;color:red'>请先点击列表项选择领取的券</p>";
         content.setAttribute('style', 'display:flex;flex-direction:column;padding: 5px;margin-top: 5px;border: 1px solid #000;');
         for (let i = 0; i < this.couponList.length; i++) {
             const item = this.couponList[i],
                 itemDiv = document.createElement("div");
-            itemDiv.setAttribute('style', 'display:flex;flex-direction:row;padding:10px 0;border:1px solid red;border-radius: 10px;margin-top:5px;padding: 5px');
+            itemDiv.setAttribute('style', 'display:flex;flex-direction:row;padding:10px 0;border:1px solid gray;border-radius: 10px;margin-top:5px;padding: 5px');
+            itemDiv.setAttribute('data-item', "coupon");
             if (item.scene == "1") {
-                itemDiv.innerHTML = `<img style="width:120px;height:100%;padding-right:10vw;display: block;" src="${item.picUrl}" />
-                <div>
-                    <p style="margin-bottom:10px">状态：${item.status == "0" ? "可领取" : item.status == "1" ? "已领取" : "已领光"}<br/>说明：${item.details}</p>
+                itemDiv.innerHTML = `<img style="user-select: none;pointer-events:none;width:120px;height:100%;padding-right:10vw;display: block;" src="${item.picUrl}" />
+                <div">
+                    <p style="user-select: none;pointer-events:none;margin-bottom:10px">状态：${item.status == "0" ? "可领取" : item.status == "1" ? "已领取" : "已领光"}<br/>说明：${item.details}</p>
                     <button style="width: 80px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">
                         <a href='https://so.m.jd.com/list/couponSearch.action?couponbatch=${item.couponbatch}' target="_blank" style="color: #fff;text-decoration: none;">可用商品</a>
                     </button>
@@ -75,9 +76,9 @@ export default class NewBabelAwardCollection implements Coupon {
                     </button>
                 </div>`
             } else if (item.scene == "3") {
-                itemDiv.innerHTML = `<img style="width:120px;height:100%;padding-right:10vw;display: block;" src="${item.picUrl}" />
-                <div>
-                <p style="margin-bottom:10px">状态：${item.status == "0" ? "可领取" : item.status == "1" ? "已领取" : "已领光"}</p>
+                itemDiv.innerHTML = `<img style="user-select: none;pointer-events:none;width:120px;height:100%;padding-right:10vw;display: block;" src="${item.picUrl}" />
+                <div">
+                <p style="user-select: none;pointer-events:none;margin-bottom:10px">状态：${item.status == "0" ? "可领取" : item.status == "1" ? "已领取" : "已领光"}</p>
                 <button style="width: 80px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">
                     <a href='https://api.m.jd.com/client.action?functionId=newBabelAwardCollection&body={"activityId":"${this.couponParams.activityId}","scene":${item.scene},"actKey":"${item.args}"}&client=wh5' target="_blank" style="color: #fff;text-decoration: none;">直接领取</a>
                 </button>
@@ -86,14 +87,14 @@ export default class NewBabelAwardCollection implements Coupon {
             content.appendChild(itemDiv);
             itemDiv.addEventListener("click", (evt) => {
                 const target = evt.target as HTMLElement;
-                if (!item.flag) {
-                    target.style.border = "1px solid red";
-                    target.style.borderRadius = "10px";
-                } else {
-                    target.style.border = "none";
-                    target.style.borderRadius = "0px";
+                if (target.getAttribute('data-item')) {
+                    if (!item.flag) {
+                        target.style.border = "1px solid red";
+                    } else {
+                        target.style.border = "1px solid gray";
+                    }
+                    item.flag = !item.flag;
                 }
-                item.flag = !item.flag;
             });
         }
         this.container.appendChild(content);
