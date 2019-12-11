@@ -4,20 +4,24 @@ import Utils from "./utils/utils";
 import WhiteCoupon from "./coupons/whtieCoupon";
 import Purchase from "./coupons/purchase";
 import ReceiveDayCoupon from "./coupons/receiveDayCoupon";
+import SecKillCoupon from "./coupons/secKillCoupon";
+import Mfreecoupon from "./coupons/mfreecoupon";
 enum couponType {
     none,
     receiveCoupons,
     newBabelAwardCollection = "newBabelAwardCollection",
     whiteCoupon = "whiteCoupon",
     purchase = "purchase",
-    receiveDayCoupon = "receiveDayCoupon"
+    receiveDayCoupon = "receiveDayCoupon",
+    secKillCoupon = "secKillCoupon",
+    mfreecoupon = "mfreecoupon",
 }
 let coupon: Coupon,
     url = window.location.href,
     couponFlag = false,
     startTime = 0,
     getTimeSpan = 500,
-    t1 = window.setInterval(getTime, getTimeSpan),
+    t1: number = 0,
     time,
     localeTime;
 
@@ -37,6 +41,8 @@ const container: HTMLDivElement = document.createElement("div"),
     loginMsgDiv: HTMLDivElement = document.createElement("div");
 
 function buildHTML() {
+    const html: HTMLElement = document.querySelector('html') as HTMLElement;
+    html.style.fontSize = "18px";
     document.body.innerHTML = "";
     document.body.style.backgroundColor = "#ffffff";
     document.body.style.textAlign = "center";
@@ -137,35 +143,47 @@ function getCouponType(): couponType {
         type = couponType.purchase;
     } else if (url.includes("plus.m.jd.com/coupon/")) {
         type = couponType.receiveDayCoupon
+    } else if ((/babelDiy\/(\S*)\/index/).test(url)) {
+        type = couponType.secKillCoupon
+    } else if (/coupons\/show.action\?key=(\S*)&roleId=(\S*)/.test(url)) {
+        type = couponType.mfreecoupon
     }
 
     return type;
 }
 
 function getCouponDesc(type: couponType) {
-    let args = {};
     switch (type) {
         case couponType.none:
             break;
         case couponType.newBabelAwardCollection:
-            args = url.match(/active\/(\S*)\/index/)![1];
-            coupon = new BabelAwardCollection({ "activityId": args }, container, outputTextArea);
+            const activityId = url.match(/active\/(\S*)\/index/)![1];
+            coupon = new BabelAwardCollection({ "activityId": activityId }, container, outputTextArea);
             break;
         case couponType.whiteCoupon:
-            args = Utils.GetQueryString("couponBusinessId");
-            coupon = new WhiteCoupon({ "couponBusinessId": args }, container, outputTextArea);
+            const couponBusinessId = Utils.GetQueryString("couponBusinessId");
+            coupon = new WhiteCoupon({ "couponBusinessId": couponBusinessId }, container, outputTextArea);
             break;
         case couponType.purchase:
-            args = Utils.GetQueryString("pid");
-            coupon = new Purchase({ "pid": args }, container, outputTextArea);
+            const pid = Utils.GetQueryString("pid");
+            coupon = new Purchase({ "pid": pid }, container, outputTextArea);
             break;
         case couponType.receiveDayCoupon:
             coupon = new ReceiveDayCoupon(null, container, outputTextArea);
+            break;
+        case couponType.secKillCoupon:
+            coupon = new SecKillCoupon(null, container, outputTextArea);
+            break;
+        case couponType.mfreecoupon:
+            const roleId = Utils.GetQueryString("roleId"),
+                key = Utils.GetQueryString("key");
+            coupon = new Mfreecoupon({ "roleId": roleId, "key": key }, container, outputTextArea);
             break;
         default:
             break;
     }
     if (coupon) {
+        t1 = window.setInterval(getTime, getTimeSpan);
         buildHTML();
         Utils.createJsonp('https://wq.jd.com/user/info/QueryJDUserInfo?sceneid=11110&sceneval=2&g_login_type=1&callback=getLoginMsg');
         coupon.get();
@@ -201,7 +219,7 @@ function copyRights() {
     }
 }
 
-var _hmt:any = _hmt || [];
+var _hmt: any = _hmt || [];
 function statistical() {
     (function () {
         var hm = document.createElement("script");
