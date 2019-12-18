@@ -7,6 +7,7 @@ import ReceiveDayCoupon from "./coupons/receiveDayCoupon";
 import SecKillCoupon from "./coupons/secKillCoupon";
 import Mfreecoupon from "./coupons/mfreecoupon";
 import CoinPurchase from "./coupons/coinPurchase";
+import GcConvert from "./coupons/gcConvert";
 enum couponType {
     none,
     receiveCoupons,
@@ -17,6 +18,7 @@ enum couponType {
     secKillCoupon = "secKillCoupon",
     mfreecoupon = "mfreecoupon",
     coinPurchase = "coinPurchase",
+    GcConvert = "GcConvert",
 }
 let coupon: Coupon,
     url = window.location.href,
@@ -75,7 +77,7 @@ function buildHTML() {
         t1 = window.setInterval(getTime, getTimeSpan);
     });
     receiveTextInput.type = "text";
-    receiveTextInput.placeholder = "定时领券时间【格式:9:59:59:950】";
+    receiveTextInput.placeholder = "定时领券时间【格式:13:59:59:950】";
     receiveTextInput.setAttribute("style", "width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px;");
     receiveTimerBtn.innerHTML = "定时全部领取";
     receiveTimerBtn.addEventListener("click", () => {
@@ -86,11 +88,14 @@ function buildHTML() {
         } else {
             couponFlag = !couponFlag;
             startTime = time;
+            outputTextArea.style.display = "block";
             receiveTextInput.disabled = couponFlag;
             if (couponFlag) {
                 receiveTimerBtn.innerHTML = "取消全部领取";
+                outputTextArea.value += `已开启定时领取\n`;
             } else {
                 receiveTimerBtn.innerHTML = "定时全部领取";
+                outputTextArea.value += `已关闭定时领取\n`;
             }
         }
 
@@ -162,10 +167,12 @@ function getCouponType(): couponType {
         type = couponType.whiteCoupon;
     } else if (url.includes('gcmall/index.html#/details?pid=')) {
         type = couponType.purchase;
-    }else if (url.includes('member/gcmall/index.html#/details?gid')) {
+    } else if (url.includes('member/gcmall/index.html#/details?gid')) {
         type = couponType.coinPurchase;
     } else if (url.includes("plus.m.jd.com/coupon/")) {
         type = couponType.receiveDayCoupon
+    } else if (url.includes("9GcConvert")) {
+        type = couponType.GcConvert
     } else if ((/babelDiy\/(\S*)\/index/).test(url)) {
         type = couponType.secKillCoupon
     } else if (/coupons\/show.action\?key=(\S*)&roleId=(\S*)/.test(url)) {
@@ -201,6 +208,9 @@ function getCouponDesc(type: couponType) {
         case couponType.secKillCoupon:
             coupon = new SecKillCoupon(null, container, outputTextArea);
             break;
+        case couponType.GcConvert:
+            coupon = new GcConvert(null, container, outputTextArea);
+            break;
         case couponType.mfreecoupon:
             const roleId = Utils.GetQueryString("roleId"),
                 key = Utils.GetQueryString("key");
@@ -229,11 +239,14 @@ function getTime() {
             timerTittleDiv.innerHTML = `京东时间：${localeTime}<br/>当前获取时间的间隔频率：${getTimeSpan}毫秒`;
             if (couponFlag) {
                 if (startTime <= +time) {
-                    outputTextArea.value += `当前时间：${localeTime}\n`;
+                    outputTextArea.value += `定时领取开始！当前时间：${localeTime}\n`;
                     couponFlag = !couponFlag;
                     if (coupon) {
                         coupon.send(outputTextArea);
                     }
+                    receiveTextInput.disabled = couponFlag;
+                    receiveTimerBtn.innerHTML = "定时全部领取";
+                    outputTextArea.value += `定时领取已结束！\n`;
                 }
             }
         });
