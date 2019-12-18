@@ -6,6 +6,7 @@ import Purchase from "./coupons/purchase";
 import ReceiveDayCoupon from "./coupons/receiveDayCoupon";
 import SecKillCoupon from "./coupons/secKillCoupon";
 import Mfreecoupon from "./coupons/mfreecoupon";
+import CoinPurchase from "./coupons/coinPurchase";
 enum couponType {
     none,
     receiveCoupons,
@@ -15,6 +16,7 @@ enum couponType {
     receiveDayCoupon = "receiveDayCoupon",
     secKillCoupon = "secKillCoupon",
     mfreecoupon = "mfreecoupon",
+    coinPurchase = "coinPurchase",
 }
 let coupon: Coupon,
     url = window.location.href,
@@ -121,6 +123,25 @@ function buildHTML() {
     operateAreaDiv.append(outputTextArea);
 }
 
+function buildHomePage() {
+    const html: HTMLElement = document.querySelector('html') as HTMLElement;
+    html.style.fontSize = "18px";
+    document.body.innerHTML = "";
+    document.body.style.backgroundColor = "#ffffff";
+    document.body.style.textAlign = "center";
+    document.body.style.maxWidth = "100vw";
+    container.setAttribute("style", "border: 1px solid #000;padding: 5px;margin: 5px;");
+    title.innerHTML = `<h2>京东领券助手V0.2</h2>
+                        <h3>author:krapnik</h3>
+                        <div style="display: flex;flex-direction: row;justify-content: center;">
+                        <iframe src="https://ghbtns.com/github-btn.html?user=krapnikkk&repo=JDCouponAssistant&type=star&count=true" frameborder="0" scrolling="0" width="80px" height="21px"></iframe>
+                        <a href="tencent://message/?uin=708873725Menu=yes" target="_blank" title="发起QQ聊天"><img src="http://bizapp.qq.com/webimg/01_online.gif" alt="QQ" style="margin:0px;"></a>
+                        </div>
+                        <h4>这个页面好像还没有被扩展或者有误哦<br/>联系作者扩展或者咨询一下吧~</h4>`;
+    container.append(title);
+    document.body.append(container);
+}
+
 let getLoginMsg = function (res: any) {
     if (res.base.nickname) {
         loginMsgDiv.innerHTML = "当前帐号：" + res.base.nickname;
@@ -141,6 +162,8 @@ function getCouponType(): couponType {
         type = couponType.whiteCoupon;
     } else if (url.includes('gcmall/index.html#/details?pid=')) {
         type = couponType.purchase;
+    }else if (url.includes('member/gcmall/index.html#/details?gid')) {
+        type = couponType.coinPurchase;
     } else if (url.includes("plus.m.jd.com/coupon/")) {
         type = couponType.receiveDayCoupon
     } else if ((/babelDiy\/(\S*)\/index/).test(url)) {
@@ -168,6 +191,10 @@ function getCouponDesc(type: couponType) {
             const pid = Utils.GetQueryString("pid");
             coupon = new Purchase({ "pid": pid }, container, outputTextArea);
             break;
+        case couponType.coinPurchase:
+            const gid = Utils.GetQueryString("gid");
+            coupon = new CoinPurchase({ "pid": gid }, container, outputTextArea);
+            break;
         case couponType.receiveDayCoupon:
             coupon = new ReceiveDayCoupon(null, container, outputTextArea);
             break;
@@ -185,9 +212,11 @@ function getCouponDesc(type: couponType) {
     if (coupon) {
         t1 = window.setInterval(getTime, getTimeSpan);
         buildHTML();
-        Utils.createJsonp('https://wq.jd.com/user/info/QueryJDUserInfo?sceneid=11110&sceneval=2&g_login_type=1&callback=getLoginMsg');
         coupon.get();
+    } else {
+        buildHomePage();
     }
+    Utils.createJsonp('https://wq.jd.com/user/info/QueryJDUserInfo?sceneid=11110&sceneval=2&g_login_type=1&callback=getLoginMsg');
 
 }
 

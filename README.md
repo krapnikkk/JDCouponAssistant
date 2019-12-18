@@ -19,6 +19,7 @@
 - [x] 日常优惠券 地址格式：https://pro.m.jd.com/mall/active/{activityId}/index.html
 - [x] 小白信用专属优惠券 地址格式：http://credit.jd.com/channel/coupon.html?couponBusinessId={couponBusinessId}&actId=004
 - [x] 金币权益 地址格式：https://m.jr.jd.com/member/gcmall/index.html#/details?pid={pid}
+- [x] 金币权益v2 地址格式：https://m.jr.jd.com/member/gcmall/index.html#/details?gid={gid}
 - [x] PLUS尊享券 地址格式：https://plus.m.jd.com/coupon/index#/
 - [x] 拼购优惠券 地址格式：https://h5.m.jd.com/babelDiy/Zeus/{activityId}/index.html
 - [x] 日常优惠券 地址格式：https://coupon.m.jd.com/coupons/show.action?key={key}&roleId={roleId}
