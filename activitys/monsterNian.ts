@@ -39,6 +39,7 @@ export default class MonsterNian implements Activity {
         let msg = `
         <div style="margin:10px;">
         <input id="timer" type="text" placeholder="提交间隔时间+随机100~500毫秒【默认:1000毫秒】" style="width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;">
+        <button class="raise" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键炸年兽</button>
         <button class="shop" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">逛逛好店</button>
         <button class="product" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">好物加购</button>
         <button class="shopping" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">逛逛会场</button>
@@ -60,6 +61,7 @@ export default class MonsterNian implements Activity {
             s = document.querySelector('.shopping'),
             i = document.querySelector('.invite'),
             j = document.querySelector('.join'),
+            b = document.querySelector('.raise'),
             l = document.querySelector('.product');
         t.onchange = () => {
             this.timer = +t!.value || 1000;
@@ -97,6 +99,9 @@ export default class MonsterNian implements Activity {
         })
         j!.addEventListener('click', () => {
             this.join();
+        })
+        b!.addEventListener('click', () => {
+
         })
     }
 
@@ -159,6 +164,24 @@ export default class MonsterNian implements Activity {
                 Utils.outPutLog(this.outputTextarea, `${new Date().toLocaleString()} 操作成功！加入成功！`);
             } else {
                 Utils.outPutLog(this.outputTextarea, `${new Date().toLocaleString()} 操作失败，好像满人了哦`);
+            }
+        })
+    }
+
+    raise() {
+        fetch("https://api.m.jd.com/client.action?functionId=bombnian_raise", {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: `functionId=bombnian_raise&body={}&client=wh5&clientVersion=1.0.0`
+        }).then(function (response) {
+            return response.json()
+        }).then((res) => {
+            if (res.data.bizCode == 0) {
+                Utils.outPutLog(this.outputTextarea, `${new Date().toLocaleString()} 操作成功！获取奖励如下:${JSON.stringify(res.data.result.levelUpAward)}`);
             }
         })
     }
