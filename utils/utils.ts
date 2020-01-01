@@ -101,6 +101,35 @@ export default class Utils {
         postMessage(res, '*');
     }
 
+    static outPutLog(output: HTMLTextAreaElement, log: string): void {
+        output.value = `${output.value}\n${log}`;
+    }
+
+    static random(n: number, m: number): number {
+        return Math.floor(Math.random() * (m - n + 1) + n);
+    }
+
+    static copyText(text: string) {
+        if (text === "") {
+            alert("好像没有需要复制的内容哦！");
+            return;
+        }
+        var oInput: HTMLInputElement | null = document.querySelector('.oInput');
+        if (!oInput) {
+            oInput = document.createElement('input');
+            oInput.className = 'oInput';
+            document.body.appendChild(oInput);
+        }
+        oInput.style.display = 'block';
+        oInput.value = text;
+        oInput.select();
+        document.execCommand("Copy");
+        oInput.style.display = 'none';
+        alert('内容已经复制到黏贴板啦');
+    }
+
+    static userAgent:string = "jdapp;android;8.4.2;8.0.0;;network/wifi;model/Mi Note 2;osVer/26;appBuild/71043;psn/|7;psq/1;uid/;adk/;ads/;pap/JA2015_311210|8.4.2|ANDROID 8.0.0;osv/8.0.0;pv/2.23;jdv/;ref/com.jingdong.app.mall.WebActivity;partner/huawei;apprpd/Home_Main;Mozilla/5.0 (Linux; Android 8.0.0; Mi Note 2 Build/OPR1.170623.032; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/71.0.3578.99 Mobile Safari/537.36";
+
     // static HTMLfactory(type: string, attributes: any, parent: HTMLElement): HTMLElement {
     //     let ele: any = document.createElement(type);
     //     for (let k in attributes) {

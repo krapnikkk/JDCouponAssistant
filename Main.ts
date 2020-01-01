@@ -1,4 +1,5 @@
 import Coupon from "./interface/Coupon";
+import Activity from "./interface/Activity";
 import BabelAwardCollection from "./coupons/newBabelAwardCollection";
 import Utils from "./utils/utils";
 import WhiteCoupon from "./coupons/whtieCoupon";
@@ -8,9 +9,10 @@ import SecKillCoupon from "./coupons/secKillCoupon";
 import Mfreecoupon from "./coupons/mfreecoupon";
 import CoinPurchase from "./coupons/coinPurchase";
 import GcConvert from "./coupons/gcConvert";
+import MonsterNian from "./activitys/MonsterNian";
 enum couponType {
     none,
-    receiveCoupons,
+    receiveCoupons = "receiveCoupons",
     newBabelAwardCollection = "newBabelAwardCollection",
     whiteCoupon = "whiteCoupon",
     purchase = "purchase",
@@ -20,12 +22,20 @@ enum couponType {
     coinPurchase = "coinPurchase",
     GcConvert = "GcConvert",
 }
+
+enum activityType {
+    none,
+    monsterNian = "monsterNian",
+}
+
 let coupon: Coupon,
+    activity: Activity,
     url = window.location.href,
-    couponFlag = false,
+    switchFlag = false,
     startTime = 0,
     getTimeSpan = 500,
     t1: number = 0,
+    UAFlag:boolean = false,
     time,
     localeTime;
 
@@ -44,74 +54,81 @@ const container: HTMLDivElement = document.createElement("div"),
     operateAreaDiv: HTMLDivElement = document.createElement("div"),
     promotionArea: HTMLDivElement = document.createElement("div"),
     recommandArea: HTMLDivElement = document.createElement("div"),
+    activityArea: HTMLDivElement = document.createElement("div"),
     loginMsgDiv: HTMLDivElement = document.createElement("div");
 
 function buildOperate() {
-    operateAreaDiv.setAttribute("style", "border: 1px solid #000;");
-    operateAreaDiv.innerHTML = "<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;padding: 0 37.5vw 5px;'>操作区</h3>";
-    loginMsgDiv.innerHTML = "当前帐号：未登录";
-    timerTextInput.type = "text";
-    timerTextInput.placeholder = "请输入获取时间的刷新频率【毫秒】";
-    timerTextInput.setAttribute("style", "width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;");
-    timerResetBtn.innerHTML = "重置频率";
-    timerResetBtn.setAttribute("style", "width: 80px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;");
-    timerResetBtn.addEventListener("click", () => {
-        const span = Math.trunc(+timerTextInput.value);
-        if (!getTimeSpan) {
-            alert("请检查输入的刷新频率是否有误！(只能为大于0的数字)");
-            return false;
-        }
-        getTimeSpan = span;
-        window.clearInterval(t1);
-        t1 = window.setInterval(getTime, getTimeSpan);
-    });
-    receiveTextInput.type = "text";
-    receiveTextInput.placeholder = "定时领券时间【格式:13:59:59:950】";
-    receiveTextInput.setAttribute("style", "width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px;");
-    receiveTimerBtn.innerHTML = "定时指定领取";
-    receiveTimerBtn.addEventListener("click", () => {
-        const time = Utils.formateTime(receiveTextInput.value);
-        if (!time || time < 0) {
-            alert("请检查定时领券时间的格式是否有误！");
-            return false;
-        } else {
-            couponFlag = !couponFlag;
-            startTime = time;
-            outputTextArea.style.display = "block";
-            receiveTextInput.disabled = couponFlag;
-            if (couponFlag) {
-                receiveTimerBtn.innerHTML = "取消指定领取";
-                outputTextArea.value += `已开启定时领取\n`;
-            } else {
-                receiveTimerBtn.innerHTML = "定时指定领取";
-                outputTextArea.value += `已关闭定时领取\n`;
+    if (coupon) {
+        operateAreaDiv.setAttribute("style", "border: 1px solid #000;");
+        operateAreaDiv.innerHTML = "<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;padding: 0 37.5vw 5px;'>操作区</h3>";
+        timerTextInput.type = "text";
+        timerTextInput.placeholder = "请输入获取时间的刷新频率【毫秒】";
+        timerTextInput.setAttribute("style", "width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;");
+        timerResetBtn.innerHTML = "重置频率";
+        timerResetBtn.setAttribute("style", "width: 80px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;");
+        timerResetBtn.addEventListener("click", () => {
+            const span = Math.trunc(+timerTextInput.value);
+            if (!getTimeSpan) {
+                alert("请检查输入的刷新频率是否有误！(只能为大于0的数字)");
+                return false;
             }
-        }
+            getTimeSpan = span;
+            window.clearInterval(t1);
+            t1 = window.setInterval(getTime, getTimeSpan);
+        });
+        receiveTextInput.type = "text";
+        receiveTextInput.placeholder = "定时领券时间【格式:13:59:59:950】";
+        receiveTextInput.setAttribute("style", "width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px;");
+        receiveTimerBtn.innerHTML = "定时指定领取";
+        receiveTimerBtn.addEventListener("click", () => {
+            const time = Utils.formateTime(receiveTextInput.value);
+            if (!time || time < 0) {
+                alert("请检查定时领券时间的格式是否有误！");
+                return false;
+            } else {
+                switchFlag = !switchFlag;
+                startTime = time;
+                outputTextArea.style.display = "block";
+                receiveTextInput.disabled = switchFlag;
+                if (switchFlag) {
+                    receiveTimerBtn.innerHTML = "取消指定领取";
+                    outputTextArea.value += `已开启定时领取\n`;
+                } else {
+                    receiveTimerBtn.innerHTML = "定时指定领取";
+                    outputTextArea.value += `已关闭定时领取\n`;
+                }
+            }
 
-    });
-    receiveAllBtn.addEventListener("click", () => {
-        if (coupon) {
-            coupon.send(outputTextArea);
-        }
-    });
-    receiveTimerBtn.setAttribute("style", "width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px;");
-    receiveAllBtn.innerHTML = "一键指定领取";
-    receiveAllBtn.setAttribute("style", "width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px;");
-    outputTextArea.setAttribute("style", "width: 90vw;height: 40vw;border: 1px solid #868686;border-radius: 10px;overflow-y: scroll;margin:5px auto;display:none");
-    outputTextArea.setAttribute("disabled", "disabled");
-    container.append(operateAreaDiv);
+        });
+        receiveAllBtn.addEventListener("click", () => {
+            if (coupon) {
+                coupon.send(outputTextArea);
+            }
+        });
+        receiveTimerBtn.setAttribute("style", "width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px;");
+        receiveAllBtn.innerHTML = "一键指定领取";
+        receiveAllBtn.setAttribute("style", "width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px;");
+        outputTextArea.setAttribute("style", "width: 90vw;height: 40vw;border: 1px solid #868686;border-radius: 10px;overflow-y: scroll;margin:5px auto;display:none");
+        outputTextArea.setAttribute("disabled", "disabled");
+        operateAreaDiv.append(timerDiv);
+        timerDiv.append(timerTittleDiv);
+        timerDiv.append(timerTextInput);
+        timerDiv.append(timerResetBtn);
+        operateAreaDiv.append(receiveDiv);
+        receiveDiv.append(receiveTextInput);
+        receiveDiv.append(receiveAreaDiv);
+        receiveAreaDiv.append(receiveAllBtn);
+        receiveAreaDiv.append(receiveTimerBtn);
+    } else {
+        outputTextArea.setAttribute("style", "width: 90vw;height: 40vw;border: 1px solid #868686;border-radius: 10px;overflow-y: scroll;margin:5px auto;");
+        outputTextArea.setAttribute("disabled", "disabled");
+    }
+    loginMsgDiv.innerHTML = "当前帐号：未登录";
     operateAreaDiv.append(loginMsgDiv);
-    operateAreaDiv.append(timerDiv);
-    timerDiv.append(timerTittleDiv);
-    timerDiv.append(timerTextInput);
-    timerDiv.append(timerResetBtn);
-    operateAreaDiv.append(receiveDiv);
-    receiveDiv.append(receiveTextInput);
-    receiveDiv.append(receiveAreaDiv);
-    receiveAreaDiv.append(receiveAllBtn);
-    receiveAreaDiv.append(receiveTimerBtn);
+    container.append(operateAreaDiv);
     operateAreaDiv.append(outputTextArea);
 }
+
 
 function buildTips() {
     const tips = document.createElement('h4');
@@ -137,9 +154,16 @@ function buildTitle() {
     document.body.append(container);
 }
 
+function buildActivity() {
+    activityArea.setAttribute("style", "border: 1px solid #000;margin:10px");
+    activityArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>活动推荐</h3>
+    <p style="color:red;font-weight:bold;"><a style="color:red" href="https://bunearth.m.jd.com/babelDiy/Zeus/4PWgqmrFHunn8C38mJA712fufguU/index.html#/wxhome" target="_blank">全民炸年兽</a> | <a  style="color:red" href="https://coupon.m.jd.com/coupons/show.action?key=26ef0709795d4fb793d41e7a8b0acac2&roleId=26885907&to=https://shop.m.jd.com/?shopId=1000132921&sceneval=2&time=1577796913938" target="_blank">自营键鼠199-100</a></p>`;
+    container.append(activityArea);
+}
+
 function buildRecommend() {
     recommandArea.setAttribute("style", "border: 1px solid #000;margin:10px");
-    recommandArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>每天好券推荐【建设中...】</h3>
+    recommandArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>每天好券推荐</h3>
     <p style="color:red;font-weight:bold;"><a style="color:red" href="https://m.jr.jd.com/member/9GcConvert/?channel=01-shouye-191214" target="_blank">9金币抢兑</a> | <a  style="color:red" href="https://coupon.m.jd.com/coupons/show.action?key=26ef0709795d4fb793d41e7a8b0acac2&roleId=26885907&to=https://shop.m.jd.com/?shopId=1000132921&sceneval=2&time=1577796913938" target="_blank">自营键鼠199-100</a></p>`;
     container.append(recommandArea);
 }
@@ -151,16 +175,24 @@ function buildPromotion() {
     container.append(promotionArea);
 }
 
+function buildUAarea() {
+    let UATipsDiv: HTMLDivElement = document.createElement("div");
+    UATipsDiv.innerHTML = `<div style="border: 1px solid #000;margin:10px"><h2>该活动需要设置user-Agent为京东APP</h2><p><a style="color:red" href="https://jingyan.baidu.com/article/20095761d41761cb0621b46f.html" target="_blank">点击查看教程</a></p><button style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block" onclick=Utils.copyText(Utils.userAgent)>复制user-Agent</button></div>`;
+    container.append(UATipsDiv);
+}
+
 let getLoginMsg = function (res: any) {
     if (res.base.nickname) {
         loginMsgDiv.innerHTML = "当前帐号：" + res.base.nickname;
     }
-};
+},
+    krapnik = function (res: any) {
+    };
 
-Object.assign(window, { "getLoginMsg": getLoginMsg,"krapnik":krapnik });
+Object.assign(window, { "getLoginMsg": getLoginMsg, "krapnik": krapnik, "Utils": Utils });
 
-function getCouponType(): couponType {
-    let type: couponType = couponType.none;
+function getCouponType(): couponType | activityType {
+    let type: couponType | activityType = couponType.none;
     if (!window.location.host.includes("jd.com")) {
         return type;
     }
@@ -182,13 +214,16 @@ function getCouponType(): couponType {
     } else if (/coupons\/show.action\?key=(\S*)&roleId=(\S*)/.test(url)) {
         type = couponType.mfreecoupon
     }
+
+    if (url.includes("4PWgqmrFHunn8C38mJA712fufguU")) {
+        type = activityType.monsterNian
+    }
     return type;
 }
 
-function getCouponDesc(type: couponType) {
+function getCouponDesc(type: couponType | activityType) {
     buildTitle();
     buildPromotion();
-    buildRecommend();
     switch (type) {
         case couponType.none:
             break;
@@ -222,15 +257,27 @@ function getCouponDesc(type: couponType) {
                 key = Utils.GetQueryString("key");
             coupon = new Mfreecoupon({ "roleId": roleId, "key": key }, container, outputTextArea);
             break;
+        case activityType.monsterNian:
+            activity = new MonsterNian(null, container, outputTextArea);
+            UAFlag= true;
+            break;
         default:
             break;
+    }
+    if(UAFlag){
+        buildUAarea();
     }
     if (coupon) {
         t1 = window.setInterval(getTime, getTimeSpan);
         buildOperate();
         coupon.get();
+    } else if (activity) {
+        buildOperate();
+        activity.get();
     } else {
         buildTips();
+        buildRecommend();
+        buildActivity();
     }
     Utils.createJsonp('https://wq.jd.com/user/info/QueryJDUserInfo?sceneid=11110&sceneval=2&g_login_type=1&callback=getLoginMsg');
 
@@ -243,14 +290,14 @@ function getTime() {
             time = Utils.formatDate(res.time);
             localeTime = new Date(+res.time).toLocaleString() + ":" + time.substr(-3, 3);
             timerTittleDiv.innerHTML = `京东时间：${localeTime}<br/>当前获取时间的间隔频率：${getTimeSpan}毫秒`;
-            if (couponFlag) {
+            if (switchFlag) {
                 if (startTime <= +time) {
                     outputTextArea.value += `定时领取开始！当前时间：${localeTime}\n`;
-                    couponFlag = !couponFlag;
+                    switchFlag = !switchFlag;
                     if (coupon) {
                         coupon.send(outputTextArea);
                     }
-                    receiveTextInput.disabled = couponFlag;
+                    receiveTextInput.disabled = switchFlag;
                     receiveTimerBtn.innerHTML = "定时指定领取";
                     outputTextArea.value += `定时领取已结束！\n`;
                 }
