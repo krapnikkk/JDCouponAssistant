@@ -28,7 +28,7 @@ export default class MonsterNian implements Activity {
             return response.json()
         }).then((res) => {
             this.data = res.data.result;
-            this.outputTextarea.value = `获取数据成功\n已加购物车：${this.data.taskVos[1]["times"]}/${this.data.taskVos[1]["productInfoVos"].length}\n已逛店铺：${this.data.taskVos[2]["times"]}/${this.data.taskVos[2]["browseShopVo"].length}\n已逛会场：${this.data.taskVos[3]["times"]}/${this.data.taskVos[3]["shoppingActivityVos"].length}\n,已参与互动：${this.data.taskVos[4]["times"]}/${this.data.taskVos[4]["shoppingActivityVos"].length}\n已看直播：${this.data.taskVos[5]["times"]}/${this.data.taskVos[5]["shoppingActivityVos"].length}\n已LBS定位：${this.data.taskVos[6]["times"]}/1`;
+            this.outputTextarea.value = `获取数据成功\n已加购物车：${this.data.taskVos[1]["times"]}/${this.data.taskVos[1]["productInfoVos"].length}\n已逛店铺：${this.data.taskVos[2]["times"]}/${this.data.taskVos[2]["browseShopVo"].length}\n已逛会场：${this.data.taskVos[3]["times"]}/${this.data.taskVos[3]["shoppingActivityVos"].length}\n已参与互动：${this.data.taskVos[4]["times"]}/${this.data.taskVos[4]["shoppingActivityVos"].length}\n已看直播：${this.data.taskVos[5]["times"]}/${this.data.taskVos[5]["shoppingActivityVos"].length}\n已LBS定位：${this.data.taskVos[6]["times"]}/1`;
             this.list();
         })
     }
@@ -38,7 +38,6 @@ export default class MonsterNian implements Activity {
         let msg = `
         <div style="margin:10px;">
         <input id="timer" type="text" placeholder="提交间隔时间+随机100~500毫秒【默认:1000毫秒】" style="width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;">
-        <button class="auto" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键助力</button>
         <button class="raise" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键炸年兽</button>
         <button class="shop" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">逛逛好店</button>
         <button class="product" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">好物加购</button>
@@ -47,7 +46,8 @@ export default class MonsterNian implements Activity {
         <button class="video" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">视频直播</button>
         <button class="record" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">LBS定位</button>
         <button class="help" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">帮作者助力</button>
-        <button class="invite" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">获取我的邀请链接</button>
+        <button class="invite" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">获取邀请链接</button>
+        <button class="auto" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键完成任务</button>
         </div>`;
         // <button class="join" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">加入作者战队</button>
         content.innerHTML = msg;
@@ -93,7 +93,7 @@ export default class MonsterNian implements Activity {
             this.send([this.data.taskVos[6]["simpleRecordInfoVo"]], this.data.taskVos[6]["taskId"]);
         });
         i!.addEventListener('click', () => {
-            Utils.copyText(`https://bunearth.m.jd.com/babelDiy/SGFJVMOZADGTQCZWGEYU/4PWgqmrFHunn8C38mJA712fufguU/index.html?shareType=taskHelp&inviteId=${this.data["inviteId"]}`);
+            Utils.copyText(`https://bunearth.m.jd.com/babelDiy/SGFJVMOZADGTQCZWGEYU/4PWgqmrFHunn8C38mJA712fufguU/index.html?shareType=taskHelp&inviteId=${this.data["inviteId"]}&taskId=1&itemId=${this.data["taskVos"][0]["assistTaskDetailVo"]["itemId"]}&shareFrom=key`);
         })
         h!.addEventListener('click', () => {
             this.invite();
@@ -141,7 +141,6 @@ export default class MonsterNian implements Activity {
                     })
                 }, (self.timer + Utils.random(300, 500)) * index);
             })(i, postData, length)
-
         }
     }
 

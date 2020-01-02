@@ -52,11 +52,8 @@ export default class GcConvert implements Coupon {
     }
 
     jsonp(response: any): void {
-        console.log(response);
         const json = JSON.parse(response.data), data = json["data"];
-        this.outputTextarea.value = `领券结果:${response.data}\n` + this.outputTextarea.value;
-
-
+        Utils.outPutLog(this.outputTextarea,`领券结果:${response.data}`);
     }
 
     list(): void {
@@ -78,11 +75,11 @@ export default class GcConvert implements Coupon {
             content.appendChild(itemDiv);
             itemDiv.addEventListener('click', (evt) => {
                 const target = evt.target as HTMLElement;
-                if (target.getAttribute('data-item')) {
+                if (target.getAttribute('data-item')||target.parentNode == itemDiv) {
                     if (!item.flag) {
-                        target.style.border = "1px solid red";
+                        itemDiv.style.border = "1px solid red";
                     } else {
-                        target.style.border = "1px solid gray";
+                        itemDiv.style.border = "1px solid gray";
                     }
                     item.flag = !item.flag;
                 }else if (target.getAttribute("data-id")){

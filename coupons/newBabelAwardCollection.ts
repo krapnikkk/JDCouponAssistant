@@ -1,4 +1,5 @@
 import Coupon from "../interface/Coupon";
+import Utils from "../utils/utils";
 type couponDetails = {
     args: string
     couponbatch: string
@@ -87,11 +88,11 @@ export default class NewBabelAwardCollection implements Coupon {
             content.appendChild(itemDiv);
             itemDiv.addEventListener("click", (evt) => {
                 const target = evt.target as HTMLElement;
-                if (target.getAttribute('data-item')) {
+                if (target.getAttribute('data-item') || target.parentNode == itemDiv) {
                     if (!item.flag) {
-                        target.style.border = "1px solid red";
+                        itemDiv.style.border = "1px solid red";
                     } else {
-                        target.style.border = "1px solid gray";
+                        itemDiv.style.border = "1px solid gray";
                     }
                     item.flag = !item.flag;
                 }
@@ -116,11 +117,10 @@ export default class NewBabelAwardCollection implements Coupon {
                     .then((res) => { return res.json() })
                     .then((json) => {
                         if (json.errmsg) {
-                            this.outputTextarea.value = `第${i + 1}张 领券结果:${json.errmsg}\n` + this.outputTextarea.value;
+                            Utils.outPutLog(this.outputTextarea, `第${i + 1}张 领券结果:${json.errmsg}`);
                         } else {
-                            this.outputTextarea.value = `第${i + 1}张 领券结果:${json.subCodeMsg}\n` + this.outputTextarea.value;
+                            Utils.outPutLog(this.outputTextarea, `第${i + 1}张 领券结果:${json.subCodeMsg}`);
                         }
-
                     });
             }
 

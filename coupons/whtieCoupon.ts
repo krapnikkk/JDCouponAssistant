@@ -1,4 +1,5 @@
 import Coupon from "../interface/Coupon";
+import Utils from "../utils/utils";
 type couponDetails = {
     couponBusinessId: string
     platform: string
@@ -62,9 +63,9 @@ export default class WhiteCoupon implements Coupon {
                 .then((res) => { return res.json() })
                 .then((json) => {
                     if (json.isSuccess) {
-                        this.outputTextarea.value = `第${i + 1}张 领券结果:领取成功！}\n` + this.outputTextarea.value;
+                        Utils.outPutLog(this.outputTextarea, `第${i + 1}张 领券结果:领取成功！}`);
                     } else {
-                        this.outputTextarea.value = `第${i + 1}张 领券结果:领取失败！\n` + this.outputTextarea.value;
+                        Utils.outPutLog(this.outputTextarea, `第${i + 1}张 领券结果:领取失败！`);
                     }
                 });
         }

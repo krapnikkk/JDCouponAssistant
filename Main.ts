@@ -11,6 +11,7 @@ import CoinPurchase from "./coupons/coinPurchase";
 import GcConvert from "./coupons/gcConvert";
 import MonsterNian from "./activitys/MonsterNian";
 import Config from "./config/config";
+import BrandCitySpring from "./activitys/brandCitySpring";
 enum couponType {
     none,
     receiveCoupons = "receiveCoupons",
@@ -27,6 +28,7 @@ enum couponType {
 enum activityType {
     none,
     monsterNian = "monsterNian",
+    brandCitySpring = "brandCitySpring",
 }
 
 let coupon: Coupon,
@@ -97,10 +99,10 @@ function buildOperate() {
                 receiveTextInput.disabled = Config.timingFlag;
                 if (Config.timingFlag) {
                     receiveTimerBtn.innerHTML = "取消指定领取";
-                    outputTextArea.value += `已开启定时领取\n`;
+                    Utils.outPutLog(outputTextArea, `已开启定时领取`);
                 } else {
                     receiveTimerBtn.innerHTML = "定时指定领取";
-                    outputTextArea.value += `已关闭定时领取\n`;
+                    Utils.outPutLog(outputTextArea, `已关闭定时领取`);
                 }
             }
 
@@ -151,7 +153,7 @@ function buildTitle() {
     title.innerHTML = `<h1 style="font-weight:700">${Config.title} ${Config.version}</h1>
                         <h3>author:${Config.author}</h3>
                         <div style="display: flex;flex-direction: row;justify-content: center;">
-                        <iframe src="https://ghbtns.com/github-btn.html?user=krapnikkk&repo=JDCouponAssistant&type=star&count=true" frameborder="0" scrolling="0" width="80px" height="21px"></iframe>
+                        <iframe src="https://ghbtns.com/github-btn.html?user=krapnikkk&repo=JDCouponAssistant&type=star&count=true" frameborder="0" scrolling="0" width="90px" height="21px"></iframe>
                         <a href="tencent://message/?uin=708873725Menu=yes" target="_blank" title="发起QQ聊天"><img src="http://bizapp.qq.com/webimg/01_online.gif" alt="QQ" style="margin:0px;"></a>
                         </div>`;
     container.append(title);
@@ -161,14 +163,23 @@ function buildTitle() {
 function buildActivity() {
     activityArea.setAttribute("style", "border: 1px solid #000;margin:10px");
     activityArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>活动推荐</h3>
-    <p style="color:red;font-weight:bold;"><a style="color:red" href="https://bunearth.m.jd.com/babelDiy/Zeus/4PWgqmrFHunn8C38mJA712fufguU/index.html#/wxhome" target="_blank">全民炸年兽</a></p>`;
+    <p style="color:red;font-weight:bold;"><a style="color:red" href="https://bunearth.m.jd.com/babelDiy/Zeus/4PWgqmrFHunn8C38mJA712fufguU/index.html#/wxhome" target="_blank">全民炸年兽</a></p>
+    <p style="color:red;font-weight:bold;"><a style="color:red" href="https://bunearth.m.jd.com/babelDiy/Zeus/w6y8PYbzhgHJc8Lu1weihPReR2T/index.html#/home" target="_blank">十二生肖来送福</a></p>`;
     container.append(activityArea);
 }
 
 function buildRecommend() {
     recommandArea.setAttribute("style", "border: 1px solid #000;margin:10px");
-    recommandArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>每天好券推荐</h3>
-    <p style="color:red;font-weight:bold;"><a style="color:red" href="https://m.jr.jd.com/member/9GcConvert/?channel=01-shouye-191214" target="_blank">9金币抢兑</a> | <a  style="color:red" href="https://coupon.m.jd.com/coupons/show.action?key=26ef0709795d4fb793d41e7a8b0acac2&roleId=26885907&to=https://shop.m.jd.com/?shopId=1000132921&sceneval=2&time=1577796913938" target="_blank">自营键鼠199-100</a></p>`;
+    recommandArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>好券推荐</h3>
+    <p style="color:red;font-weight:bold;">
+    <a style="color:red" href="https://m.jr.jd.com/member/9GcConvert/?channel=01-shouye-191214" target="_blank">9金币抢兑</a>
+    </p>
+    <p style="color:red;font-weight:bold;">
+    <a style="color:red" href="https://coupon.m.jd.com/coupons/show.action?key=26ef0709795d4fb793d41e7a8b0acac2&roleId=26885907&to=https://shop.m.jd.com/?shopId=1000132921&sceneval=2&time=1577796913938" target="_blank">自营键鼠199-100</a>
+    </p>
+    <p style="color:red;font-weight:bold;">
+    <a style="color:red" href="https://pro.m.jd.com/wq/active/FYXPxE3J9bnJ5LHvRMBNf4gJxMb/index.html" target="_blank">零食满99-88</a>
+    </p>`;
     container.append(recommandArea);
 }
 
@@ -208,9 +219,12 @@ function getCouponType(): couponType | activityType {
     } else if (/coupons\/show.action\?key=(\S*)&roleId=(\S*)/.test(Config.locationHref)) {
         type = couponType.mfreecoupon
     }
-
-    if (Config.locationHref.includes("4PWgqmrFHunn8C38mJA712fufguU")) {
-        type = activityType.monsterNian
+    if (Config.locationHref.includes("bunearth.m.jd.com")) {
+        if (Config.locationHref.includes("4PWgqmrFHunn8C38mJA712fufguU")) {
+            type = activityType.monsterNian;
+        } else if (Config.locationHref.includes("w6y8PYbzhgHJc8Lu1weihPReR2T")) {
+            type = activityType.brandCitySpring;
+        }
     }
     return type;
 }
@@ -255,6 +269,8 @@ function getCouponDesc(type: couponType | activityType) {
             activity = new MonsterNian(null, container, outputTextArea);
             Config.UAFlag = true;
             break;
+            case activityType.brandCitySpring:
+            activity = new BrandCitySpring(null, container, outputTextArea);
         default:
             break;
     }
@@ -267,8 +283,10 @@ function getCouponDesc(type: couponType | activityType) {
         coupon.get();
     } else if (activity) {
         buildOperate();
+        buildActivity();
         activity.get();
     } else {
+        Utils.loadCss("https://meyerweb.com/eric/tools/css/reset/reset200802.css");
         buildTips();
         buildRecommend();
         buildActivity();
@@ -286,14 +304,14 @@ function getTime() {
             timerTittleDiv.innerHTML = `京东时间：${Config.localeTime}<br/>当前获取时间的间隔频率：${Config.intervalSpan}毫秒`;
             if (Config.timingFlag) {
                 if (startTime <= +time) {
-                    outputTextArea.value += `定时领取开始！当前时间：${Config.localeTime}\n`;
+                    Utils.outPutLog(outputTextArea, `定时领取开始！当前时间：${Config.localeTime}`);
                     Config.timingFlag = !Config.timingFlag;
                     if (coupon) {
                         coupon.send(outputTextArea);
                     }
                     receiveTextInput.disabled = Config.timingFlag;
                     receiveTimerBtn.innerHTML = "定时指定领取";
-                    outputTextArea.value += `定时领取已结束！\n`;
+                    Utils.outPutLog(outputTextArea, `定时领取已结束！`);
                 }
             }
         });
@@ -317,8 +335,6 @@ function statistical() {
         s.parentNode!.insertBefore(hm, s);
     })();
 }
-
-Utils.loadCss("https://meyerweb.com/eric/tools/css/reset/reset200802.css");
 
 getCouponDesc(getCouponType());
 copyRights();

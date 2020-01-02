@@ -42,7 +42,7 @@ export default class Purchase implements Coupon {
                 alert("请检查该页面优惠券的有效性！");
             }
         }else{
-            this.outputTextarea.value = `领券结果:${response.data}\n` + this.outputTextarea.value;
+            Utils.outPutLog(this.outputTextarea, `领券结果:${response.data}`);
         }
 
     }

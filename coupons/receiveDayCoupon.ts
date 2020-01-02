@@ -1,4 +1,5 @@
 import Coupon from "../interface/Coupon";
+import Utils from "../utils/utils";
 type couponDetails = {
     giftAmount: string
     discount: string
@@ -71,11 +72,11 @@ export default class ReceiveDayCoupon implements Coupon {
             content.appendChild(itemDiv);
             itemDiv.addEventListener("click", (evt) => {
                 const target = evt.target as HTMLElement;
-                if (target.getAttribute('data-item')) {
+                if (target.getAttribute('data-item')||target.parentNode == itemDiv) {
                     if (!item.flag) {
-                        target.style.border = "1px solid red";
+                        itemDiv.style.border = "1px solid red";
                     } else {
-                        target.style.border = "1px solid gray";
+                        itemDiv.style.border = "1px solid gray";
                     }
                     item.flag = !item.flag;
                 } else if (target.getAttribute("data-id")) {
@@ -95,7 +96,7 @@ export default class ReceiveDayCoupon implements Coupon {
                 fetch(url, { credentials: "include" })
                     .then((res) => { return res.json() })
                     .then((json) => {
-                        this.outputTextarea.value = `${item.quota}-${item.discount} 领券结果:${json.msg}\n` + this.outputTextarea.value;
+                        Utils.outPutLog(this.outputTextarea,`${item.quota}-${item.discount} 领券结果:${json.msg}`);
                     });
             }
 
@@ -109,7 +110,7 @@ export default class ReceiveDayCoupon implements Coupon {
         fetch(url, { credentials: "include" })
             .then((res) => { return res.json() })
             .then((json) => {
-                this.outputTextarea.value = `${item.quota}-${item.discount} 领券结果:${json.msg}\n` + this.outputTextarea.value;
+                Utils.outPutLog(this.outputTextarea,`${item.quota}-${item.discount} 领券结果:${json.msg}`);
             });
 
     }
