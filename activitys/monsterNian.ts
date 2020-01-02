@@ -3,7 +3,6 @@ import Utils from "../utils/utils";
 
 
 export default class MonsterNian implements Activity {
-    url: string = "https://vip.jr.jd.com/goldcoin/purchase?id={pid}&callback=";
     detailurl: string = "https://api.m.jd.com/client.action?functionId=bombnian_getTaskDetail";
     data: any = [];
     timer: number = 1000;
@@ -39,6 +38,7 @@ export default class MonsterNian implements Activity {
         let msg = `
         <div style="margin:10px;">
         <input id="timer" type="text" placeholder="提交间隔时间+随机100~500毫秒【默认:1000毫秒】" style="width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;">
+        <button class="auto" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键助力</button>
         <button class="raise" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键炸年兽</button>
         <button class="shop" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">逛逛好店</button>
         <button class="product" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">好物加购</button>
@@ -48,8 +48,8 @@ export default class MonsterNian implements Activity {
         <button class="record" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">LBS定位</button>
         <button class="help" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">帮作者助力</button>
         <button class="invite" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">获取我的邀请链接</button>
-        <button class="join" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">加入作者战队</button>
         </div>`;
+        // <button class="join" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">加入作者战队</button>
         content.innerHTML = msg;
         this.container.appendChild(content);
         const t = document.querySelector('#timer') as HTMLInputElement,
@@ -60,8 +60,9 @@ export default class MonsterNian implements Activity {
             r = document.querySelector('.record'),
             s = document.querySelector('.shopping'),
             i = document.querySelector('.invite'),
-            j = document.querySelector('.join'),
+            // j = document.querySelector('.join'),
             b = document.querySelector('.raise'),
+            u = document.querySelector('.auto'),
             l = document.querySelector('.product');
         t.onchange = () => {
             this.timer = +t!.value || 1000;
@@ -97,11 +98,22 @@ export default class MonsterNian implements Activity {
         h!.addEventListener('click', () => {
             this.invite();
         })
-        j!.addEventListener('click', () => {
-            this.join();
-        })
+        // j!.addEventListener('click', () => {
+        //     this.join();
+        // })
         b!.addEventListener('click', () => {
-
+            this.raise();
+        })
+        var e = document.createEvent("MouseEvents");
+        e.initEvent("click", true, true);
+        u!.addEventListener('click', () => {
+            Utils.outPutLog(this.outputTextarea, `一键自动开始任务！`);
+            b!.dispatchEvent(e);
+            o!.dispatchEvent(e);
+            a!.dispatchEvent(e);
+            v!.dispatchEvent(e);
+            s!.dispatchEvent(e);
+            l!.dispatchEvent(e);
         })
     }
 
@@ -134,6 +146,8 @@ export default class MonsterNian implements Activity {
     }
 
     invite() {
+        var postData =`functionId=bombnian_collectScore&body={"inviteId":"T0kkDJUmGX0Sdet46x7KGSqKNI-klg18GVA8f5s","taskId":1,"itemId":"ASHYV3O7TlGlOXSI"}&client=wh5&clientVersion=1.0.0`;
+        // var postData =`functionId=bombnian_collectScore&body={"inviteId":"DgxlSNRnRyNRPa01oWqgYGmh6fowp7KSdvYh_P9xeptD0UnvN0zMq6o","taskId":1,"itemId":"ACTNUmK-SyjcNFWT523lDlA"}&client=wh5&clientVersion=1.0.0`;
         fetch("https://api.m.jd.com/client.action?functionId=bombnian_collectScore", {
             method: "POST",
             mode: "cors",
@@ -141,7 +155,7 @@ export default class MonsterNian implements Activity {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             },
-            body: `functionId=bombnian_collectScore&body={"inviteId":"DgxlSNRnRyNRPa01oWqgYGmh6fowp7KSdvYh_P9xeptD0UnvN0zMq6o","taskId":1,"itemId":"ACTNUmK-SyjcNFWT523lDlA"}&client=wh5&clientVersion=1.0.0`
+            body: postData
         }).then(function (response) {
             return response.json()
         }).then((res) => {
@@ -149,18 +163,18 @@ export default class MonsterNian implements Activity {
         })
     }
     join() {
-        fetch("https://api.m.jd.com/client.action?functionId=bombnian_pk_getHomeData", {
+        fetch("https://api.m.jd.com/client.action?functionId=bombnian_pk_joinGroup", {
             method: "POST",
             mode: "cors",
             credentials: "include",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             },
-            body: `functionId=bombnian_pk_getHomeData&body={"inviteId":"VlU-EZopQidWJ6s2oG2sfIHInYsPApTbtntxKA1MAWPJSGYsX6Se6Dv3"}&client=wh5&clientVersion=1.0.0`
+            body: `functionId=bombnian_pk_joinGroup&body={"inviteId":"VlU-EZopQidWJ6s2oG2sfIHInYsPApTbtntxKA1MAWPJSGYsX6Se6Dv3","confirmFlag":1}&client=wh5&clientVersion=1.0.0`
         }).then(function (response) {
             return response.json()
         }).then((res) => {
-            if (res.data.result.groupGuestInfo.joinStatus == 0) {
+            if (res.data.bizCode == 0) {
                 Utils.outPutLog(this.outputTextarea, `${new Date().toLocaleString()} 操作成功！加入成功！`);
             } else {
                 Utils.outPutLog(this.outputTextarea, `${new Date().toLocaleString()} 操作失败，好像满人了哦`);
@@ -182,6 +196,8 @@ export default class MonsterNian implements Activity {
         }).then((res) => {
             if (res.data.bizCode == 0) {
                 Utils.outPutLog(this.outputTextarea, `${new Date().toLocaleString()} 操作成功！获取奖励如下:${JSON.stringify(res.data.result.levelUpAward)}`);
+            }else{
+                Utils.outPutLog(this.outputTextarea, `${new Date().toLocaleString()} 操作失败！${res.data.bizMsg}`);
             }
         })
     }
