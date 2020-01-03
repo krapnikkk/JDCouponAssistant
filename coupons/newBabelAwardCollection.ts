@@ -88,7 +88,7 @@ export default class NewBabelAwardCollection implements Coupon {
             content.appendChild(itemDiv);
             itemDiv.addEventListener("click", (evt) => {
                 const target = evt.target as HTMLElement;
-                if (target.getAttribute('data-item') || target.parentNode == itemDiv) {
+                if (target.getAttribute('data-item') || (target.parentNode == itemDiv && target.tagName != "BUTTON")) {
                     if (!item.flag) {
                         itemDiv.style.border = "1px solid red";
                     } else {

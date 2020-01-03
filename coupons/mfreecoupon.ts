@@ -66,7 +66,7 @@ export default class Mfreecoupon implements Coupon {
             content.appendChild(itemDiv);
             itemDiv.addEventListener("click", (evt) => {
                 const target = evt.target as HTMLElement;
-                if (target.getAttribute('data-item')||target.parentNode == itemDiv) {
+                if (target.getAttribute('data-item') || (target.parentNode == itemDiv && target.tagName != "BUTTON")) {
                     if (!item.flag) {
                         itemDiv.style.border = "1px solid red";
                     } else {
@@ -90,6 +90,6 @@ export default class Mfreecoupon implements Coupon {
     }
 
     jsonp(response: any): void {
-        Utils.outPutLog(this.outputTextarea,`领券结果:${JSON.stringify(response)}`);
+        Utils.outPutLog(this.outputTextarea, `领券结果:${JSON.stringify(response)}`);
     }
 }
