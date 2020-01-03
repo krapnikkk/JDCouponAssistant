@@ -1,11 +1,11 @@
 import Activity from "../interface/Activity";
 import Utils from "../utils/utils";
+import Config from "../config/config";
 export default class BrandCitySpring implements Activity {
     url: string = "https://api.m.jd.com/client.action";
     params: any;
     container: HTMLDivElement;
     outputTextarea: HTMLTextAreaElement;
-    timer: number = 1000;
     constructor(params: any, containerDiv: HTMLDivElement, outputTextarea: HTMLTextAreaElement) {
         this.params = params;
         this.container = containerDiv;
@@ -18,7 +18,6 @@ export default class BrandCitySpring implements Activity {
         const content = document.createElement("div");
         let msg = `
         <div style="margin:10px;">
-        <input id="timer" type="text" placeholder="提交间隔时间+随机100~500毫秒【默认:1000毫秒】" style="width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;">
         <button class="visit" style="width: 200px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键浏览店铺</button>
         <button class="linkgame" style="width: 200px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键小游戏</button>
         <button class="exchange" style="width: 200px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键福币兑换</button>
@@ -26,14 +25,10 @@ export default class BrandCitySpring implements Activity {
 
         content.innerHTML = msg;
         this.container.appendChild(content);
-        const t = document.querySelector('#timer') as HTMLInputElement,
-            e = document.querySelector('.exchange'),
+        const e = document.querySelector('.exchange'),
             v = document.querySelector('.visit'),
             g = document.querySelector('.linkgame'),
             a = document.querySelector('.auto');
-        t.onchange = () => {
-            this.timer = +t!.value || 1000;
-        }
 
         e!.addEventListener('click', () => {
             Utils.outPutLog(this.outputTextarea, `开始自动福币兑换`)
@@ -76,7 +71,7 @@ export default class BrandCitySpring implements Activity {
                             Utils.outPutLog(self.outputTextarea, `${new Date().toLocaleString()} 当前任务已完成!`);
                         }
                     })
-                }, (self.timer + Utils.random(300, 500)) * index);
+                }, (Config.timeoutSpan + Utils.random(300, 500)) * index);
             })(i, length)
         }
     }
@@ -103,7 +98,7 @@ export default class BrandCitySpring implements Activity {
                             Utils.outPutLog(self.outputTextarea, `${new Date().toLocaleString()} 当前任务已完成!`);
                         }
                     })
-                }, (self.timer + Utils.random(300, 500)) * index);
+                }, (Config.timeoutSpan + Utils.random(300, 500)) * index);
             })(i, 80)
         }
     }
@@ -130,7 +125,7 @@ export default class BrandCitySpring implements Activity {
                             Utils.outPutLog(self.outputTextarea, `${new Date().toLocaleString()} 当前任务已完成!`);
                         }
                     })
-                }, (self.timer + Utils.random(300, 500)) * index);
+                }, (Config.timeoutSpan + Utils.random(300, 500)) * index);
             })(i, 6)
         }
     }

@@ -148,6 +148,10 @@ export default class Utils {
         return value != null && (type == 'object' || type == 'function');
     }
 
+    static isNumber(obj: any) {  
+        return typeof obj === 'number' && !isNaN(obj);  
+    }
+
     // static HTMLfactory(type: string, attributes: any, parent: HTMLElement): HTMLElement {
     //     let ele: any = document.createElement(type);
     //     for (let k in attributes) {

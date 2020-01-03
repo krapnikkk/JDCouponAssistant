@@ -39,19 +39,9 @@ let coupon: Coupon,
 const container: HTMLDivElement = document.createElement("div"),
     title: HTMLDivElement = document.createElement("div"),
     timerTittleDiv: HTMLDivElement = document.createElement("div"),
-    timerDiv: HTMLDivElement = document.createElement("div"),
-    timerTextInput: HTMLInputElement = document.createElement("input"),
-    timerResetBtn: HTMLButtonElement = document.createElement("button"),
-    receiveDiv: HTMLDivElement = document.createElement("div"),
     receiveTextInput: HTMLInputElement = document.createElement("input"),
-    receiveAreaDiv: HTMLDivElement = document.createElement("div"),
-    receiveAllBtn: HTMLButtonElement = document.createElement("button"),
     receiveTimerBtn: HTMLButtonElement = document.createElement("button"),
     outputTextArea: HTMLTextAreaElement = document.createElement("textarea"),
-    operateAreaDiv: HTMLDivElement = document.createElement("div"),
-    promotionArea: HTMLDivElement = document.createElement("div"),
-    recommandArea: HTMLDivElement = document.createElement("div"),
-    activityArea: HTMLDivElement = document.createElement("div"),
     loginMsgDiv: HTMLDivElement = document.createElement("div");
 
 let getLoginMsg = function (res: any) {
@@ -65,7 +55,14 @@ let getLoginMsg = function (res: any) {
 Object.assign(window, { "getLoginMsg": getLoginMsg, "krapnik": krapnik, "Utils": Utils, "Config": Config });
 
 function buildOperate() {
+    const operateAreaDiv: HTMLDivElement = document.createElement("div");
     if (coupon) {
+        const receiveDiv: HTMLDivElement = document.createElement("div"),
+            receiveAreaDiv: HTMLDivElement = document.createElement("div"),
+            receiveAllBtn: HTMLButtonElement = document.createElement("button"),
+            timerTextInput: HTMLInputElement = document.createElement("input"),
+            timerResetBtn: HTMLButtonElement = document.createElement("button"),
+            timerDiv: HTMLDivElement = document.createElement("div");
         operateAreaDiv.setAttribute("style", "border: 1px solid #000;");
         operateAreaDiv.innerHTML = "<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;padding: 0 37.5vw 5px;'>操作区</h3>";
         timerTextInput.type = "text";
@@ -161,6 +158,7 @@ function buildTitle() {
 }
 
 function buildActivity() {
+    const activityArea: HTMLDivElement = document.createElement("div");
     activityArea.setAttribute("style", "border: 1px solid #000;margin:10px");
     activityArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>活动推荐</h3>
     <p style="color:red;font-weight:bold;"><a style="color:red" href="https://bunearth.m.jd.com/babelDiy/Zeus/4PWgqmrFHunn8C38mJA712fufguU/index.html#/wxhome" target="_blank">全民炸年兽</a></p>
@@ -169,6 +167,7 @@ function buildActivity() {
 }
 
 function buildRecommend() {
+    const recommandArea: HTMLDivElement = document.createElement("div");
     recommandArea.setAttribute("style", "border: 1px solid #000;margin:10px");
     recommandArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>好券推荐</h3>
     <p style="color:red;font-weight:bold;">
@@ -184,6 +183,7 @@ function buildRecommend() {
 }
 
 function buildPromotion() {
+    const promotionArea: HTMLDivElement = document.createElement("div");
     promotionArea.setAttribute("style", "border: 1px solid #000;margin:10px");
     promotionArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>推广区</h3>
     <p style="color:red;font-weight:bold;"><a  style="color:red" href="http://krapnik.cn/project/jd/dayTask.html" target="_blank">每日京东红包汇总</a></p>`;
@@ -192,8 +192,23 @@ function buildPromotion() {
 
 function buildUAarea() {
     let UATipsDiv: HTMLDivElement = document.createElement("div");
-    UATipsDiv.innerHTML = `<div style="border: 1px solid #000;margin:10px"><h2>该活动需要设置user-Agent为京东APP</h2><p><a style="color:red" href="https://jingyan.baidu.com/article/20095761d41761cb0621b46f.html" target="_blank">点击查看教程</a></p><button style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block" onclick=Utils.copyText(Config.JDAppUA)>复制user-Agent</button></div>`;
+    UATipsDiv.innerHTML = `<div style="border: 1px solid #000;margin:10px"><h2>该活动需要设置user-Agent为京东APP</h2><p><a style="color:red" href="https://jingyan.baidu.com/article/20095761d41761cb0621b46f.html" target="_blank">点击查看教程</a></p><p>部分浏览器插件会覆盖UA设置，请自行排查并关闭</p><button style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block" onclick=Utils.copyText(Config.JDAppUA)>复制user-Agent</button></div>`;
     container.append(UATipsDiv);
+}
+
+function buildTimeoutArea() {
+    let timeoutDiv: HTMLDivElement = document.createElement("div"),
+        timeoutInput: HTMLInputElement = document.createElement("input");
+    timeoutInput.setAttribute("style", "width:80vw;height: 25px;font-size:14px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;");
+    timeoutInput.placeholder = "请输入任务的提交间隔时间【默认:1500毫秒】";
+    timeoutDiv.innerHTML = `<p style="font-size:14px;">任务提交时间将会在设置提交间隔时间的基础上随机增加300~500毫秒</p>`;
+    timeoutDiv.append(timeoutInput);
+    timeoutInput.onchange = () => {
+        if (Utils.isNumber(+timeoutInput!.value)) {
+            Config.timeoutSpan = +timeoutInput!.value || 1500;
+        }
+    }
+    container.append(timeoutDiv);
 }
 
 function getCouponType(): couponType | activityType {
@@ -269,7 +284,7 @@ function getCouponDesc(type: couponType | activityType) {
             activity = new MonsterNian(null, container, outputTextArea);
             Config.UAFlag = true;
             break;
-            case activityType.brandCitySpring:
+        case activityType.brandCitySpring:
             activity = new BrandCitySpring(null, container, outputTextArea);
         default:
             break;
@@ -283,6 +298,7 @@ function getCouponDesc(type: couponType | activityType) {
         coupon.get();
     } else if (activity) {
         buildOperate();
+        buildTimeoutArea();
         buildActivity();
         activity.get();
     } else {

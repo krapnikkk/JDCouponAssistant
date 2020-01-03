@@ -1,5 +1,6 @@
 import Activity from "../interface/Activity";
 import Utils from "../utils/utils";
+import Config from "../config/config";
 
 
 export default class MonsterNian implements Activity {
@@ -13,6 +14,7 @@ export default class MonsterNian implements Activity {
         this.params = params;
         this.container = containerDiv;
         this.outputTextarea = outputTextarea;
+        this.outputTextarea.value = `当你看到这行文字时，说明你还没有配置好浏览器UA！`;
     }
     get(): void {
         var postData = "functionId=bombnian_getTaskDetail&body={}&client=wh5&clientVersion=1.0.0";
@@ -37,7 +39,6 @@ export default class MonsterNian implements Activity {
         const content = document.createElement("div");
         let msg = `
         <div style="margin:10px;">
-        <input id="timer" type="text" placeholder="提交间隔时间+随机100~500毫秒【默认:1000毫秒】" style="width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;">
         <button class="raise" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键炸年兽</button>
         <button class="shop" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">逛逛好店</button>
         <button class="product" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">好物加购</button>
@@ -52,8 +53,7 @@ export default class MonsterNian implements Activity {
         // <button class="join" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">加入作者战队</button>
         content.innerHTML = msg;
         this.container.appendChild(content);
-        const t = document.querySelector('#timer') as HTMLInputElement,
-            o = document.querySelector('.shop'),
+        const o = document.querySelector('.shop'),
             h = document.querySelector('.help'),
             a = document.querySelector('.activity'),
             v = document.querySelector('.video'),
@@ -64,9 +64,7 @@ export default class MonsterNian implements Activity {
             b = document.querySelector('.raise'),
             u = document.querySelector('.auto'),
             l = document.querySelector('.product');
-        t.onchange = () => {
-            this.timer = +t!.value || 1000;
-        }
+ 
 
         o!.addEventListener('click', () => {
             Utils.outPutLog(this.outputTextarea, `开始自动逛逛好店任务`)
@@ -139,14 +137,14 @@ export default class MonsterNian implements Activity {
                             Utils.outPutLog(self.outputTextarea, `${new Date().toLocaleString()} 当前任务已完成!`);
                         }
                     })
-                }, (self.timer + Utils.random(300, 500)) * index);
+                }, (Config.timeoutSpan + Utils.random(300, 500)) * index);
             })(i, postData, length)
         }
     }
 
     invite() {
-        var postData =`functionId=bombnian_collectScore&body={"inviteId":"T0kkDJUmGX0Sdet46x7KGSqKNI-klg18GVA8f5s","taskId":1,"itemId":"ASHYV3O7TlGlOXSI"}&client=wh5&clientVersion=1.0.0`;
-        // var postData =`functionId=bombnian_collectScore&body={"inviteId":"DgxlSNRnRyNRPa01oWqgYGmh6fowp7KSdvYh_P9xeptD0UnvN0zMq6o","taskId":1,"itemId":"ACTNUmK-SyjcNFWT523lDlA"}&client=wh5&clientVersion=1.0.0`;
+        // var postData =`functionId=bombnian_collectScore&body={"inviteId":"T0kkDJUmGX0Sdet46x7KGSqKNI-klg18GVA8f5s","taskId":1,"itemId":"ASHYV3O7TlGlOXSI"}&client=wh5&clientVersion=1.0.0`;
+        var postData = `functionId=bombnian_collectScore&body={"inviteId":"DgxlSNRnRyNRPa01oWqgYGmh6fowp7KSdvYh_P9xeptD0UnvN0zMq6o","taskId":1,"itemId":"ACTNUmK-SyjcNFWT523lDlA"}&client=wh5&clientVersion=1.0.0`;
         fetch("https://api.m.jd.com/client.action?functionId=bombnian_collectScore", {
             method: "POST",
             mode: "cors",
@@ -195,7 +193,7 @@ export default class MonsterNian implements Activity {
         }).then((res) => {
             if (res.data.bizCode == 0) {
                 Utils.outPutLog(this.outputTextarea, `${new Date().toLocaleString()} 操作成功！获取奖励如下:${JSON.stringify(res.data.result.levelUpAward)}`);
-            }else{
+            } else {
                 Utils.outPutLog(this.outputTextarea, `${new Date().toLocaleString()} 操作失败！${res.data.bizMsg}`);
             }
         })
