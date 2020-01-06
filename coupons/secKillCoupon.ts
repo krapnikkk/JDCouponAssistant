@@ -97,13 +97,16 @@ export default class SecKillCoupon implements Coupon {
     send(): void {
         this.outputTextarea.style.display = "block";
         for (let i = 0; i < this.couponList.length; i++) {
-            let item = this.couponList[i],
-                url = `https://api.m.jd.com/client.action?functionId=receiveSeckillCoupon&body=%7B"roleId"%3A"${encodeURIComponent(item["putKey"])}"%2C"source"%3A"home_subsidy"%2C"floorType"%3A0%2C"skuId"%3A"${item.skuId}"%2C"quota"%3A"${item.quota}"%2C"disCount"%3A"${item.discount}"%2C"batchId"%3A"${item.batchId}"%7D&client=m&appid=XPMSGC2019`;
-            fetch(url, { method: "POST", mode: "cors", credentials: "include", headers: { "Content-Type": "application/x-www-form-urlencoded" } })
-                .then((res) => { return res.json() })
-                .then((json) => {
-                    Utils.outPutLog(this.outputTextarea, `${item.quota}-${item.discount} 领券结果:${json.resultMsg}`);
-                });
+            let item = this.couponList[i];
+            if (item.flag) {
+                const url = `https://api.m.jd.com/client.action?functionId=receiveSeckillCoupon&body=%7B"roleId"%3A"${encodeURIComponent(item["putKey"])}"%2C"source"%3A"home_subsidy"%2C"floorType"%3A0%2C"skuId"%3A"${item.skuId}"%2C"quota"%3A"${item.quota}"%2C"disCount"%3A"${item.discount}"%2C"batchId"%3A"${item.batchId}"%7D&client=m&appid=XPMSGC2019`;
+                fetch(url, { method: "POST", mode: "cors", credentials: "include", headers: { "Content-Type": "application/x-www-form-urlencoded" } })
+                    .then((res) => { return res.json() })
+                    .then((json) => {
+                        Utils.outPutLog(this.outputTextarea, `${item.quota}-${item.discount} 领券结果:${json.resultMsg}`);
+                    });
+            }
+
         }
     }
 

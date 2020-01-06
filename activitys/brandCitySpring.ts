@@ -72,7 +72,7 @@ export default class BrandCitySpring implements Activity {
                         }
                     })
                 }, (Config.timeoutSpan + Utils.random(300, 500)) * index);
-            })(i, length)
+            })(i, 12)
         }
     }
     
