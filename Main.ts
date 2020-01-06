@@ -1,7 +1,10 @@
 import Coupon from "./interface/Coupon";
 import Activity from "./interface/Activity";
-import BabelAwardCollection from "./coupons/newBabelAwardCollection";
+
 import Utils from "./utils/utils";
+import Config from "./config/config";
+
+import BabelAwardCollection from "./coupons/newBabelAwardCollection";
 import WhiteCoupon from "./coupons/whtieCoupon";
 import Purchase from "./coupons/purchase";
 import ReceiveDayCoupon from "./coupons/receiveDayCoupon";
@@ -9,9 +12,11 @@ import SecKillCoupon from "./coupons/secKillCoupon";
 import Mfreecoupon from "./coupons/mfreecoupon";
 import CoinPurchase from "./coupons/coinPurchase";
 import GcConvert from "./coupons/gcConvert";
+
 import MonsterNian from "./activitys/MonsterNian";
-import Config from "./config/config";
 import BrandCitySpring from "./activitys/brandCitySpring";
+import Palace from "./activitys/palace";
+
 enum couponType {
     none,
     receiveCoupons = "receiveCoupons",
@@ -29,6 +34,7 @@ enum activityType {
     none,
     monsterNian = "monsterNian",
     brandCitySpring = "brandCitySpring",
+    palace = "palace",
 }
 
 let coupon: Coupon,
@@ -46,13 +52,12 @@ const container: HTMLDivElement = document.createElement("div"),
 
 let getLoginMsg = function (res: any) {
     if (res.base.nickname) {
-        loginMsgDiv.innerHTML = "当前帐号：" + res.base.nickname;
+        loginMsgDiv.innerHTML = "当前登录京东帐号：" + res.base.nickname;
     }
 },
     krapnik = function (res: any) {
     };
 
-Object.assign(window, { "getLoginMsg": getLoginMsg, "krapnik": krapnik, "Utils": Utils, "Config": Config });
 
 function buildOperate() {
     const operateAreaDiv: HTMLDivElement = document.createElement("div");
@@ -162,7 +167,8 @@ function buildActivity() {
     activityArea.setAttribute("style", "border: 1px solid #000;margin:10px");
     activityArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>活动推荐</h3>
     <p style="color:red;font-weight:bold;"><a style="color:red" href="https://bunearth.m.jd.com/babelDiy/Zeus/4PWgqmrFHunn8C38mJA712fufguU/index.html#/wxhome" target="_blank">全民炸年兽</a></p>
-    <p style="color:red;font-weight:bold;"><a style="color:red" href="https://bunearth.m.jd.com/babelDiy/Zeus/w6y8PYbzhgHJc8Lu1weihPReR2T/index.html#/home" target="_blank">十二生肖来送福</a></p>`;
+    <p style="color:red;font-weight:bold;"><a style="color:red" href="https://bunearth.m.jd.com/babelDiy/Zeus/w6y8PYbzhgHJc8Lu1weihPReR2T/index.html#/home" target="_blank">十二生肖来送福</a></p>
+    <p style="color:red;font-weight:bold;"><a style="color:red" href="https://palace.m.jd.com/" target="_blank">逛超市集瑞兽</a></p>`;
     container.append(activityArea);
 }
 
@@ -186,7 +192,7 @@ function buildPromotion() {
     const promotionArea: HTMLDivElement = document.createElement("div");
     promotionArea.setAttribute("style", "border: 1px solid #000;margin:10px");
     promotionArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>推广区</h3>
-    <p style="color:red;font-weight:bold;"><a  style="color:red" href="http://krapnik.cn/project/jd/dayTask.html" target="_blank">每日京东红包汇总</a></p>`;
+    <p style="color:red;font-weight:bold;"><a style="color:red" href="http://krapnik.cn/project/jd/dayTask.html" target="_blank">每日京东红包汇总</a></p>`;
     container.append(promotionArea);
 }
 
@@ -200,7 +206,7 @@ function buildTimeoutArea() {
     let timeoutDiv: HTMLDivElement = document.createElement("div"),
         timeoutInput: HTMLInputElement = document.createElement("input");
     timeoutInput.setAttribute("style", "width:80vw;height: 25px;font-size:14px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;");
-    timeoutInput.placeholder = "请输入任务的提交间隔时间【默认:1500毫秒】";
+    timeoutInput.placeholder = `请输入任务的提交间隔时间【默认:${Config.timeoutSpan}毫秒】`;
     timeoutDiv.innerHTML = `<p style="font-size:14px;">任务提交时间将会在设置提交间隔时间的基础上随机增加300~500毫秒</p>`;
     timeoutDiv.append(timeoutInput);
     timeoutInput.onchange = () => {
@@ -240,6 +246,9 @@ function getCouponType(): couponType | activityType {
         } else if (Config.locationHref.includes("w6y8PYbzhgHJc8Lu1weihPReR2T")) {
             type = activityType.brandCitySpring;
         }
+    }
+    if (Config.locationHref.includes("palace")) {
+        type = activityType.palace;
     }
     return type;
 }
@@ -286,6 +295,10 @@ function getCouponDesc(type: couponType | activityType) {
             break;
         case activityType.brandCitySpring:
             activity = new BrandCitySpring(null, container, outputTextArea);
+            break;
+        case activityType.palace:
+            activity = new Palace(null, container, outputTextArea);
+            break;
         default:
             break;
     }
@@ -297,9 +310,9 @@ function getCouponDesc(type: couponType | activityType) {
         buildOperate();
         coupon.get();
     } else if (activity) {
+        buildActivity();
         buildOperate();
         buildTimeoutArea();
-        buildActivity();
         activity.get();
     } else {
         Utils.loadCss("https://meyerweb.com/eric/tools/css/reset/reset200802.css");
@@ -355,3 +368,6 @@ function statistical() {
 getCouponDesc(getCouponType());
 copyRights();
 statistical();
+
+Object.assign(window, { "getLoginMsg": getLoginMsg, "krapnik": krapnik, "Utils": Utils, "Config": Config });
+
