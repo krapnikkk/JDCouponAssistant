@@ -64,7 +64,7 @@ export default class MonsterNian implements Activity {
             b = document.querySelector('.raise'),
             u = document.querySelector('.auto'),
             l = document.querySelector('.product');
- 
+
 
         o!.addEventListener('click', () => {
             Utils.outPutLog(this.outputTextarea, `开始自动逛逛好店任务`)
@@ -104,42 +104,53 @@ export default class MonsterNian implements Activity {
         })
         var e = document.createEvent("MouseEvents");
         e.initEvent("click", true, true);
-        u!.addEventListener('click', () => {
+        u!.addEventListener('click',async () => {
             Utils.outPutLog(this.outputTextarea, `一键自动开始任务！`);
-            b!.dispatchEvent(e);
-            o!.dispatchEvent(e);
-            a!.dispatchEvent(e);
-            v!.dispatchEvent(e);
-            s!.dispatchEvent(e);
-            l!.dispatchEvent(e);
-            i!.dispatchEvent(e);
+            Utils.outPutLog(this.outputTextarea, `开始自动逛逛好店任务`)
+            await this.send(this.data.taskVos[2]["browseShopVo"], this.data.taskVos[2]["taskId"]);
+            Utils.outPutLog(this.outputTextarea, `开始自动好物加购任务`)
+            await this.send(this.data.taskVos[1]["productInfoVos"], this.data.taskVos[1]["taskId"]);
+            Utils.outPutLog(this.outputTextarea, `开始自动逛逛会场任务`)
+            await this.send(this.data.taskVos[3]["shoppingActivityVos"], this.data.taskVos[3]["taskId"]);
+            Utils.outPutLog(this.outputTextarea, `开始自动好玩互动任务`)
+            await this.send(this.data.taskVos[4]["shoppingActivityVos"], this.data.taskVos[4]["taskId"]);
+            Utils.outPutLog(this.outputTextarea, `开始自动视频直播任务`)
+            await this.send(this.data.taskVos[5]["shoppingActivityVos"], this.data.taskVos[5]["taskId"]);
+            // o!.dispatchEvent(e);
+            // a!.dispatchEvent(e);
+            // v!.dispatchEvent(e);
+            // s!.dispatchEvent(e);
+            // l!.dispatchEvent(e);
         })
     }
 
-    send(data: any, taskId: number) {
+    async send(data: any, taskId: number) {
         let self = this, length = data.length;
         for (let i = 0; i < length; i++) {
             var postData = `functionId=bombnian_collectScore&body={"taskId":${taskId},"itemId":"${data[i]["itemId"]}"}&client=wh5&clientVersion=1.0.0`;
-            (function (index, data, len) {
-                setTimeout(() => {
-                    fetch("https://api.m.jd.com/client.action?functionId=bombnian_collectScore", {
+            // (function (index, data, len) {
+            await new Promise(resolve => {
+                setTimeout(async () => {
+                    await fetch("https://api.m.jd.com/client.action?functionId=bombnian_collectScore", {
                         method: "POST",
                         mode: "cors",
                         credentials: "include",
                         headers: {
                             "Content-Type": "application/x-www-form-urlencoded"
                         },
-                        body: data
+                        body: postData
                     }).then(function (response) {
                         return response.json()
                     }).then((res) => {
-                        Utils.outPutLog(self.outputTextarea, `${new Date().toLocaleString()} 操作成功！任务序号：${index + 1}/${len}`);
-                        if (index + 1 >= len) {
+                        Utils.outPutLog(self.outputTextarea, `${new Date().toLocaleString()} 操作成功！任务序号：${i + 1}/${length}`);
+                        if (i + 1 >= length) {
                             Utils.outPutLog(self.outputTextarea, `${new Date().toLocaleString()} 当前任务已完成!`);
                         }
+                        resolve();
                     })
-                }, (Config.timeoutSpan + Utils.random(300, 500)) * index);
-            })(i, postData, length)
+                }, (Config.timeoutSpan + Utils.random(300, 500)));
+            })
+            // })(i, postData, length)
         }
     }
 
