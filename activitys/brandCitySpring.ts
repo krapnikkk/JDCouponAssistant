@@ -32,7 +32,7 @@ export default class BrandCitySpring implements Activity {
 
         e!.addEventListener('click', () => {
             Utils.outPutLog(this.outputTextarea, `开始自动福币兑换`)
-            this.send();
+            this.lottery();
         });
         v!.addEventListener('click', () => {
             Utils.outPutLog(this.outputTextarea, `开始自动浏览店铺`)
@@ -42,14 +42,51 @@ export default class BrandCitySpring implements Activity {
             Utils.outPutLog(this.outputTextarea, `开始自动小游戏`)
             this.game();
         });
-        a!.addEventListener('click', () => {
+        a!.addEventListener('click', async () => {
             Utils.outPutLog(this.outputTextarea, `开始自动全部任务`)
-            this.send();
-            this.visit();
-            this.game();
+            Utils.outPutLog(this.outputTextarea, `开始自动浏览店铺`)
+            await this.send("brandcity_spring_randomVisit", 2, 80);
+            Utils.outPutLog(this.outputTextarea, `开始自动小游戏`)
+            await this.send("brandcity_spring_getLottery", 4, 6);
+            Utils.outPutLog(this.outputTextarea, `开始自动福币兑换`)
+            await this.send("brandcity_spring_randomVisit", null, 12);
+            Utils.outPutLog(this.outputTextarea, `全部任务完成`)
+            // this.visit();
+            // this.game();
         });
     }
-    send(): void {
+
+    async send(functionId: string, actionType: number | null, taskCnt: number) {
+        let self = this;
+        for (let i = 0; i < taskCnt; i++) {
+            await new Promise(resolve => {
+                // (function (index, len) {
+                let postData = {
+                    "clientVersion": "1.0.0",
+                    "client": "wh5",
+                    "uuid": "15727505818691431184273",
+                    "area": "",
+                    "appid": "publicUseApi",
+                    "functionId": functionId,
+                    "body": actionType ? { "actionType": actionType, "taskId": `${i + 1},` } : { "uuid": "15727505818691431184273" }
+                };
+                setTimeout(async () => {
+                    fetch(`${self.url}?${Utils.stringify(postData)}`, { credentials: "include" }).then(function (response) {
+                        return response.json()
+                    }).then((res) => {
+                        Utils.outPutLog(self.outputTextarea, `${new Date().toLocaleString()} 操作成功！任务序号：${i + 1}/${taskCnt}`);
+                        if (i + 1 >= taskCnt) {
+                            Utils.outPutLog(self.outputTextarea, `${new Date().toLocaleString()} 当前任务已完成!`);
+                        }
+                        resolve()
+                    })
+                }, (Config.timeoutSpan + Utils.random(300, 500)));
+            })
+            // })(i, 12)
+        }
+    }
+
+    lottery(): void {
         let self = this;
         for (let i = 0; i < 12; i++) {
             (function (index, len) {
@@ -75,7 +112,7 @@ export default class BrandCitySpring implements Activity {
             })(i, 12)
         }
     }
-    
+
     visit(): void {
         let self = this;
         for (let i = 0; i < 80; i++) {
@@ -87,7 +124,7 @@ export default class BrandCitySpring implements Activity {
                     "area": "",
                     "appid": "publicUseApi",
                     "functionId": "brandcity_spring_randomVisit",
-                    "body": {"uuid":"15727505818691431184273"}
+                    "body": { "actionType": 2, "taskId": `${i + 1},`, "uuid": "15727505818691431184273" }
                 };
                 setTimeout(() => {
                     fetch(`${self.url}?${Utils.stringify(postData)}`, { credentials: "include" }).then(function (response) {
@@ -114,7 +151,7 @@ export default class BrandCitySpring implements Activity {
                     "area": "",
                     "appid": "publicUseApi",
                     "functionId": "brandcity_spring_getLottery",
-                    "body": {"actionType":4,"taskId":i+1}
+                    "body": { "actionType": 4, "taskId": i + 1 }
                 };
                 setTimeout(() => {
                     fetch(`${self.url}?${Utils.stringify(postData)}`, { credentials: "include" }).then(function (response) {
