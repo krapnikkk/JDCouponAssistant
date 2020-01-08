@@ -29,7 +29,7 @@ export default class NewBabelAwardCollection implements Coupon {
         const activityData = (window as any).__react_data__.activityData.floorList;
         for (let i = 0; i < activityData.length; i++) {
             const item = activityData[i];
-            if (item.template == "free_coupon" || item.template == "finance_coupon") {
+            if (item.template == "free_coupon" || item.template == "finance_coupon" || item.template == "combine_coupon") {
                 for (let j = 0; j < item.couponList.length; j++) {
                     const coupon = item.couponList[j],
                         scene = coupon["scene"],
