@@ -50,6 +50,7 @@ export default class MonsterNian implements Activity {
         <button class="record" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">LBS定位</button>
         <button class="raise" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">炸年兽</button>
         <button class="invite" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">获取邀请链接</button>
+        <button class="help" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">帮助作者队伍助力</button>
         <button class="auto" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键完成任务</button>
         </div>`;
 
@@ -58,7 +59,7 @@ export default class MonsterNian implements Activity {
         content.innerHTML = msg;
         this.container.appendChild(content);
         const o = document.querySelector('.shop'),
-            // h = document.querySelector('.help'),
+            h = document.querySelector('.help'),
             a = document.querySelector('.activity'),
             v = document.querySelector('.video'),
             r = document.querySelector('.record'),
@@ -68,6 +69,7 @@ export default class MonsterNian implements Activity {
             b = document.querySelector('.raise'),
             u = document.querySelector('.auto'),
             browser = document.querySelector('.browser'),
+
             l = document.querySelector('.product');
 
 
@@ -99,6 +101,10 @@ export default class MonsterNian implements Activity {
             Utils.outPutLog(this.outputTextarea, `开始自动逛主会场任务`)
             this.doTask();
         });
+        h!.addEventListener('click', () => {
+            this.help();
+        });
+
         i!.addEventListener('click', () => {
             Utils.copyText(`https://bunearth.m.jd.com/babelDiy/SGFJVMOZADGTQCZWGEYU/4PWgqmrFHunn8C38mJA712fufguU/index.html?shareType=taskHelp&inviteId=${this.data["inviteId"]}&taskId=1&itemId=${this.data["taskVos"][0]["assistTaskDetailVo"]["itemId"]}&shareFrom=key`);
         })
@@ -248,5 +254,36 @@ export default class MonsterNian implements Activity {
                 Utils.outPutLog(this.outputTextarea, `${new Date().toLocaleString()} 操作失败！${res.data.bizMsg}`);
             }
         })
+    }
+
+    help() {
+        fetch('https://api.m.jd.com/client.action?functionId=bombnian_pk_assistGroup',
+            {
+                method: "POST",
+                mode: "cors",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: `functionId=bombnian_pk_assistGroup&body={"confirmFlag":1,"inviteId":"XUkkFpUhDG0XY-p35CzwPZgzlWgNooCLIHRgCJ6uCcsnnwdlBg"}&client=wh5&clientVersion=1.0.0`
+            }
+        ).then((res) => res.json())
+            .then((json) => {
+            });
+
+        fetch('https://api.m.jd.com/client.action?functionId=bombnian_pk_assistGroup',
+            {
+                method: "POST",
+                mode: "cors",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: `functionId=bombnian_pk_assistGroup&body={"confirmFlag":1,"inviteId":"XUkkFpUhDG1WJqszpW2uY-4mR3ZvVGMfViX3iMWdE4FeIvO3rYjOC-K6cox9Eh0"}&client=wh5&clientVersion=1.0.0`
+            }
+        ).then((res) => res.json())
+            .then((json) => {
+                Utils.outPutLog(this.outputTextarea, `${new Date().toLocaleString()} 谢谢你的助力！`);
+            });
     }
 }

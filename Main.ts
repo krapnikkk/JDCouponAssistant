@@ -64,6 +64,7 @@ function buildOperate() {
     if (coupon) {
         const receiveDiv: HTMLDivElement = document.createElement("div"),
             receiveAreaDiv: HTMLDivElement = document.createElement("div"),
+            receiveTipsDiv: HTMLDivElement = document.createElement("div"),
             receiveAllBtn: HTMLButtonElement = document.createElement("button"),
             timerTextInput: HTMLInputElement = document.createElement("input"),
             timerResetBtn: HTMLButtonElement = document.createElement("button"),
@@ -85,6 +86,7 @@ function buildOperate() {
             window.clearInterval(Config.intervalId);
             Config.intervalId = window.setInterval(getTime, Config.intervalSpan);
         });
+        receiveTipsDiv.innerHTML = "<h3>定时时间使用24小时制</h3><p>零点自动领券规则<br>服务器时间+刷新频率>=23:59:59:999<br>tips:部分券其实是提前发放的</p>";
         receiveTextInput.type = "text";
         receiveTextInput.placeholder = "定时领券时间【格式:13:59:59:950】";
         receiveTextInput.setAttribute("style", "width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px;");
@@ -124,6 +126,7 @@ function buildOperate() {
         timerDiv.append(timerTextInput);
         timerDiv.append(timerResetBtn);
         operateAreaDiv.append(receiveDiv);
+        receiveDiv.append(receiveTipsDiv);
         receiveDiv.append(receiveTextInput);
         receiveDiv.append(receiveAreaDiv);
         receiveAreaDiv.append(receiveAllBtn);
@@ -132,7 +135,7 @@ function buildOperate() {
         outputTextArea.setAttribute("style", "width: 90vw;height: 40vw;border: 1px solid #868686;border-radius: 10px;overflow-y: scroll;margin:5px auto;");
         outputTextArea.setAttribute("disabled", "disabled");
     }
-    loginMsgDiv.innerHTML = "当前帐号：未登录";
+    loginMsgDiv.innerHTML = "当前京东帐号：<a href='https://plogin.m.jd.com/login/login' target='_blank'>点击登录</a>";
     operateAreaDiv.append(loginMsgDiv);
     container.append(operateAreaDiv);
     operateAreaDiv.append(outputTextArea);
@@ -140,7 +143,7 @@ function buildOperate() {
 
 function buildTips() {
     const tips = document.createElement('h4');
-    tips.innerHTML = '<h4>页面地址暂未被扩展或者有误！</h4><p>本插件只能在指定活动地址或领券地址使用！</p><p>如果这是个活动地址或领券地址，可以<a href="tencent://message/?uin=708873725Menu=yes" target="_blank" title="发起QQ聊天">联系作者</a>扩展~</p>'
+    tips.innerHTML = '<h4>页面地址暂未被扩展或者有误！</h4><p>本插件只能在指定活动地址或领券地址使用！</p><p>如果这是个活动地址或领券地址，<a href="tencent://message/?uin=708873725Menu=yes" target="_blank" title="发起QQ聊天">联系作者</a>扩展~</p><a style="color:red" href="http://krapnik.cn/project/jd/tutorial.mp4" target="_blank">点击查看教程视频</a>'
     title.append(tips);
 }
 
@@ -178,12 +181,6 @@ function buildRecommend() {
     recommandArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>好券推荐</h3>
     <p style="color:red;font-weight:bold;">
     <a style="color:red" href="https://m.jr.jd.com/member/9GcConvert/?channel=01-shouye-191214" target="_blank">9金币抢兑</a>
-    </p>
-    <p style="color:red;font-weight:bold;">
-    <a style="color:red" href="https://coupon.m.jd.com/coupons/show.action?key=26ef0709795d4fb793d41e7a8b0acac2&roleId=26885907&to=https://shop.m.jd.com/?shopId=1000132921&sceneval=2&time=1577796913938" target="_blank">自营键鼠199-100</a>
-    </p>
-    <p style="color:red;font-weight:bold;">
-    <a style="color:red" href="https://pro.m.jd.com/wq/active/FYXPxE3J9bnJ5LHvRMBNf4gJxMb/index.html" target="_blank">零食满99-88</a>
     </p>`;
     container.append(recommandArea);
 }
@@ -192,13 +189,14 @@ function buildPromotion() {
     const promotionArea: HTMLDivElement = document.createElement("div");
     promotionArea.setAttribute("style", "border: 1px solid #000;margin:10px");
     promotionArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>推广区</h3>
-    <p style="color:red;font-weight:bold;"><a style="color:red" href="http://krapnik.cn/project/jd/dayTask.html" target="_blank">每日京东红包汇总</a></p>`;
+    <p style="color:red;font-weight:bold;"><a style="color:red" href="http://krapnik.cn/project/jd/dayTask.html" target="_blank">每日京东红包汇总</a></p>
+    <p style="color:red;font-weight:bold;"><a style="color:red" onclick="openEnvelopNewKL()">帮作者助力京贴</a></p>`;
     container.append(promotionArea);
 }
 
 function buildUAarea() {
     let UATipsDiv: HTMLDivElement = document.createElement("div");
-    UATipsDiv.innerHTML = `<div style="border: 1px solid #000;margin:10px;font-weight:bold"><h2>该活动需要设置user-Agent为京东APP</h2><p><a style="color:red" href="https://jingyan.baidu.com/article/20095761d41761cb0621b46f.html" target="_blank">点击查看教程</a></p><p>部分浏览器插件会覆盖UA设置，请自行排查并关闭</p><p>【比如：京价保】</p><button style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block" onclick=Utils.copyText(Config.JDAppUA)>复制user-Agent</button></div>`;
+    UATipsDiv.innerHTML = `<div style="border: 1px solid #000;margin:10px;font-weight:bold"><h2>该活动需要设置user-Agent为京东APP</h2><p><a style="color:red" href="http://krapnik.cn/project/jd/tutorial.mp4" target="_blank">点击查看教程视频</a></p><p>部分浏览器插件会覆盖UA设置，请自行排查并关闭</p><p>【比如：京价保】</p><button style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block" onclick=Utils.copyText(Config.JDAppUA)>一键复制User-Agent</button></div>`;
     container.append(UATipsDiv);
 }
 
@@ -239,6 +237,8 @@ function getCouponType(): couponType | activityType {
         type = couponType.secKillCoupon
     } else if (/coupons\/show.action\?key=(\S*)&roleId=(\S*)/.test(Config.locationHref)) {
         type = couponType.mfreecoupon
+    } else if (Config.locationHref.includes("4PN6NLSX1vyp8xibC5sk7WZEFF5U")) {
+        type = couponType.secKillCoupon
     }
     if (Config.locationHref.includes("bunearth.m.jd.com")) {
         if (Config.locationHref.includes("4PWgqmrFHunn8C38mJA712fufguU")) {
@@ -332,7 +332,7 @@ function getTime() {
             Config.localeTime = new Date(+res.time).toLocaleString() + ":" + time.substr(-3, 3);
             timerTittleDiv.innerHTML = `京东时间：${Config.localeTime}<br/>当前获取时间的间隔频率：${Config.intervalSpan}毫秒`;
             if (Config.timingFlag) {
-                if (startTime <= +time) {
+                if (startTime <= +time || startTime + Config.intervalSpan >= 235959999) {
                     Utils.outPutLog(outputTextArea, `定时领取开始！当前时间：${Config.localeTime}`);
                     Config.timingFlag = !Config.timingFlag;
                     if (coupon) {
@@ -369,5 +369,43 @@ getCouponDesc(getCouponType());
 copyRights();
 statistical();
 
-Object.assign(window, { "getLoginMsg": getLoginMsg, "krapnik": krapnik, "Utils": Utils, "Config": Config });
+Object.assign(window, { "getLoginMsg": getLoginMsg, "krapnik": krapnik, "Utils": Utils, "Config": Config, "openEnvelopNewKL": openEnvelopNewKL });
+
+
+
+function openEnvelopNewKL() {
+    var postData2 = { "shareId": "NoUmlRW2j25Xc2b3y7iDLjaGfRujTnKF", "wxImageUrl": "", "wxNickName": "", "riskDeviceParam": "{\"macAddress\":\"\",\"imei\":\"\",\"eid\":\"\",\"openUUID\":\"\",\"uuid\":\"\",\"traceIp\":\"\",\"os\":\"android\",\"osVersion\":\"8.0.0\",\"appId\":\"JDJR-App\",\"clientVersion\":\"5.3.20\",\"resolution\":\"\",\"channelInfo\":\"\",\"networkType\":\"WIFI\",\"startNo\":42,\"openid\":\"\",\"token\":\"\",\"sid\":\"\",\"terminalType\":\"\",\"longtitude\":\"\",\"latitude\":\"\",\"securityData\":\"\",\"jscContent\":\"\",\"fnHttpHead\":\"\",\"receiveRequestTime\":\"\",\"port\":80,\"appType\":\"3\",\"deviceType\":\"Xiaomi\",\"fp\":\"\",\"ip\":\"\",\"idfa\":\"\",\"sdkToken\":\"\"}", "channelLv": "nhj2" };
+    fetch("https://ms.jr.jd.com/gw/generic/uc/h5/m/openEnvelopNewKL", {
+        method: "POST",
+        mode: "cors",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: "reqData=" + JSON.stringify(postData2)
+    }).then(function (response) {
+        return response.json()
+    }).then(function (res) {
+        var data = { "shareId": "NoUmlRW2j25Xc2b3y7iDLjaGfRujTnKF", "inApp": true, "riskDeviceParam": "{\"macAddress\":\"\",\"imei\":\"\",\"eid\":\"\",\"openUUID\":\"\",\"uuid\":\"\",\"traceIp\":\"\",\"os\":\"android\",\"osVersion\":\"8.0.0\",\"appId\":\"JDJR-App\",\"clientVersion\":\"5.3.20\",\"resolution\":\"\",\"channelInfo\":\"\",\"networkType\":\"WIFI\",\"startNo\":42,\"openid\":\"\",\"token\":\"\",\"sid\":\"\",\"terminalType\":\"\",\"longtitude\":\"\",\"latitude\":\"\",\"securityData\":\"\",\"jscContent\":\"\",\"fnHttpHead\":\"\",\"receiveRequestTime\":\"\",\"port\":80,\"appType\":\"3\",\"deviceType\":\"Xiaomi\",\"fp\":\"4b3ed46c60b21a8f7996f9e3a1685de4\",\"ip\":\"36.36.18.217\",\"idfa\":\"\",\"sdkToken\":\"\"}", "channelLv": "nhj2" };
+        fetch("https://ms.jr.jd.com/gw/generic/uc/h5/m/envelopInfoNewKL", {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "reqData=" + JSON.stringify(data)
+        }).then(function (response) {
+            return response.json()
+        }).then(function (res) {
+            alert("谢谢你的助力！");
+        })
+    })
+}
+
+
+
+
+
+
 

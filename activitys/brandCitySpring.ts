@@ -45,11 +45,11 @@ export default class BrandCitySpring implements Activity {
         a!.addEventListener('click', async () => {
             Utils.outPutLog(this.outputTextarea, `开始自动全部任务`)
             Utils.outPutLog(this.outputTextarea, `开始自动浏览店铺`)
-            await this.send("brandcity_spring_randomVisit", 2, 80);
+            await this.send("brandcity_spring_randomVisit", null, 80);
             Utils.outPutLog(this.outputTextarea, `开始自动小游戏`)
             await this.send("brandcity_spring_getLottery", 4, 6);
             Utils.outPutLog(this.outputTextarea, `开始自动福币兑换`)
-            await this.send("brandcity_spring_randomVisit", null, 12);
+            await this.send("brandcity_spring_getLottery", 2, 12);
             Utils.outPutLog(this.outputTextarea, `全部任务完成`)
             // this.visit();
             // this.game();
@@ -68,7 +68,7 @@ export default class BrandCitySpring implements Activity {
                     "area": "",
                     "appid": "publicUseApi",
                     "functionId": functionId,
-                    "body": actionType ? { "actionType": actionType, "taskId": `${i + 1},` } : { "uuid": "15727505818691431184273" }
+                    "body": actionType ? { "actionType": actionType, "taskId": `${i + 1}` } : { "uuid": "15727505818691431184273" }
                 };
                 setTimeout(async () => {
                     fetch(`${self.url}?${Utils.stringify(postData)}`, { credentials: "include" }).then(function (response) {
