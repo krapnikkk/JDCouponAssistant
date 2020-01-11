@@ -74,9 +74,9 @@ export default class BrandCitySpring implements Activity {
                     fetch(`${self.url}?${Utils.stringify(postData)}`, { credentials: "include" }).then(function (response) {
                         return response.json()
                     }).then((res) => {
-                        Utils.outPutLog(self.outputTextarea, `${new Date().toLocaleString()} 操作成功！任务序号：${i + 1}/${taskCnt}`);
+                        Utils.outPutLog(self.outputTextarea, `操作成功！任务序号：${i + 1}/${taskCnt}`);
                         if (i + 1 >= taskCnt) {
-                            Utils.outPutLog(self.outputTextarea, `${new Date().toLocaleString()} 当前任务已完成!`);
+                            Utils.outPutLog(self.outputTextarea, `当前任务已完成!`);
                         }
                         resolve()
                     })
@@ -103,9 +103,9 @@ export default class BrandCitySpring implements Activity {
                     fetch(`${self.url}?${Utils.stringify(postData)}`, { credentials: "include" }).then(function (response) {
                         return response.json()
                     }).then((res) => {
-                        Utils.outPutLog(self.outputTextarea, `${new Date().toLocaleString()} 操作成功！任务序号：${index + 1}/${len}`);
+                        Utils.outPutLog(self.outputTextarea, `操作成功！任务序号：${index + 1}/${len}`);
                         if (index + 1 >= len) {
-                            Utils.outPutLog(self.outputTextarea, `${new Date().toLocaleString()} 当前任务已完成!`);
+                            Utils.outPutLog(self.outputTextarea, `当前任务已完成!`);
                         }
                     })
                 }, (Config.timeoutSpan + Utils.random(300, 500)) * index);
@@ -130,9 +130,9 @@ export default class BrandCitySpring implements Activity {
                     fetch(`${self.url}?${Utils.stringify(postData)}`, { credentials: "include" }).then(function (response) {
                         return response.json()
                     }).then((res) => {
-                        Utils.outPutLog(self.outputTextarea, `${new Date().toLocaleString()} 操作成功！任务序号：${index + 1}/${len}`);
+                        Utils.outPutLog(self.outputTextarea, `操作成功！任务序号：${index + 1}/${len}`);
                         if (index + 1 >= len) {
-                            Utils.outPutLog(self.outputTextarea, `${new Date().toLocaleString()} 当前任务已完成!`);
+                            Utils.outPutLog(self.outputTextarea, `当前任务已完成!`);
                         }
                     })
                 }, (Config.timeoutSpan + Utils.random(300, 500)) * index);
@@ -157,9 +157,9 @@ export default class BrandCitySpring implements Activity {
                     fetch(`${self.url}?${Utils.stringify(postData)}`, { credentials: "include" }).then(function (response) {
                         return response.json()
                     }).then((res) => {
-                        Utils.outPutLog(self.outputTextarea, `${new Date().toLocaleString()} 操作成功！任务序号：${index + 1}/${len}`);
+                        Utils.outPutLog(self.outputTextarea, `操作成功！任务序号：${index + 1}/${len}`);
                         if (index + 1 >= len) {
-                            Utils.outPutLog(self.outputTextarea, `${new Date().toLocaleString()} 当前任务已完成!`);
+                            Utils.outPutLog(self.outputTextarea, `当前任务已完成!`);
                         }
                     })
                 }, (Config.timeoutSpan + Utils.random(300, 500)) * index);

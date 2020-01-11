@@ -89,12 +89,12 @@ export default class Palace implements Activity {
                                     return response.json()
                                 }).then((res) => {
                                     // if (res.success) {
-                                    Utils.outPutLog(self.outputTextarea, `${new Date().toLocaleString()} 操作成功！任务序号：${i + 1}/${taskCnt}`);
+                                    Utils.outPutLog(self.outputTextarea, `操作成功！任务序号：${i + 1}/${taskCnt}`);
                                     // } else {
                                     //     Utils.outPutLog(self.outputTextarea, `这个店铺已经被收藏过啦！建议先批量取消关注店铺后再执行这个任务！`);
                                     // }
                                     if (i + 1 >= taskCnt) {
-                                        Utils.outPutLog(self.outputTextarea, `${new Date().toLocaleString()} 当前任务已完成!`);
+                                        Utils.outPutLog(self.outputTextarea, `当前任务已完成!`);
                                     }
                                     resolve();
                                 });
@@ -130,12 +130,12 @@ export default class Palace implements Activity {
                                     return response.json()
                                 }).then((res) => {
                                     // if (res.success) {
-                                    Utils.outPutLog(self.outputTextarea, `${new Date().toLocaleString()} 操作成功！任务序号：${index + 1}/${len}`);
+                                    Utils.outPutLog(self.outputTextarea, `操作成功！任务序号：${index + 1}/${len}`);
                                     // } else {
                                     //     Utils.outPutLog(self.outputTextarea, `这个店铺已经被收藏过啦！建议先批量取消关注店铺后再执行这个任务！`);
                                     // }
                                     if (index + 1 >= len) {
-                                        Utils.outPutLog(self.outputTextarea, `${new Date().toLocaleString()} 当前任务已完成!`);
+                                        Utils.outPutLog(self.outputTextarea, `当前任务已完成!`);
                                     }
                                 });
                         }, (Config.timeoutSpan + Utils.random(300, 500)) * index);
@@ -160,9 +160,9 @@ export default class Palace implements Activity {
                                 .then(function (response) {
                                     return response.json()
                                 }).then((res) => {
-                                    Utils.outPutLog(self.outputTextarea, `${new Date().toLocaleString()} 操作成功！任务序号：${index + 1}/${len}`);
+                                    Utils.outPutLog(self.outputTextarea, `操作成功！任务序号：${index + 1}/${len}`);
                                     if (index + 1 >= len) {
-                                        Utils.outPutLog(self.outputTextarea, `${new Date().toLocaleString()} 当前任务已完成!`);
+                                        Utils.outPutLog(self.outputTextarea, `当前任务已完成!`);
                                     }
                                 });
                         }, (Config.timeoutSpan + Utils.random(300, 500)) * index);

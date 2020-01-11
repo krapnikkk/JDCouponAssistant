@@ -1,5 +1,5 @@
 import Activity from "../interface/Activity";
-import Utils from "../utils/utils";
+import Utils, { _$ } from "../utils/utils";
 import Config from "../config/config";
 
 
@@ -41,6 +41,15 @@ export default class MonsterNian implements Activity {
         const content = document.createElement("div");
         let msg = `
         <div style="margin:10px;">
+        <button class="auto" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键完成任务</button>
+        <button class="help" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">帮助作者队伍助力</button>
+        <button class="invite" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">获取我的助力链接</button>
+        <input class="inviteLink" type="text" style="width:80vw;height: 25px;font-size:14px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;" placeholder="请输入需要助力的分享链接">
+        <button class="assist" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">为TA助力</button>
+        <button class="group" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">获取我的队伍分享链接</button>
+        <input class="groupLink" type="text" style="width:80vw;height: 25px;font-size:14px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;" placeholder="请输入需要助力的队伍的分享链接">
+        <button class="assistGroup" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">为这个队伍助力</button>
+        <button class="raise" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">炸年兽</button>
         <button class="shop" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">逛逛好店</button>
         <button class="browser" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">逛逛主会场</button>
         <button class="product" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">好物加购</button>
@@ -48,29 +57,27 @@ export default class MonsterNian implements Activity {
         <button class="activity" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">好玩互动</button>
         <button class="video" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">视频直播</button>
         <button class="record" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">LBS定位</button>
-        <button class="raise" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">炸年兽</button>
-        <button class="invite" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">获取邀请链接</button>
-        <button class="help" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">帮助作者队伍助力</button>
-        <button class="auto" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键完成任务</button>
         </div>`;
 
         // <button class="help" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">帮作者助力</button>
         // <button class="join" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">加入作者战队</button>
         content.innerHTML = msg;
         this.container.appendChild(content);
-        const o = document.querySelector('.shop'),
-            h = document.querySelector('.help'),
-            a = document.querySelector('.activity'),
-            v = document.querySelector('.video'),
-            r = document.querySelector('.record'),
-            s = document.querySelector('.shopping'),
-            i = document.querySelector('.invite'),
-            // j = document.querySelector('.join'),
-            b = document.querySelector('.raise'),
-            u = document.querySelector('.auto'),
-            browser = document.querySelector('.browser'),
-
-            l = document.querySelector('.product');
+        const o = _$('.shop'),
+            h = _$('.help'),
+            a = _$('.activity'),
+            v = _$('.video'),
+            r = _$('.record'),
+            s = _$('.shopping'),
+            i = _$('.invite'),
+            g = _$('.group'),
+            b = _$('.raise'),
+            u = _$('.auto'),
+            browser = _$('.browser'),
+            assistGroup = _$('.assistGroup'),
+            invite = _$('.inviteLink'),
+            assist = _$('.assist'),
+            l = _$('.product');
 
 
         o!.addEventListener('click', () => {
@@ -108,12 +115,17 @@ export default class MonsterNian implements Activity {
         i!.addEventListener('click', () => {
             Utils.copyText(`https://bunearth.m.jd.com/babelDiy/SGFJVMOZADGTQCZWGEYU/4PWgqmrFHunn8C38mJA712fufguU/index.html?shareType=taskHelp&inviteId=${this.data["inviteId"]}&taskId=1&itemId=${this.data["taskVos"][0]["assistTaskDetailVo"]["itemId"]}&shareFrom=key`);
         })
-        // h!.addEventListener('click', () => {
-        //     this.invite();
-        // })
-        // j!.addEventListener('click', () => {
-        //     this.join();
-        // })
+        g!.addEventListener('click', () => {
+            this.group();
+        })
+        assistGroup!.addEventListener('click', () => {
+            const link = _$('.groupLink') as HTMLInputElement;
+            this.assistGroup(link.value);
+        })
+        assist!.addEventListener('click', () => {
+            const link = _$('.inviteLink') as HTMLInputElement;
+            this.assist(link.value);
+        })
         b!.addEventListener('click', () => {
             this.raise();
         })
@@ -121,6 +133,7 @@ export default class MonsterNian implements Activity {
         e.initEvent("click", true, true);
         u!.addEventListener('click', async () => {
             Utils.outPutLog(this.outputTextarea, `一键自动开始任务！`);
+            this.help();
             Utils.outPutLog(this.outputTextarea, `开始自动逛逛好店任务`)
             await this.send(this.data.taskVos[3]["browseShopVo"], this.data.taskVos[3]["taskId"]);
             Utils.outPutLog(this.outputTextarea, `开始自动好物加购任务`)
@@ -158,9 +171,9 @@ export default class MonsterNian implements Activity {
                     }).then(function (response) {
                         return response.json()
                     }).then((res) => {
-                        Utils.outPutLog(self.outputTextarea, `${new Date().toLocaleString()} 操作成功！任务序号：${i + 1}/${length}`);
+                        Utils.outPutLog(self.outputTextarea, `操作成功！任务序号：${i + 1}/${length}`);
                         if (i + 1 >= length) {
-                            Utils.outPutLog(self.outputTextarea, `${new Date().toLocaleString()} 当前任务已完成!`);
+                            Utils.outPutLog(self.outputTextarea, `当前任务已完成!`);
                         }
                         resolve();
                     })
@@ -184,7 +197,7 @@ export default class MonsterNian implements Activity {
         }).then(function (response) {
             return response.json()
         }).then((res) => {
-            Utils.outPutLog(this.outputTextarea, `${new Date().toLocaleString()} 操作成功！谢谢你的助力！`);
+            Utils.outPutLog(this.outputTextarea, `操作成功！谢谢你的助力！`);
         })
     }
     join() {
@@ -200,9 +213,9 @@ export default class MonsterNian implements Activity {
             return response.json()
         }).then((res) => {
             if (res.data.bizCode == 0) {
-                Utils.outPutLog(this.outputTextarea, `${new Date().toLocaleString()} 操作成功！加入成功！`);
+                Utils.outPutLog(this.outputTextarea, `操作成功！加入成功！`);
             } else {
-                Utils.outPutLog(this.outputTextarea, `${new Date().toLocaleString()} 操作失败，好像满人了哦`);
+                Utils.outPutLog(this.outputTextarea, `操作失败，好像满人了哦`);
             }
         })
     }
@@ -219,7 +232,7 @@ export default class MonsterNian implements Activity {
         }).then(function (response) {
             return response.json()
         }).then((res) => {
-            Utils.outPutLog(this.outputTextarea, `${new Date().toLocaleString()} 任务领取成功！`);
+            Utils.outPutLog(this.outputTextarea, `任务领取成功！`);
             this.broswer();
         })
     }
@@ -231,7 +244,7 @@ export default class MonsterNian implements Activity {
             return response.json()
         }).then((res) => {
             if (res.data.bizCode == 0) {
-                Utils.outPutLog(this.outputTextarea, `${new Date().toLocaleString()} 操作成功！`);
+                Utils.outPutLog(this.outputTextarea, `操作成功！`);
             }
         })
     }
@@ -249,9 +262,9 @@ export default class MonsterNian implements Activity {
             return response.json()
         }).then((res) => {
             if (res.data.bizCode == 0) {
-                Utils.outPutLog(this.outputTextarea, `${new Date().toLocaleString()} 操作成功！获取奖励如下:${JSON.stringify(res.data.result.levelUpAward)}`);
+                Utils.outPutLog(this.outputTextarea, `操作成功！获取奖励如下:${JSON.stringify(res.data.result.levelUpAward)}`);
             } else {
-                Utils.outPutLog(this.outputTextarea, `${new Date().toLocaleString()} 操作失败！${res.data.bizMsg}`);
+                Utils.outPutLog(this.outputTextarea, `操作失败！${res.data.bizMsg}`);
             }
         })
     }
@@ -265,7 +278,7 @@ export default class MonsterNian implements Activity {
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded"
                 },
-                body: `functionId=bombnian_pk_assistGroup&body={"confirmFlag":1,"inviteId":"XUkkFpUhDG0XY-p35CzwPZgzlWgNooCLIHRgCJ6uCcsnnwdlBg"}&client=wh5&clientVersion=1.0.0`
+                body: `functionId=bombnian_pk_assistGroup&body={"confirmFlag":1,"inviteId":"XUkkFpUhDG0XY-p35CzwPZgzlWgNooCLIHRgCJ6uCcsnnwdlDl0"}&client=wh5&clientVersion=1.0.0`
             }
         ).then((res) => res.json())
             .then((json) => {
@@ -279,11 +292,76 @@ export default class MonsterNian implements Activity {
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded"
                 },
-                body: `functionId=bombnian_pk_assistGroup&body={"confirmFlag":1,"inviteId":"XUkkFpUhDG1WJqszpW2uY-4mR3ZvVGMfViX3iMWdE4FeIvO3rYjOC-K6cox9Eh0"}&client=wh5&clientVersion=1.0.0`
+                body: `functionId=bombnian_pk_assistGroup&body={"confirmFlag":1,"inviteId":"XUkkFpUhDG1WJqszpW2uY-4mR3ZvVGMfViX3iMWdE4FeIvO3rYjOC-K6cox9EhXD"}&client=wh5&clientVersion=1.0.0`
             }
         ).then((res) => res.json())
             .then((json) => {
-                Utils.outPutLog(this.outputTextarea, `${new Date().toLocaleString()} 谢谢你的助力！`);
+                Utils.outPutLog(this.outputTextarea, `谢谢你的助力！`);
             });
     }
+
+    group() {
+        fetch('https://api.m.jd.com/client.action?functionId=bombnian_pk_getHomeData',
+            {
+                method: "POST",
+                mode: "cors",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: `functionId=bombnian_pk_getHomeData&body={}&client=wh5&clientVersion=1.0.0`
+            }
+        ).then((res) => res.json())
+            .then((json) => {
+                const groupAssistInviteId = json.data.result.groupPkInfo.groupAssistInviteId;
+                Utils.outPutLog(this.outputTextarea, `获取到邀请id:${groupAssistInviteId}`);
+                Utils.copyText(`https://bunearth.m.jd.com/babelDiy/ZTSKYQHOPNHCVTWNJSQF/4PWgqmrFHunn8C38mJA712fufguU/index.html?shareType=pk&inviteId=${groupAssistInviteId}`);
+            });
+    }
+
+    assistGroup(url: string) {
+        if (!url&&url.includes('inviteId')) {
+            alert("请输入要助力的队伍分享链接或输入正确的队伍分享地址！");
+            return;
+        }
+        const inviteId = Utils.getSearchString(url, "inviteId") || url;
+        fetch('https://api.m.jd.com/client.action?functionId=bombnian_pk_assistGroup',
+            {
+                method: "POST",
+                mode: "cors",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: `functionId=bombnian_pk_assistGroup&body={"confirmFlag":1,"inviteId":"${inviteId}"}&client=wh5&clientVersion=1.0.0`
+            }
+        ).then((res) => res.json())
+            .then((json) => {
+                Utils.outPutLog(this.outputTextarea, `助力结果：${json.data.bizMsg}`);
+            });
+    }
+
+    assist(url: string) {
+        if (!url&&url.includes('itemId')&&url.includes('inviteId')) {
+            alert("请输入要助力的分享链接或输入正确的分享地址！");
+            return;
+        }
+        const inviteId = Utils.getSearchString(url, "inviteId"),
+        itemId = Utils.getSearchString(url, "itemId"); 
+        fetch('https://api.m.jd.com/client.action?functionId=bombnian_collectScore',
+            {
+                method: "POST",
+                mode: "cors",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: `functionId=bombnian_collectScore&body={"taskId":1,"inviteId":"${inviteId}","itemId":"${itemId}"}&client=wh5&clientVersion=1.0.0`
+            }
+        ).then((res) => res.json())
+            .then((json) => {
+                Utils.outPutLog(this.outputTextarea, `助力结果：${json.data.bizMsg}`);
+            });
+    }
+
 }
