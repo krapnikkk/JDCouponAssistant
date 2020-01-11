@@ -65,7 +65,7 @@ export default class CoinPurchase implements Coupon {
             content.appendChild(itemDiv);
         }
         this.container.appendChild(content);
-        document.querySelector('.receive')!.addEventListener('click', () => { this.send() });
+        _$('.receive')!.addEventListener('click', () => { this.send() });
     }
     send(): void {
         this.outputTextarea.style.display = "block";

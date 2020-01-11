@@ -1,5 +1,5 @@
 import Coupon from "../interface/Coupon";
-import Utils from "../utils/utils";
+import Utils, { _$ } from "../utils/utils";
 type couponDetails = {
     pid: string
     title: string
@@ -65,7 +65,7 @@ export default class Purchase implements Coupon {
             content.appendChild(itemDiv);
         }
         this.container.appendChild(content);
-        document.querySelector('.receive')!.addEventListener('click', () => { this.send() });
+        _$('.receive')!.addEventListener('click', () => { this.send() });
     }
     send(): void {
         this.outputTextarea.style.display = "block";

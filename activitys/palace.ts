@@ -1,5 +1,5 @@
 import Activity from "../interface/Activity";
-import Utils from "../utils/utils";
+import Utils, { _$ } from "../utils/utils";
 import Config from "../config/config";
 
 export default class Palace implements Activity {
@@ -40,10 +40,10 @@ export default class Palace implements Activity {
 
         content.innerHTML = msg;
         this.container.appendChild(content);
-        const e = document.querySelector('.sign'),
-            v = document.querySelector('.visit'),
-            g = document.querySelector('.browse'),
-            a = document.querySelector('.auto');
+        const e = _$('.sign'),
+            v = _$('.visit'),
+            g = _$('.browse'),
+            a = _$('.auto');
 
         e!.addEventListener('click', () => {
             Utils.outPutLog(this.outputTextarea, `开始自动签到`)

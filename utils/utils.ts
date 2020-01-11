@@ -70,6 +70,17 @@ export default class Utils {
         return "";
     }
 
+    static getSearchString(str: string,key: string): any {
+        str = str.substring(1, str.length);
+        var arr = str.split("&");
+        var obj: any = new Object();
+        for (var i = 0; i < arr.length; i++) {
+            var tmp_arr = arr[i].split("=");
+            obj[decodeURIComponent(tmp_arr[0])] = decodeURIComponent(tmp_arr[1]);
+        }
+        return obj[key];
+    }
+
     static getQueryStringByName(url: string) {
         url = url.replace(/#.*/, ''); //removes hash (to avoid getting hash query)
         var queryString = /\?[a-zA-Z0-9\=\&\%\$\-\_\.\+\!\*\'\(\)\,]+/.exec(url); //valid chars according to: http://www.ietf.org/rfc/rfc1738.txt
@@ -99,7 +110,7 @@ export default class Utils {
 
     static outPutLog(output: HTMLTextAreaElement, log: string): void {
         if (output.value) {
-            output.value = `${output.value}\n${log}`;
+            output.value = `${output.value}\n${new Date().toLocaleString()} ${log}`;
         } else {
             output.value = log;
         }
@@ -137,7 +148,7 @@ export default class Utils {
     };
 
     static stringify(params: any): string {
-        return Object.keys(params).map((key) =>  { 
+        return Object.keys(params).map((key) => {
             console.log();
             return `${key}=${this.isObject(params[key]) ? JSON.stringify(params[key]) : encodeURIComponent(params[key])}`;
         }).join("&");
@@ -148,8 +159,8 @@ export default class Utils {
         return value != null && (type == 'object' || type == 'function');
     }
 
-    static isNumber(obj: any) {  
-        return typeof obj === 'number' && !isNaN(obj);  
+    static isNumber(obj: any) {
+        return typeof obj === 'number' && !isNaN(obj);
     }
 
     // static HTMLfactory(type: string, attributes: any, parent: HTMLElement): HTMLElement {
@@ -161,4 +172,9 @@ export default class Utils {
     //     return ele;
 
     // }
+    static querySelector(dom: string): HTMLElement | null {
+        return document.querySelector(dom);
+    }
 }
+
+export const _$ = Utils.querySelector;

@@ -1,5 +1,5 @@
 import Activity from "../interface/Activity";
-import Utils from "../utils/utils";
+import Utils, { _$ } from "../utils/utils";
 import Config from "../config/config";
 export default class BrandCitySpring implements Activity {
     url: string = "https://api.m.jd.com/client.action";
@@ -25,10 +25,10 @@ export default class BrandCitySpring implements Activity {
 
         content.innerHTML = msg;
         this.container.appendChild(content);
-        const e = document.querySelector('.exchange'),
-            v = document.querySelector('.visit'),
-            g = document.querySelector('.linkgame'),
-            a = document.querySelector('.auto');
+        const e = _$('.exchange'),
+            v = _$('.visit'),
+            g = _$('.linkgame'),
+            a = _$('.auto');
 
         e!.addEventListener('click', () => {
             Utils.outPutLog(this.outputTextarea, `开始自动福币兑换`)
