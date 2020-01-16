@@ -1,7 +1,7 @@
 import Coupon from "./interface/Coupon";
 import Activity from "./interface/Activity";
 
-import Utils from "./utils/utils";
+import Utils, { _$ } from "./utils/utils";
 import Config from "./config/config";
 
 import BabelAwardCollection from "./coupons/newBabelAwardCollection";
@@ -46,6 +46,7 @@ const container: HTMLDivElement = document.createElement("div"),
     title: HTMLDivElement = document.createElement("div"),
     timerTittleDiv: HTMLDivElement = document.createElement("div"),
     receiveTextInput: HTMLInputElement = document.createElement("input"),
+    receiveCountInput: HTMLInputElement = document.createElement("input"),
     receiveTimerBtn: HTMLButtonElement = document.createElement("button"),
     outputTextArea: HTMLTextAreaElement = document.createElement("textarea"),
     loginMsgDiv: HTMLDivElement = document.createElement("div");
@@ -68,17 +69,19 @@ function buildOperate() {
             receiveAllBtn: HTMLButtonElement = document.createElement("button"),
             timerTextInput: HTMLInputElement = document.createElement("input"),
             timerResetBtn: HTMLButtonElement = document.createElement("button"),
+            spanTextInput: HTMLInputElement = document.createElement("input"),
+            spanResetBtn: HTMLButtonElement = document.createElement("button"),
             timerDiv: HTMLDivElement = document.createElement("div");
         operateAreaDiv.setAttribute("style", "border: 1px solid #000;");
         operateAreaDiv.innerHTML = "<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;padding: 0 37.5vw 5px;'>操作区</h3>";
         timerTextInput.type = "text";
         timerTextInput.placeholder = "请输入获取时间的刷新频率【毫秒】";
         timerTextInput.setAttribute("style", "width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;");
-        timerResetBtn.innerHTML = "重置频率";
-        timerResetBtn.setAttribute("style", "width: 80px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;");
+        timerResetBtn.innerHTML = "重置刷新频率";
+        timerResetBtn.setAttribute("style", "width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;");
         timerResetBtn.addEventListener("click", () => {
             const span = Math.trunc(+timerTextInput.value);
-            if (!Config.intervalSpan) {
+            if (!span) {
                 alert("请检查输入的刷新频率是否有误！(只能为大于0的数字)");
                 return false;
             }
@@ -86,12 +89,30 @@ function buildOperate() {
             window.clearInterval(Config.intervalId);
             Config.intervalId = window.setInterval(getTime, Config.intervalSpan);
         });
-        receiveTipsDiv.innerHTML = "<h3>定时时间使用24小时制</h3><p>零点自动领券规则<br>服务器时间+刷新频率>=23:59:59:999<br>tips:部分券其实是提前发放的</p>";
+        spanTextInput.type = "text";
+        spanTextInput.placeholder = "请输入重复领券的提交频率【默认：500毫秒】";
+        spanTextInput.setAttribute("style", "width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;");
+        spanResetBtn.innerHTML = "重置提交频率";
+        spanResetBtn.setAttribute("style", "width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;");
+        spanResetBtn.addEventListener("click", () => {
+            const span = Math.trunc(+spanTextInput.value);
+            if (!span) {
+                alert("请检查输入的提交频率是否有误！(只能为大于0的数字)");
+                return false;
+            }
+            Config.postSpan = span;
+        });
+        receiveTipsDiv.innerHTML = `<h3>定时时间使用24小时制</h3><p style="color:red">零点领券设置参考<br>刷新频率:500 | 定时时间：23:59:59:490<br>tips:部分券其实是提前发放的</p>`;
         receiveTextInput.type = "text";
         receiveTextInput.placeholder = "定时领券时间【格式:13:59:59:950】";
         receiveTextInput.setAttribute("style", "width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px;");
+        receiveCountInput.type = "text";
+        receiveCountInput.placeholder = "领券提交次数【默认为1】";
+        receiveCountInput.setAttribute("style", "width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px;");
         receiveTimerBtn.innerHTML = "定时指定领取";
         receiveTimerBtn.addEventListener("click", () => {
+            Config.postCount = parseInt(receiveCountInput.value) > 0 ? parseInt(receiveCountInput.value) : 1;
+            console.log("Config.postCounter" + Config.postCount);
             const time = Utils.formateTime(receiveTextInput.value);
             if (!time || time < 0) {
                 alert("请检查定时领券时间的格式是否有误！");
@@ -101,6 +122,7 @@ function buildOperate() {
                 startTime = time;
                 outputTextArea.style.display = "block";
                 receiveTextInput.disabled = Config.timingFlag;
+                receiveCountInput.disabled = Config.timingFlag;
                 if (Config.timingFlag) {
                     receiveTimerBtn.innerHTML = "取消指定领取";
                     Utils.outPutLog(outputTextArea, `已开启定时领取`);
@@ -125,9 +147,12 @@ function buildOperate() {
         timerDiv.append(timerTittleDiv);
         timerDiv.append(timerTextInput);
         timerDiv.append(timerResetBtn);
+        timerDiv.append(spanTextInput);
+        timerDiv.append(spanResetBtn);
         operateAreaDiv.append(receiveDiv);
         receiveDiv.append(receiveTipsDiv);
         receiveDiv.append(receiveTextInput);
+        receiveDiv.append(receiveCountInput);
         receiveDiv.append(receiveAreaDiv);
         receiveAreaDiv.append(receiveAllBtn);
         receiveAreaDiv.append(receiveTimerBtn);
@@ -143,12 +168,12 @@ function buildOperate() {
 
 function buildTips() {
     const tips = document.createElement('h4');
-    tips.innerHTML = '<h4>页面地址暂未被扩展或者有误！</h4><p>本插件只能在指定活动地址或领券地址使用！</p><p>如果这是个活动地址或领券地址，<a href="tencent://message/?uin=708873725Menu=yes" target="_blank" title="发起QQ聊天">联系作者</a>扩展~</p><a style="color:red" href="http://krapnik.cn/project/jd/tutorial.mp4" target="_blank">点击查看教程视频</a>'
+    tips.innerHTML = '<h4>页面地址暂未被扩展或者有误！</h4><p>本插件只能在指定活动地址或领券地址使用！</p><p>如果这是个活动地址或领券地址，<a href="tencent://message/?uin=708873725Menu=yes" target="_blank" title="发起QQ聊天">联系作者</a>扩展~</p><a style="color:red" href="https://gitee.com/krapnik/res/raw/master/tutorial.mp4" target="_blank">点击下载教程视频</a>'
     title.append(tips);
 }
 
 function buildTitle() {
-    const html: HTMLElement = document.querySelector('html') as HTMLElement;
+    const html: HTMLElement = _$('html') as HTMLElement;
     html.style.fontSize = "18px";
     document.body.innerHTML = "";
     document.body.style.backgroundColor = "#ffffff";
@@ -170,8 +195,7 @@ function buildActivity() {
     activityArea.setAttribute("style", "border: 1px solid #000;margin:10px");
     activityArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>活动推荐</h3>
     <p style="color:red;font-weight:bold;"><a style="color:red" href="https://bunearth.m.jd.com/babelDiy/Zeus/4PWgqmrFHunn8C38mJA712fufguU/index.html#/wxhome" target="_blank">全民炸年兽</a></p>
-    <p style="color:red;font-weight:bold;"><a style="color:red" href="https://bunearth.m.jd.com/babelDiy/Zeus/w6y8PYbzhgHJc8Lu1weihPReR2T/index.html#/home" target="_blank">十二生肖来送福</a></p>
-    <p style="color:red;font-weight:bold;"><a style="color:red" href="https://palace.m.jd.com/" target="_blank">逛超市集瑞兽</a></p>`;
+    <p style="color:red;font-weight:bold;"><a style="color:red" href="https://bunearth.m.jd.com/babelDiy/Zeus/w6y8PYbzhgHJc8Lu1weihPReR2T/index.html#/home" target="_blank">十二生肖来送福</a></p>`;
     container.append(activityArea);
 }
 
@@ -190,14 +214,23 @@ function buildPromotion() {
     promotionArea.setAttribute("style", "border: 1px solid #000;margin:10px");
     promotionArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>推广区</h3>
     <p style="color:red;font-weight:bold;"><a style="color:red" href="http://krapnik.cn/project/jd/dayTask.html" target="_blank">每日京东红包汇总</a></p>
-    <p style="color:red;font-weight:bold;"><a style="color:red" onclick="openEnvelopNewKL()">帮作者助力京贴</a></p>`;
+    <p style="color:red;font-weight:bold;"><a style="color:red" onclick="openEnvelopNewKL()">帮作者助力京贴</a></p>
+    <p style="color:red;font-weight:bold;"><a style="color:red" onclick="help()">帮作者助力年兽队伍</a></p>`;
     container.append(promotionArea);
 }
 
 function buildUAarea() {
     let UATipsDiv: HTMLDivElement = document.createElement("div");
-    UATipsDiv.innerHTML = `<div style="border: 1px solid #000;margin:10px;font-weight:bold"><h2>该活动需要设置user-Agent为京东APP</h2><p><a style="color:red" href="http://krapnik.cn/project/jd/tutorial.mp4" target="_blank">点击查看教程视频</a></p><p>部分浏览器插件会覆盖UA设置，请自行排查并关闭</p><p>【比如：京价保】</p><button style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block" onclick=Utils.copyText(Config.JDAppUA)>一键复制User-Agent</button></div>`;
+    UATipsDiv.innerHTML = `<div style="border: 1px solid #000;margin:10px;font-weight:bold"><h2>该活动需要设置user-Agent为京东APP</h2><p><a style="color:red" href="https://gitee.com/krapnik/res/raw/master/tutorial.mp4" target="_blank">点击下载教程视频</a></p><p>部分浏览器插件会覆盖UA设置，请自行排查并关闭</p><p>【比如：京价保】</p><button style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block" onclick=Utils.copyText(Config.JDAppUA)>一键复制User-Agent</button></div>`;
     container.append(UATipsDiv);
+}
+
+function buildSensorArea() {
+    let sensorArea: HTMLDivElement = document.createElement("div");
+    sensorArea.innerHTML = `<div style="border: 1px solid #000;margin:10px;font-weight:bold"><h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>高级操作区</h3><p>功能扩展中，后期补教程</p>
+    <button style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block" onclick="Utils.copyText(document.cookie)">复制Cookie</button>
+    <button style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">配置多帐号</button></div>`;
+    container.append(sensorArea);
 }
 
 function buildTimeoutArea() {
@@ -307,9 +340,11 @@ function getCouponDesc(type: couponType | activityType) {
     }
     if (coupon) {
         Config.intervalId = window.setInterval(getTime, Config.intervalSpan);
+        buildSensorArea();
         buildOperate();
         coupon.get();
     } else if (activity) {
+        buildSensorArea();
         buildActivity();
         buildOperate();
         buildTimeoutArea();
@@ -332,13 +367,21 @@ function getTime() {
             Config.localeTime = new Date(+res.time).toLocaleString() + ":" + time.substr(-3, 3);
             timerTittleDiv.innerHTML = `京东时间：${Config.localeTime}<br/>当前获取时间的间隔频率：${Config.intervalSpan}毫秒`;
             if (Config.timingFlag) {
-                if (startTime <= +time || startTime + Config.intervalSpan >= 235959999) {
-                    Utils.outPutLog(outputTextArea, `定时领取开始！当前时间：${Config.localeTime}`);
+                if (startTime <= +time) {
+                    Utils.outPutLog(outputTextArea, `定时领取开始！`);
                     Config.timingFlag = !Config.timingFlag;
                     if (coupon) {
-                        coupon.send(outputTextArea);
+                        for (let i = 0; i < Config.postCount; i++) {
+                            (function (index) {
+                                setTimeout(() => {
+                                    Utils.outPutLog(outputTextArea, `第${index + 1}次提交！`);
+                                    coupon.send(outputTextArea);
+                                }, index * Config.postSpan)
+                            })(i)
+                        }
                     }
                     receiveTextInput.disabled = Config.timingFlag;
+                    receiveCountInput.disabled = Config.timingFlag;
                     receiveTimerBtn.innerHTML = "定时指定领取";
                     Utils.outPutLog(outputTextArea, `定时领取已结束！`);
                 }
@@ -369,7 +412,7 @@ getCouponDesc(getCouponType());
 copyRights();
 statistical();
 
-Object.assign(window, { "getLoginMsg": getLoginMsg, "krapnik": krapnik, "Utils": Utils, "Config": Config, "openEnvelopNewKL": openEnvelopNewKL });
+Object.assign(window, { "getLoginMsg": getLoginMsg, "krapnik": krapnik, "Utils": Utils, "Config": Config, "openEnvelopNewKL": openEnvelopNewKL, "help": help });
 
 
 
@@ -403,9 +446,33 @@ function openEnvelopNewKL() {
     })
 }
 
-
-
-
-
+function help() {
+    fetch('https://api.m.jd.com/client.action?functionId=bombnian_pk_assistGroup',
+        {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: `functionId=bombnian_pk_assistGroup&body={"confirmFlag":1,"inviteId":"XUkkFpUhDG1WJqszpW2uY-4mR3ZvVGMfViX3iMWdE4FeIvO3rYjOC-K6cox9EhXF"}&client=wh5&clientVersion=1.0.0`
+        }
+    ).then((res) => res.json())
+        .then((json) => {
+            fetch('https://api.m.jd.com/client.action?functionId=bombnian_pk_assistGroup',
+                {
+                    method: "POST",
+                    mode: "cors",
+                    credentials: "include",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: `functionId=bombnian_pk_assistGroup&body={"confirmFlag":1,"inviteId":"XUkkFpUhDG0XY-p35CzwPZgzlWgNooCLIHRgCJ6uCcsnnwdlDls"}&client=wh5&clientVersion=1.0.0`
+                }
+            ).then((res) => res.json())
+                .then((json) => {
+                });
+        });
+}
 
 
