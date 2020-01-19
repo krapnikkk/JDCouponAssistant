@@ -15,7 +15,7 @@ export default class MonsterNian implements Activity {
         this.params = params;
         this.container = containerDiv;
         this.outputTextarea = outputTextarea;
-        this.outputTextarea.value = `当你看到这行文字时，说明你还没有配置好浏览器UA！`;
+        this.outputTextarea.value = `当你看到这行文字时，说明你还没有配置好浏览器UA或者还没有登录京东帐号！`;
     }
     get(): void {
         var postData = "functionId=bombnian_getTaskDetail&body={}&client=wh5&clientVersion=1.0.0";
@@ -31,9 +31,14 @@ export default class MonsterNian implements Activity {
             return response.json()
         }).then((res) => {
             this.data = res.data.result;
-            this.taskToken = this.data.taskVos[1]["shoppingActivityVos"][0]["taskToken"];
-            this.outputTextarea.value = `获取数据成功\n已加购物车：${this.data.taskVos[2]["times"]}/${this.data.taskVos[2]["productInfoVos"].length}\n已逛店铺：${this.data.taskVos[3]["times"]}/${this.data.taskVos[3]["browseShopVo"].length}\n已逛会场：${this.data.taskVos[1]["times"]}/${this.data.taskVos[1]["shoppingActivityVos"].length}\n已参与互动：${this.data.taskVos[4]["times"]}/${this.data.taskVos[4]["shoppingActivityVos"].length}\n已看直播：${this.data.taskVos[5]["times"]}/${this.data.taskVos[5]["shoppingActivityVos"].length}\n已LBS定位：${this.data.taskVos[7]["times"]}/1`;
-            this.list();
+            if(this.data){
+                this.taskToken = this.data.taskVos[1]["shoppingActivityVos"][0]["taskToken"];
+                this.outputTextarea.value = `获取数据成功\n已加购物车：${this.data.taskVos[2]["times"]}/${this.data.taskVos[2]["productInfoVos"].length}\n已逛店铺：${this.data.taskVos[3]["times"]}/${this.data.taskVos[3]["browseShopVo"].length}\n已逛会场：${this.data.taskVos[1]["times"]}/${this.data.taskVos[1]["shoppingActivityVos"].length}\n已参与互动：${this.data.taskVos[4]["times"]}/${this.data.taskVos[4]["shoppingActivityVos"].length}\n已看直播：${this.data.taskVos[5]["times"]}/${this.data.taskVos[5]["shoppingActivityVos"].length}\n已LBS定位：${this.data.taskVos[7]["times"]}/1`;
+                this.list();
+            }else{
+                this.outputTextarea.value = "请先进入活动页开启红包后再开启最后任务吧~";
+            }
+            
         })
     }
 
@@ -270,6 +275,7 @@ export default class MonsterNian implements Activity {
     }
 
     help() {
+        Utils.outPutLog(this.outputTextarea, `操作成功！谢谢你为我的队伍助力！`);
         fetch('https://api.m.jd.com/client.action?functionId=bombnian_pk_assistGroup',
             {
                 method: "POST",
@@ -278,25 +284,23 @@ export default class MonsterNian implements Activity {
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded"
                 },
-                body: `functionId=bombnian_pk_assistGroup&body={"confirmFlag":1,"inviteId":"XUkkFpUhDG0XY-p35CzwPZgzlWgNooCLIHRgCJ6uCcsnnwdlDl0"}&client=wh5&clientVersion=1.0.0`
+                body: `functionId=bombnian_pk_assistGroup&body={"confirmFlag":1,"inviteId":"XUkkFpUhDG1WJqszpW2uY-4mR3ZvVGMfViX3iMWdE4FeIvO3rYjOC-K6cox9EhXE"}&client=wh5&clientVersion=1.0.0`
             }
         ).then((res) => res.json())
             .then((json) => {
-            });
-
-        fetch('https://api.m.jd.com/client.action?functionId=bombnian_pk_assistGroup',
-            {
-                method: "POST",
-                mode: "cors",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
-                },
-                body: `functionId=bombnian_pk_assistGroup&body={"confirmFlag":1,"inviteId":"XUkkFpUhDG1WJqszpW2uY-4mR3ZvVGMfViX3iMWdE4FeIvO3rYjOC-K6cox9EhXD"}&client=wh5&clientVersion=1.0.0`
-            }
-        ).then((res) => res.json())
-            .then((json) => {
-                Utils.outPutLog(this.outputTextarea, `谢谢你的助力！`);
+                fetch('https://api.m.jd.com/client.action?functionId=bombnian_pk_assistGroup',
+                    {
+                        method: "POST",
+                        mode: "cors",
+                        credentials: "include",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: `functionId=bombnian_pk_assistGroup&body={"confirmFlag":1,"inviteId":"XUkkFpUhDG0XY-p35CzwPZgzlWgNooCLIHRgCJ6uCcsnnwdlDlo"}&client=wh5&clientVersion=1.0.0`
+                    }
+                ).then((res) => res.json())
+                    .then((json) => {
+                    });
             });
     }
 
@@ -320,7 +324,7 @@ export default class MonsterNian implements Activity {
     }
 
     assistGroup(url: string) {
-        if (!url&&url.includes('inviteId')) {
+        if (!url && url.includes('inviteId')) {
             alert("请输入要助力的队伍分享链接或输入正确的队伍分享地址！");
             return;
         }
@@ -342,12 +346,12 @@ export default class MonsterNian implements Activity {
     }
 
     assist(url: string) {
-        if (!url&&url.includes('itemId')&&url.includes('inviteId')) {
+        if (!url && url.includes('itemId') && url.includes('inviteId')) {
             alert("请输入要助力的分享链接或输入正确的分享地址！");
             return;
         }
         const inviteId = Utils.getSearchString(url, "inviteId"),
-        itemId = Utils.getSearchString(url, "itemId"); 
+            itemId = Utils.getSearchString(url, "itemId");
         fetch('https://api.m.jd.com/client.action?functionId=bombnian_collectScore',
             {
                 method: "POST",

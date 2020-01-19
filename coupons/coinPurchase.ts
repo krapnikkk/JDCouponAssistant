@@ -1,5 +1,5 @@
 import Coupon from "../interface/Coupon";
-import Utils from "../utils/utils";
+import Utils, { _$ } from "../utils/utils";
 type couponDetails = {
     pid: string
     title: string

@@ -213,9 +213,7 @@ function buildPromotion() {
     const promotionArea: HTMLDivElement = document.createElement("div");
     promotionArea.setAttribute("style", "border: 1px solid #000;margin:10px");
     promotionArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>推广区</h3>
-    <p style="color:red;font-weight:bold;"><a style="color:red" href="http://krapnik.cn/project/jd/dayTask.html" target="_blank">每日京东红包汇总</a></p>
-    <p style="color:red;font-weight:bold;"><a style="color:red" onclick="openEnvelopNewKL()">帮作者助力京贴</a></p>
-    <p style="color:red;font-weight:bold;"><a style="color:red" onclick="help()">帮作者助力年兽队伍</a></p>`;
+    <p style="color:red;font-weight:bold;"><a style="color:red" href="http://krapnik.cn/project/jd/dayTask.html" target="_blank">每日京东红包汇总</a></p>`;
     container.append(promotionArea);
 }
 
@@ -412,67 +410,12 @@ getCouponDesc(getCouponType());
 copyRights();
 statistical();
 
-Object.assign(window, { "getLoginMsg": getLoginMsg, "krapnik": krapnik, "Utils": Utils, "Config": Config, "openEnvelopNewKL": openEnvelopNewKL, "help": help });
+Object.assign(window, { "getLoginMsg": getLoginMsg, "krapnik": krapnik, "Utils": Utils, "Config": Config });
 
 
 
-function openEnvelopNewKL() {
-    var postData2 = { "shareId": "NoUmlRW2j25Xc2b3y7iDLjaGfRujTnKF", "wxImageUrl": "", "wxNickName": "", "riskDeviceParam": "{\"macAddress\":\"\",\"imei\":\"\",\"eid\":\"\",\"openUUID\":\"\",\"uuid\":\"\",\"traceIp\":\"\",\"os\":\"android\",\"osVersion\":\"8.0.0\",\"appId\":\"JDJR-App\",\"clientVersion\":\"5.3.20\",\"resolution\":\"\",\"channelInfo\":\"\",\"networkType\":\"WIFI\",\"startNo\":42,\"openid\":\"\",\"token\":\"\",\"sid\":\"\",\"terminalType\":\"\",\"longtitude\":\"\",\"latitude\":\"\",\"securityData\":\"\",\"jscContent\":\"\",\"fnHttpHead\":\"\",\"receiveRequestTime\":\"\",\"port\":80,\"appType\":\"3\",\"deviceType\":\"Xiaomi\",\"fp\":\"\",\"ip\":\"\",\"idfa\":\"\",\"sdkToken\":\"\"}", "channelLv": "nhj2" };
-    fetch("https://ms.jr.jd.com/gw/generic/uc/h5/m/openEnvelopNewKL", {
-        method: "POST",
-        mode: "cors",
-        credentials: "include",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: "reqData=" + JSON.stringify(postData2)
-    }).then(function (response) {
-        return response.json()
-    }).then(function (res) {
-        var data = { "shareId": "NoUmlRW2j25Xc2b3y7iDLjaGfRujTnKF", "inApp": true, "riskDeviceParam": "{\"macAddress\":\"\",\"imei\":\"\",\"eid\":\"\",\"openUUID\":\"\",\"uuid\":\"\",\"traceIp\":\"\",\"os\":\"android\",\"osVersion\":\"8.0.0\",\"appId\":\"JDJR-App\",\"clientVersion\":\"5.3.20\",\"resolution\":\"\",\"channelInfo\":\"\",\"networkType\":\"WIFI\",\"startNo\":42,\"openid\":\"\",\"token\":\"\",\"sid\":\"\",\"terminalType\":\"\",\"longtitude\":\"\",\"latitude\":\"\",\"securityData\":\"\",\"jscContent\":\"\",\"fnHttpHead\":\"\",\"receiveRequestTime\":\"\",\"port\":80,\"appType\":\"3\",\"deviceType\":\"Xiaomi\",\"fp\":\"4b3ed46c60b21a8f7996f9e3a1685de4\",\"ip\":\"36.36.18.217\",\"idfa\":\"\",\"sdkToken\":\"\"}", "channelLv": "nhj2" };
-        fetch("https://ms.jr.jd.com/gw/generic/uc/h5/m/envelopInfoNewKL", {
-            method: "POST",
-            mode: "cors",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: "reqData=" + JSON.stringify(data)
-        }).then(function (response) {
-            return response.json()
-        }).then(function (res) {
-            alert("谢谢你的助力！");
-        })
-    })
-}
 
-function help() {
-    fetch('https://api.m.jd.com/client.action?functionId=bombnian_pk_assistGroup',
-        {
-            method: "POST",
-            mode: "cors",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: `functionId=bombnian_pk_assistGroup&body={"confirmFlag":1,"inviteId":"XUkkFpUhDG1WJqszpW2uY-4mR3ZvVGMfViX3iMWdE4FeIvO3rYjOC-K6cox9EhXF"}&client=wh5&clientVersion=1.0.0`
-        }
-    ).then((res) => res.json())
-        .then((json) => {
-            fetch('https://api.m.jd.com/client.action?functionId=bombnian_pk_assistGroup',
-                {
-                    method: "POST",
-                    mode: "cors",
-                    credentials: "include",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    },
-                    body: `functionId=bombnian_pk_assistGroup&body={"confirmFlag":1,"inviteId":"XUkkFpUhDG0XY-p35CzwPZgzlWgNooCLIHRgCJ6uCcsnnwdlDls"}&client=wh5&clientVersion=1.0.0`
-                }
-            ).then((res) => res.json())
-                .then((json) => {
-                });
-        });
-}
+
+
 
 

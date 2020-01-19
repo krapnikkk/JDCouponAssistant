@@ -9,7 +9,7 @@ type couponDetails = {
 
 export default class WhiteCoupon implements Coupon {
     url: string = "https://opencredit.jd.com/act/get/coupon?couponBusinessId={couponBusinessId}&actId=004";
-    detailurl: string = "http://opencredit.jd.com/act/get/couponInfo?couponBusinessId={couponBusinessId}";
+    detailurl: string = "https://opencredit.jd.com/act/get/couponInfo?couponBusinessId={couponBusinessId}";
     couponList: couponDetails[] = [];
     container: HTMLDivElement;
     couponParams: any;
@@ -41,7 +41,7 @@ export default class WhiteCoupon implements Coupon {
     }
     list(): void {
         const content = document.createElement("div");
-        content.innerHTML = "<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin-top: 5px;padding: 0 37.5vw 5px;'>优惠券</h3>";
+        content.innerHTML = "<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin-top: 5px;padding: 0 37.5vw 5px;'>优惠券</h3><p style='margin: 5px 0;color:red'>默认领取单张券，无须选定</p>";
         content.setAttribute('style', 'display:flex;flex-direction:column;padding: 5px;margin-top: 5px;border: 1px solid #000;');
         for (let i = 0; i < this.couponList.length; i++) {
             const item = this.couponList[i],
