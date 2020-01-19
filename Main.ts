@@ -12,6 +12,7 @@ import SecKillCoupon from "./coupons/secKillCoupon";
 import Mfreecoupon from "./coupons/mfreecoupon";
 import CoinPurchase from "./coupons/coinPurchase";
 import GcConvert from "./coupons/gcConvert";
+import ReceiveCoupons from "./coupons/receiveCoupons";
 
 import MonsterNian from "./activitys/MonsterNian";
 import BrandCitySpring from "./activitys/brandCitySpring";
@@ -28,6 +29,7 @@ enum couponType {
     mfreecoupon = "mfreecoupon",
     coinPurchase = "coinPurchase",
     GcConvert = "GcConvert",
+    ReceiveCoupons = "ReceiveCoupons",
 }
 
 enum activityType {
@@ -270,7 +272,10 @@ function getCouponType(): couponType | activityType {
         type = couponType.mfreecoupon
     } else if (Config.locationHref.includes("4PN6NLSX1vyp8xibC5sk7WZEFF5U")) {
         type = couponType.secKillCoupon
+    } else if (Config.locationHref.includes("m.jr.jd.com/member/rightsCenter/#/white")) {
+        type = couponType.ReceiveCoupons
     }
+
     if (Config.locationHref.includes("bunearth.m.jd.com")) {
         if (Config.locationHref.includes("4PWgqmrFHunn8C38mJA712fufguU")) {
             type = activityType.monsterNian;
@@ -319,6 +324,9 @@ function getCouponDesc(type: couponType | activityType) {
             const roleId = Utils.GetQueryString("roleId"),
                 key = Utils.GetQueryString("key");
             coupon = new Mfreecoupon({ "roleId": roleId, "key": key }, container, outputTextArea);
+            break;
+        case couponType.ReceiveCoupons:
+            coupon = new ReceiveCoupons(null, container, outputTextArea);
             break;
         case activityType.monsterNian:
             activity = new MonsterNian(null, container, outputTextArea);
