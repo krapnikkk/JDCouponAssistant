@@ -17,6 +17,7 @@ import ReceiveCoupons from "./coupons/receiveCoupons";
 import MonsterNian from "./activitys/MonsterNian";
 import BrandCitySpring from "./activitys/brandCitySpring";
 import Palace from "./activitys/palace";
+import ReceiveBless from "./activitys/receiveBless";
 
 enum couponType {
     none,
@@ -37,6 +38,7 @@ enum activityType {
     monsterNian = "monsterNian",
     brandCitySpring = "brandCitySpring",
     palace = "palace",
+    receiveBless = "ReceiveBless",
 }
 
 let coupon: Coupon,
@@ -197,7 +199,7 @@ function buildActivity() {
     activityArea.setAttribute("style", "border: 1px solid #000;margin:10px");
     activityArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>活动推荐</h3>
     <p style="color:red;font-weight:bold;"><a style="color:red" href="https://bunearth.m.jd.com/babelDiy/Zeus/4PWgqmrFHunn8C38mJA712fufguU/index.html#/wxhome" target="_blank">全民炸年兽</a></p>
-    <p style="color:red;font-weight:bold;"><a style="color:red" href="https://bunearth.m.jd.com/babelDiy/Zeus/w6y8PYbzhgHJc8Lu1weihPReR2T/index.html#/home" target="_blank">十二生肖来送福</a></p>`;
+    <p style="color:red;font-weight:bold;"><a style="color:red" href="https://bunearth.m.jd.com/babelDiy/VKZTUZOWBAHVKUULQFLX/21tFbS6Xm4tpon3oJnwzbnCJBo1Z/index.html" target="_blank">2020拜年神器</a></p>`;
     container.append(activityArea);
 }
 
@@ -281,6 +283,8 @@ function getCouponType(): couponType | activityType {
             type = activityType.monsterNian;
         } else if (Config.locationHref.includes("w6y8PYbzhgHJc8Lu1weihPReR2T")) {
             type = activityType.brandCitySpring;
+        } else if (Config.locationHref.includes("21tFbS6Xm4tpon3oJnwzbnCJBo1Z")) {
+            type = activityType.receiveBless;
         }
     }
     if (Config.locationHref.includes("palace")) {
@@ -338,6 +342,10 @@ function getCouponDesc(type: couponType | activityType) {
         case activityType.palace:
             activity = new Palace(null, container, outputTextArea);
             break;
+        case activityType.receiveBless:
+            activity = new ReceiveBless(null, container, outputTextArea);
+            Config.UAFlag = true;
+            break;
         default:
             break;
     }
@@ -346,11 +354,11 @@ function getCouponDesc(type: couponType | activityType) {
     }
     if (coupon) {
         Config.intervalId = window.setInterval(getTime, Config.intervalSpan);
-        buildSensorArea();
+        // buildSensorArea();
         buildOperate();
         coupon.get();
     } else if (activity) {
-        buildSensorArea();
+        // buildSensorArea();
         buildActivity();
         buildOperate();
         buildTimeoutArea();
