@@ -63,7 +63,7 @@ export default class NewBabelAwardCollection implements Coupon {
         for (let i = 0; i < this.couponList.length; i++) {
             const item = this.couponList[i],
                 itemDiv = document.createElement("div");
-            itemDiv.setAttribute('style', 'display:flex;flex-direction:row;padding:10px 0;border:1px solid gray;border-radius: 10px;margin-top:5px;padding: 5px');
+            itemDiv.setAttribute('style', 'display:flex;flex-direction:row;border:1px solid gray;border-radius: 10px;margin-top:5px;padding: 5px');
             itemDiv.setAttribute('data-item', "coupon");
             if (item.scene == "1") {
                 itemDiv.innerHTML = `<img style="user-select: none;pointer-events:none;width:120px;height:100%;padding-right:10vw;display: block;" src="${item.picUrl}" />
