@@ -112,7 +112,7 @@ export default class Utils {
         if (output.value) {
             output.value = `${output.value}\n${new Date().toLocaleString()} ${log}`;
         } else {
-            output.value = log;
+            output.value = new Date().toLocaleString() + log;
         }
     }
 
