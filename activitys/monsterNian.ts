@@ -324,7 +324,7 @@ export default class MonsterNian implements Activity {
     }
 
     assistGroup(url: string) {
-        if (!url && url.includes('inviteId')) {
+        if (!url || !url.includes('inviteId')) {
             alert("请输入要助力的队伍分享链接或输入正确的队伍分享地址！");
             return;
         }
