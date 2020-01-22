@@ -1,3 +1,5 @@
+import Config from "../config/config";
+
 (window as any).jsonpBind = function (res: string) {
     Utils.jsonpBind(JSON.stringify(res));
 }
@@ -37,10 +39,19 @@ export default class Utils {
 
     static formatDate(date: string): string {
         let dateObj = new Date(+date),
+            year: string | number = dateObj.getFullYear(),
+            month: string | number = dateObj.getMonth() + 1,
+            day: string | number = dateObj.getDate(),
             hours: string | number = dateObj.getHours(),
             mins: string | number = dateObj.getMinutes(),
             secs: string | number = dateObj.getSeconds(),
             msecs: string | number = dateObj.getMilliseconds();
+        if (month < 10) {
+            month = "0" + month;
+        }
+        if (day < 10) {
+            day = "0" + day;
+        }
         if (hours < 10) {
             hours = "0" + hours;
         }
@@ -55,7 +66,7 @@ export default class Utils {
         } else if (msecs < 100 && msecs >= 10) {
             msecs = "0" + msecs;
         }
-        return hours + "" + mins + "" + secs + "" + msecs;
+        return year + "" + month + "" + day + "" + hours + "" + mins + "" + secs + "" + msecs;
     }
 
     static GetQueryString(name: string): string {
@@ -70,7 +81,7 @@ export default class Utils {
         return "";
     }
 
-    static getSearchString(str: string,key: string): any {
+    static getSearchString(str: string, key: string): any {
         str = str.substring(1, str.length);
         var arr = str.split("&");
         var obj: any = new Object();
@@ -88,7 +99,7 @@ export default class Utils {
     }
 
     static formateTime(time: string): number {
-        return Math.trunc(+time.replace(/[:|：]+/ig, ""));
+        return Math.trunc(+(time.replace(/\s+/ig, "").replace(/[:|：]+/ig, "").replace(/[-|——]+/ig, "")));
     }
 
     static createJsonp(url: string, bind: boolean = false) {
@@ -108,12 +119,17 @@ export default class Utils {
         postMessage(res, '*');
     }
 
-    static outPutLog(output: HTMLTextAreaElement, log: string): void {
-        if (output.value) {
-            output.value = `${output.value}\n${new Date().toLocaleString()} ${log}`;
-        } else {
-            output.value = new Date().toLocaleString() + log;
+    static outPutLog(output: HTMLTextAreaElement, log: string,timeFlag: boolean=true): void {
+        if(timeFlag){
+            if (output.value) {
+                output.value = `${output.value}\n${new Date().toLocaleString()} ${log}`;
+            } else {
+                output.value = new Date().toLocaleString() + log;
+            }
+        }else{
+            output.value =`${output.value}\n${log}`;
         }
+        
     }
 
     static random(n: number, m: number): number {

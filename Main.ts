@@ -42,9 +42,7 @@ enum activityType {
 }
 
 let coupon: Coupon,
-    activity: Activity,
-    startTime = 0,
-    time;
+    activity: Activity;
 
 const container: HTMLDivElement = document.createElement("div"),
     title: HTMLDivElement = document.createElement("div"),
@@ -106,9 +104,9 @@ function buildOperate() {
             }
             Config.postSpan = span;
         });
-        receiveTipsDiv.innerHTML = `<h3>定时时间使用24小时制</h3><p style="color:red">零点领券设置参考<br>刷新频率:500 | 定时时间：23:59:59:490<br>tips:部分券其实是提前发放的</p>`;
+        receiveTipsDiv.innerHTML = `<h3>定时时间使用年月日+24小时制</h3><p style="color:red">领券设置参考<br>刷新频率:500 | 定时时间：2020-01-01 23:59:59:490<br>tips:部分券其实是提前发放的</p>`;
         receiveTextInput.type = "text";
-        receiveTextInput.placeholder = "定时领券时间【格式:13:59:59:950】";
+        receiveTextInput.placeholder = "定时领券时间【格式:2020-01-01 13:59:59:950】";
         receiveTextInput.setAttribute("style", "width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px;");
         receiveCountInput.type = "text";
         receiveCountInput.placeholder = "领券提交次数【默认为1】";
@@ -116,14 +114,14 @@ function buildOperate() {
         receiveTimerBtn.innerHTML = "定时指定领取";
         receiveTimerBtn.addEventListener("click", () => {
             Config.postCount = parseInt(receiveCountInput.value) > 0 ? parseInt(receiveCountInput.value) : 1;
-            console.log("Config.postCounter" + Config.postCount);
             const time = Utils.formateTime(receiveTextInput.value);
+            // console.log(time);
             if (!time || time < 0) {
                 alert("请检查定时领券时间的格式是否有误！");
                 return false;
             } else {
                 Config.timingFlag = !Config.timingFlag;
-                startTime = time;
+                Config.startTime = time;
                 outputTextArea.style.display = "block";
                 receiveTextInput.disabled = Config.timingFlag;
                 receiveCountInput.disabled = Config.timingFlag;
@@ -209,7 +207,7 @@ function buildRecommend() {
     recommandArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>好券推荐</h3>
     <p style="color:red;font-weight:bold;">
     <a style="color:red" href="https://m.jr.jd.com/member/9GcConvert/?channel=01-shouye-191214" target="_blank">9金币抢兑</a>
-    <a style="color:red" href="https://m.jr.jd.com/member/rightsCenter/#/white" target="_blank">12期免息券</a>
+    <br><a style="color:red" href="https://m.jr.jd.com/member/rightsCenter/#/white" target="_blank">12期免息券</a>
     </p>`;
     container.append(recommandArea);
 }
@@ -353,6 +351,8 @@ function getCouponDesc(type: couponType | activityType) {
     if (Config.UAFlag) {
         buildUAarea();
     }
+    buildRecommend();
+    buildActivity();
     if (coupon) {
         Config.intervalId = window.setInterval(getTime, Config.intervalSpan);
         // buildSensorArea();
@@ -360,15 +360,13 @@ function getCouponDesc(type: couponType | activityType) {
         coupon.get();
     } else if (activity) {
         // buildSensorArea();
-        buildActivity();
+        // buildActivity();
         buildOperate();
         buildTimeoutArea();
         activity.get();
     } else {
         Utils.loadCss("https://meyerweb.com/eric/tools/css/reset/reset200802.css");
         buildTips();
-        buildRecommend();
-        buildActivity();
     }
     Utils.createJsonp(`${Config.JDUserInfoURL}&callback=getLoginMsg`);
 
@@ -378,12 +376,13 @@ function getTime() {
     fetch(Config.JDTimeInfoURL)
         .then(function (response) { return response.json() })
         .then(function (res) {
-            time = Utils.formatDate(res.time);
-            Config.localeTime = new Date(+res.time).toLocaleString() + ":" + time.substr(-3, 3);
+            Config.serverTime = Utils.formatDate(res.time);
+            Config.localeTime = new Date(+res.time).toLocaleString() + ":" + Config.serverTime.substr(-3, 3);
             timerTittleDiv.innerHTML = `京东时间：${Config.localeTime}<br/>当前获取时间的间隔频率：${Config.intervalSpan}毫秒`;
             if (Config.timingFlag) {
-                if (startTime <= +time) {
+                if (Config.startTime <= +Config.serverTime) {
                     Utils.outPutLog(outputTextArea, `定时领取开始！`);
+                    Utils.outPutLog(outputTextArea, `当前京东服务器时间：${Config.localeTime}`);
                     Config.timingFlag = !Config.timingFlag;
                     if (coupon) {
                         for (let i = 0; i < Config.postCount; i++) {
