@@ -27,6 +27,8 @@
 - [ ] 白条优惠券 地址格式：https://jrmkt.jd.com/ptp/wl/vouchers.html?activityId={activityId}
 - [x] 白条优惠券 权益中心：https://m.jr.jd.com/member/rightsCenter/#/white
 - [x] 白条优惠券 京东白条：https://m.jr.jd.com/consumer/baitiaom/#/index
+- [x] 日常优惠券 领券中心APP端：https://coupon.m.jd.com/center/getCouponCenter.action
+
 
 # TODO list
 - [ ] 内置每日好券推荐接口

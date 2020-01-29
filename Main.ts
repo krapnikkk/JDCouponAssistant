@@ -19,6 +19,7 @@ import BrandCitySpring from "./activitys/brandCitySpring";
 import Palace from "./activitys/palace";
 import ReceiveBless from "./activitys/receiveBless";
 import ReceiveCoupon from "./coupons/receiveCoupon";
+import getCouponCenter from "./coupons/getCouponCenter";
 
 enum couponType {
     none,
@@ -33,6 +34,7 @@ enum couponType {
     GcConvert = "GcConvert",
     ReceiveCoupons = "ReceiveCoupons",
     ReceiveCoupon = "ReceiveCoupon",
+    getCouponCenter = "getCouponCenter",
 }
 
 enum activityType {
@@ -195,10 +197,10 @@ function buildTitle() {
 }
 
 function buildActivity() {
-    const activityArea: HTMLDivElement = document.createElement("div");
-    activityArea.setAttribute("style", "border: 1px solid #000;margin:10px");
-    activityArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>活动推荐</h3>`;
-    container.append(activityArea);
+    // const activityArea: HTMLDivElement = document.createElement("div");
+    // activityArea.setAttribute("style", "border: 1px solid #000;margin:10px");
+    // activityArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>活动推荐</h3>`;
+    // container.append(activityArea);
 }
 
 function buildRecommend() {
@@ -277,6 +279,8 @@ function getCouponType(): couponType | activityType {
         type = couponType.ReceiveCoupons
     } else if (Config.locationHref.includes("m.jr.jd.com/consumer/baitiaom/index.html")) {
         type = couponType.ReceiveCoupon
+    } else if (Config.locationHref.includes("coupon.m.jd.com/center/getCouponCenter.action")) {
+        type = couponType.getCouponCenter
     }
 
     if (Config.locationHref.includes("bunearth.m.jd.com")) {
@@ -335,6 +339,9 @@ function getCouponDesc(type: couponType | activityType) {
             break;
         case couponType.ReceiveCoupon:
             coupon = new ReceiveCoupon(null, container, outputTextArea);
+            break;
+        case couponType.getCouponCenter:
+            coupon = new getCouponCenter(null, container, outputTextArea);
             break;
         case activityType.monsterNian:
             activity = new MonsterNian(null, container, outputTextArea);
