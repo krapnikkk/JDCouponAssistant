@@ -19,7 +19,8 @@ import BrandCitySpring from "./activitys/brandCitySpring";
 import Palace from "./activitys/palace";
 import ReceiveBless from "./activitys/receiveBless";
 import ReceiveCoupon from "./coupons/receiveCoupon";
-import getCouponCenter from "./coupons/getCouponCenter";
+import GetCouponCenter from "./coupons/getCouponCenter";
+import Exchange from "./coupons/exchange";
 
 enum couponType {
     none,
@@ -35,6 +36,7 @@ enum couponType {
     ReceiveCoupons = "ReceiveCoupons",
     ReceiveCoupon = "ReceiveCoupon",
     getCouponCenter = "getCouponCenter",
+    exchange = "exchange",
 }
 
 enum activityType {
@@ -281,6 +283,8 @@ function getCouponType(): couponType | activityType {
         type = couponType.ReceiveCoupon
     } else if (Config.locationHref.includes("coupon.m.jd.com/center/getCouponCenter.action")) {
         type = couponType.getCouponCenter
+    } else if (Config.locationHref.includes("vip.m.jd.com/index.html?appName=fuli&id=")) {
+        type = couponType.exchange
     }
 
     if (Config.locationHref.includes("bunearth.m.jd.com")) {
@@ -341,7 +345,11 @@ function getCouponDesc(type: couponType | activityType) {
             coupon = new ReceiveCoupon(null, container, outputTextArea);
             break;
         case couponType.getCouponCenter:
-            coupon = new getCouponCenter(null, container, outputTextArea);
+            coupon = new GetCouponCenter(null, container, outputTextArea);
+            break;
+        case couponType.exchange:
+            const itemId = Utils.GetQueryString("id");
+            coupon = new Exchange({"itemId":itemId}, container, outputTextArea);
             break;
         case activityType.monsterNian:
             activity = new MonsterNian(null, container, outputTextArea);
