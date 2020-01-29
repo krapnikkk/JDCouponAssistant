@@ -69,19 +69,19 @@ export default class NewBabelAwardCollection implements Coupon {
                 itemDiv.innerHTML = `<img style="user-select: none;pointer-events:none;width:120px;height:100%;padding-right:10vw;display: block;" src="${item.picUrl}" />
                 <div">
                     <p style="user-select: none;pointer-events:none;margin-bottom:10px">状态：${item.status == "0" ? "可领取" : item.status == "1" ? "已领取" : "已领光"}<br/>说明：${item.details}</p>
-                    <button style="width: 80px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">
+                    <button style="width: 100px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">
                         <a href='https://so.m.jd.com/list/couponSearch.action?couponbatch=${item.couponbatch}' target="_blank" style="color: #fff;text-decoration: none;">可用商品</a>
                     </button>
-                    <button style="width: 80px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">
-                        <a href='https://api.m.jd.com/client.action?functionId=newBabelAwardCollection&body={"activityId":"${this.couponParams.activityId}","scene":${item.scene},"args":"${item.args}"}&client=wh5' target="_blank" style="color: #fff;text-decoration: none;">直接领取</a>
+                    <button style="width: 100px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">
+                        <a href='https://api.m.jd.com/client.action?functionId=newBabelAwardCollection&body={"activityId":"${this.couponParams.activityId}","scene":${item.scene},"args":"${item.args}"}&client=wh5' target="_blank" style="color: #fff;text-decoration: none;">提取链接</a>
                     </button>
                 </div>`
             } else if (item.scene == "3") {
                 itemDiv.innerHTML = `<img style="user-select: none;pointer-events:none;width:120px;height:100%;padding-right:10vw;display: block;" src="${item.picUrl}" />
                 <div">
                 <p style="user-select: none;pointer-events:none;margin-bottom:10px">状态：${item.status == "0" ? "可领取" : item.status == "1" ? "已领取" : "已领光"}</p>
-                <button style="width: 80px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">
-                    <a href='https://api.m.jd.com/client.action?functionId=newBabelAwardCollection&body={"activityId":"${this.couponParams.activityId}","scene":${item.scene},"actKey":"${item.args}"}&client=wh5' target="_blank" style="color: #fff;text-decoration: none;">直接领取</a>
+                <button style="width: 100px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">
+                    <a href='https://api.m.jd.com/client.action?functionId=newBabelAwardCollection&body={"activityId":"${this.couponParams.activityId}","scene":${item.scene},"actKey":"${item.args}"}&client=wh5' target="_blank" style="color: #fff;text-decoration: none;">提取链接</a>
                 </button>
                 </div>`
             }
