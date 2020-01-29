@@ -18,6 +18,7 @@ import MonsterNian from "./activitys/MonsterNian";
 import BrandCitySpring from "./activitys/brandCitySpring";
 import Palace from "./activitys/palace";
 import ReceiveBless from "./activitys/receiveBless";
+import ReceiveCoupon from "./coupons/receiveCoupon";
 
 enum couponType {
     none,
@@ -31,6 +32,7 @@ enum couponType {
     coinPurchase = "coinPurchase",
     GcConvert = "GcConvert",
     ReceiveCoupons = "ReceiveCoupons",
+    ReceiveCoupon = "ReceiveCoupon",
 }
 
 enum activityType {
@@ -195,9 +197,7 @@ function buildTitle() {
 function buildActivity() {
     const activityArea: HTMLDivElement = document.createElement("div");
     activityArea.setAttribute("style", "border: 1px solid #000;margin:10px");
-    activityArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>活动推荐</h3>
-    <p style="color:red;font-weight:bold;"><a style="color:red" href="https://bunearth.m.jd.com/babelDiy/Zeus/4PWgqmrFHunn8C38mJA712fufguU/index.html#/wxhome" target="_blank">全民炸年兽</a></p>
-    <p style="color:red;font-weight:bold;"><a style="color:red" href="https://bunearth.m.jd.com/babelDiy/VKZTUZOWBAHVKUULQFLX/21tFbS6Xm4tpon3oJnwzbnCJBo1Z/index.html" target="_blank">2020拜年神器</a></p>`;
+    activityArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>活动推荐</h3>`;
     container.append(activityArea);
 }
 
@@ -275,6 +275,8 @@ function getCouponType(): couponType | activityType {
         type = couponType.secKillCoupon
     } else if (Config.locationHref.includes("m.jr.jd.com/member/rightsCenter/#/white")) {
         type = couponType.ReceiveCoupons
+    } else if (Config.locationHref.includes("m.jr.jd.com/consumer/baitiaom/index.html")) {
+        type = couponType.ReceiveCoupon
     }
 
     if (Config.locationHref.includes("bunearth.m.jd.com")) {
@@ -330,6 +332,9 @@ function getCouponDesc(type: couponType | activityType) {
             break;
         case couponType.ReceiveCoupons:
             coupon = new ReceiveCoupons(null, container, outputTextArea);
+            break;
+        case couponType.ReceiveCoupon:
+            coupon = new ReceiveCoupon(null, container, outputTextArea);
             break;
         case activityType.monsterNian:
             activity = new MonsterNian(null, container, outputTextArea);

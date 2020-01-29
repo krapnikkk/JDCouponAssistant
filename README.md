@@ -26,7 +26,7 @@
 - [ ] 京豆兑换 地址格式：https://vip.m.jd.com/index.html?appName=fuli&id={id}
 - [ ] 白条优惠券 地址格式：https://jrmkt.jd.com/ptp/wl/vouchers.html?activityId={activityId}
 - [x] 白条优惠券 权益中心：https://m.jr.jd.com/member/rightsCenter/#/white
-- [ ] 白条优惠券 京东白条：https://m.jr.jd.com/consumer/baitiaom/#/index
+- [x] 白条优惠券 京东白条：https://m.jr.jd.com/consumer/baitiaom/#/index
 
 # TODO list
 - [ ] 内置每日好券推荐接口
