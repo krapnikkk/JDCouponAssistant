@@ -58,7 +58,6 @@ export default class getCouponCenter implements Coupon {
                     alert("请检查该页面优惠券的有效性！");
                 }
             });
-        this.list();
     }
 
     list(): void {
