@@ -104,9 +104,9 @@ function buildOperate() {
             }
             Config.postSpan = span;
         });
-        receiveTipsDiv.innerHTML = `<h3>定时时间使用年月日+24小时制</h3><p style="color:red">领券设置参考<br>刷新频率:500 | 定时时间：2020-01-01 23:59:59:490<br>tips:部分券其实是提前发放的</p>`;
+        receiveTipsDiv.innerHTML = `<h3>定时时间使用年月日+24小时制</h3><p style="color:red">零点领券设置参考<br>刷新频率:500 | 定时时间：2020-01-01 23:59:59:490<br>tips:部分券其实是提前发放的</p>`;
         receiveTextInput.type = "text";
-        receiveTextInput.placeholder = "定时领券时间【格式:2020-01-01 13:59:59:950】";
+        receiveTextInput.placeholder = "定时领券时间【格式:2020-01-01 09:59:59:950】";
         receiveTextInput.setAttribute("style", "width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px;");
         receiveCountInput.type = "text";
         receiveCountInput.placeholder = "领券提交次数【默认为1】";

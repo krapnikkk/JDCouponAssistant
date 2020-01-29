@@ -12,11 +12,15 @@ export default class ReceiveBless implements Activity {
     outputTextarea: HTMLTextAreaElement;
     shareLink: string = "";
     shareData: Array<string> = [];
+    shareListDiv: HTMLDivElement;
     constructor(params: any, containerDiv: HTMLDivElement, outputTextarea: HTMLTextAreaElement) {
         this.params = params;
         this.container = containerDiv;
         this.outputTextarea = outputTextarea;
-        this.outputTextarea.value = `当你看到这行文字时，说明你还没有登录京东帐号！`;
+        this.outputTextarea.value = `当你看到这行文字时，说明你还没有登录京东帐号或者账号接口没有返回数据！`;
+        this.shareListDiv = document.createElement("div");
+        this.shareListDiv.setAttribute("style", "margin:10px; border:1px solid #000;font-size: 14px;");
+        this.shareListDiv.setAttribute("class", "shareList");
     }
     get(): void {
         fetch("https://api.m.jd.com/client.action?functionId=getDefaultTpl&body={%22templateId%22:1001}&appid=content_ecology&clientVersion=1.0.0&client=wh5", { credentials: "include" })
@@ -27,6 +31,7 @@ export default class ReceiveBless implements Activity {
                     this.shareLink = `https://bunearth.m.jd.com/babelDiy/ZAEYNFNMBSWTXROQWKCR/21tFbS6Xm4tpon3oJnwzbnCJBo1Z/index.html?ad_od=1&DDid=${this.data.uuid}&ukey=${this.data.ukey}&modelid=${this.data.templateId}&go=CARD`;
                     this.list();
                     this.shareList();
+                    this.container.appendChild(this.shareListDiv);
                     this.outputTextarea.value = "";
                 }
 
@@ -42,12 +47,14 @@ export default class ReceiveBless implements Activity {
         <button class="share" style="width: 200px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">提交我的拜年链接</button>
         <input class="inviteLink" type="text" style="width:80vw;height: 25px;font-size:14px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;" placeholder="请输入需要助力的拜年链接">
         <button class="assist" style="width: 200px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">为TA助力</button>
+        <input class="inviteCnt" type="text" style="width:80vw;height: 25px;font-size:14px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;" placeholder="需要获取的拜年库数据数量【默认：50】">
+        <button class="inviteGet" style="width: 200px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">获取拜年库数据</button>
         <button class="assistAll" style="width: 200px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键为拜年库数据拜年</button>
         <p style="font-size:14px;color:red;">一键为拜年库的前50个数据拜年<br>【提交时间倒序】<br>你也可以将你的拜年链接提交上去<br>复制拜年链接后设置京东UA再打开可查看活动首页</p>
         </div>`;
         content.innerHTML = msg;
         this.container.appendChild(content);
-        const h = _$('.home'),
+        const h = _$('.inviteGet'),
             c = _$('.copy'),
             s = _$('.share'),
             assist = _$('.assist'),
@@ -65,6 +72,14 @@ export default class ReceiveBless implements Activity {
         assist!.addEventListener('click', () => {
             const link = _$('.inviteLink') as HTMLInputElement;
             this.assist(link.value);
+        })
+
+        h!.addEventListener('click', () => {
+            const cnt = _$('.inviteCnt') as HTMLInputElement;
+            if(Utils.isNumber(cnt.value)){
+                alert("该内容非数字！请检查无误后再输入！")
+            }
+            this.shareList(+cnt.value);
         })
 
         s!.addEventListener('click', () => {
@@ -114,12 +129,10 @@ export default class ReceiveBless implements Activity {
         Utils.outPutLog(this.outputTextarea, `自动拜年结束`);
     }
 
-    shareList(): void {
-        const content = document.createElement("div");
-        content.setAttribute("style", "margin:10px; border:1px solid #000;font-size: 14px;");
-        content.setAttribute("class", "shareList");
+    shareList(limit:number = 50): void {
+        this.shareData = [];
         let msg = "";
-        fetch(this.detailurl).then((res) => { return res.json() })
+        fetch(`${this.detailurl}?limit=${limit}`).then((res) => { return res.json() })
             .then((json) => {
                 if (json.success) {
                     let data = json["data"]["data"];
@@ -130,8 +143,7 @@ export default class ReceiveBless implements Activity {
                         msg += `<div style="margin:10px;border-bottom:1px solid #333"><p>id：${item["id"]}<br>DDid：${item["DDid"]}<br>ukey：${item["ukey"]}<br>提交时间：${item["create_time"]}</p>
                         <button class="help" value="${url}" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block"">手动拜年</button></div>`
                     }
-                    content.innerHTML = msg;
-                    this.container.appendChild(content);
+                    this.shareListDiv.innerHTML = msg;
                     _$(".shareList")!.addEventListener("click", (evt) => {
                         const target = evt.target as HTMLElement;
                         if (target.tagName == "BUTTON") {

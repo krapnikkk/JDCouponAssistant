@@ -71,7 +71,7 @@ export default class ReceiveCoupons implements Coupon {
                 const target = evt.target as HTMLElement;
                 if (target.getAttribute('data-item') || (target.parentNode == itemDiv && target.tagName != "BUTTON")) {
                     if (!item.flag) {
-                        itemDiv.style.border = "1px solid red";
+                        itemDiv.style.border = "3px solid red";
                     } else {
                         itemDiv.style.border = "1px solid gray";
                     }
