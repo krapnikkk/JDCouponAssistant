@@ -4,6 +4,8 @@ import Activity from "./interface/Activity";
 import Utils, { _$ } from "./utils/utils";
 import Config from "./config/config";
 
+import Goods from "./goods/goods";
+
 import BabelAwardCollection from "./coupons/newBabelAwardCollection";
 import WhiteCoupon from "./coupons/whtieCoupon";
 import Purchase from "./coupons/purchase";
@@ -22,32 +24,14 @@ import ReceiveCoupon from "./coupons/receiveCoupon";
 import GetCouponCenter from "./coupons/getCouponCenter";
 import Exchange from "./coupons/exchange";
 
-enum couponType {
-    none,
-    receiveCoupons = "receiveCoupons",
-    newBabelAwardCollection = "newBabelAwardCollection",
-    whiteCoupon = "whiteCoupon",
-    purchase = "purchase",
-    receiveDayCoupon = "receiveDayCoupon",
-    secKillCoupon = "secKillCoupon",
-    mfreecoupon = "mfreecoupon",
-    coinPurchase = "coinPurchase",
-    GcConvert = "GcConvert",
-    ReceiveCoupons = "ReceiveCoupons",
-    ReceiveCoupon = "ReceiveCoupon",
-    getCouponCenter = "getCouponCenter",
-    exchange = "exchange",
-}
+import { activityType } from "./enum/activityType";
+import { couponType } from "./enum/couponType";
+import { goodsType } from "./enum/goodsType";
 
-enum activityType {
-    none,
-    monsterNian = "monsterNian",
-    brandCitySpring = "brandCitySpring",
-    palace = "palace",
-    receiveBless = "ReceiveBless",
-}
+
 
 let coupon: Coupon,
+    goods: Goods,
     activity: Activity;
 
 const container: HTMLDivElement = document.createElement("div"),
@@ -133,7 +117,7 @@ function buildOperate() {
                 receiveCountInput.disabled = Config.timingFlag;
                 if (Config.timingFlag) {
                     receiveTimerBtn.innerHTML = "取消指定领取";
-                    Utils.outPutLog(outputTextArea, `已开启定时领取`);
+                    Utils.outPutLog(outputTextArea, `已开启定时领取！定时领取时间：${receiveTextInput.value}`);
                 } else {
                     receiveTimerBtn.innerHTML = "定时指定领取";
                     Utils.outPutLog(outputTextArea, `已关闭定时领取`);
@@ -259,10 +243,14 @@ function buildTimeoutArea() {
     container.append(timeoutDiv);
 }
 
-function getCouponType(): couponType | activityType {
-    let type: couponType | activityType = couponType.none;
+function getCouponType(): couponType | activityType | goodsType {
+    let type: couponType | activityType | goodsType = couponType.none;
     if (!window.location.host.includes("jd.com")) {
         return type;
+    }
+
+    if (Config.locationHref.includes("item.jd.com/") || Config.locationHref.includes("item.m.jd.com/product/")) {
+        type = goodsType.goods;
     }
 
     if ((window as any).__react_data__) {
@@ -305,14 +293,17 @@ function getCouponType(): couponType | activityType {
     if (Config.locationHref.includes("palace")) {
         type = activityType.palace;
     }
+
     return type;
 }
 
-function getCouponDesc(type: couponType | activityType) {
+function getCouponDesc(type: couponType | activityType | goodsType) {
     buildTitle();
     buildPromotion();
     switch (type) {
-        case couponType.none:
+        case goodsType.goods:
+            const goodsId = Config.locationHref.match(/jd.com\/(\S*).html/)![1];
+            goods = new Goods(container, outputTextArea,goodsId);
             break;
         case couponType.newBabelAwardCollection:
             const activityId = Config.locationHref.match(/active\/(\S*)\/index/)![1];
@@ -355,7 +346,7 @@ function getCouponDesc(type: couponType | activityType) {
             break;
         case couponType.exchange:
             const itemId = Utils.GetQueryString("id");
-            coupon = new Exchange({"itemId":itemId}, container, outputTextArea);
+            coupon = new Exchange({ "itemId": itemId }, container, outputTextArea);
             break;
         case activityType.monsterNian:
             activity = new MonsterNian(null, container, outputTextArea);
@@ -390,6 +381,8 @@ function getCouponDesc(type: couponType | activityType) {
         buildOperate();
         buildTimeoutArea();
         activity.get();
+    } else if (goods) {
+        goods.get();
     } else {
         Utils.loadCss("https://meyerweb.com/eric/tools/css/reset/reset200802.css");
         buildTips();
@@ -439,6 +432,7 @@ function copyRights() {
 }
 
 var _hmt: any = _hmt || [];
+
 function statistical() {
     (function () {
         var hm = document.createElement("script");
@@ -448,8 +442,8 @@ function statistical() {
     })();
 }
 
-getCouponDesc(getCouponType());
 copyRights();
+getCouponDesc(getCouponType());
 statistical();
 
 Object.assign(window, { "getLoginMsg": getLoginMsg, "krapnik": krapnik, "Utils": Utils, "Config": Config });

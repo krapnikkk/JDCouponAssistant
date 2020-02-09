@@ -119,17 +119,17 @@ export default class Utils {
         postMessage(res, '*');
     }
 
-    static outPutLog(output: HTMLTextAreaElement, log: string,timeFlag: boolean=true): void {
-        if(timeFlag){
+    static outPutLog(output: HTMLTextAreaElement, log: string, timeFlag: boolean = true): void {
+        if (timeFlag) {
             if (output.value) {
                 output.value = `${output.value}\n${new Date().toLocaleString()} ${log}`;
             } else {
                 output.value = new Date().toLocaleString() + log;
             }
-        }else{
-            output.value =`${output.value}\n${log}`;
+        } else {
+            output.value = `${output.value}\n${log}`;
         }
-        
+
     }
 
     static random(n: number, m: number): number {
@@ -153,6 +153,22 @@ export default class Utils {
         document.execCommand("Copy");
         oInput.style.display = 'none';
         alert('内容已经复制到黏贴板啦');
+    }
+
+    static loadiFrame(url: string): Promise<HTMLIFrameElement> {
+        return new Promise(resolve => {
+            var iframe: HTMLIFrameElement = document.createElement('iframe');
+            document.body.appendChild(iframe);
+            iframe.style.display = 'block';
+            iframe.width = "1";
+            iframe.height = "1";
+            iframe!.onload = () => {
+                iframe!.style.display = 'none';
+                resolve(iframe);
+                // document.body.removeChild(iframe);
+            }
+            iframe!.src = url;
+        })
     }
 
     static loadCss(url: string) {
