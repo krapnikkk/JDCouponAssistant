@@ -71,7 +71,7 @@ export default class Palace implements Activity {
         });
     }
 
-    async send(taskName: string, taskCnt: number, ) {
+    async send(taskName: string, taskCnt: number ) {
         let self = this;
         await fetch(`https://api.m.jd.com/?functionId=taskDetail&body={%22taskType%22:%22${taskName}%22}&client=megatron&clientVersion=1.0.0`, { credentials: "include" })
             .then(function (response) {
