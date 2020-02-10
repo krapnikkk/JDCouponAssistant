@@ -1,10 +1,6 @@
-import Config from "../config/config";
-
 (window as any).jsonpBind = function (res: string) {
     Utils.jsonpBind(JSON.stringify(res));
 }
-
-
 export default class Utils {
     static formateDate(date: string): string {
         let dateObj = new Date(+date),
@@ -104,15 +100,15 @@ export default class Utils {
 
     static createJsonp(url: string, bind: boolean = false) {
         var jsonpScript = document.createElement('script');
+        document.getElementsByTagName('head')[0].appendChild(jsonpScript);
         if (bind) {
             url += "jsonpBind";
-            document.getElementsByTagName('head')[0].appendChild(jsonpScript);
-            jsonpScript.setAttribute('src', url);
-        } else {
-            document.getElementsByTagName('head')[0].appendChild(jsonpScript);
-            jsonpScript.setAttribute('src', url);
         }
+        jsonpScript.setAttribute('src', url);
 
+        jsonpScript.onload = () => {
+            document.getElementsByTagName('head')[0].removeChild(jsonpScript);
+        }
     }
 
     static jsonpBind(res: string) {
@@ -165,7 +161,6 @@ export default class Utils {
             iframe!.onload = () => {
                 iframe!.style.display = 'none';
                 resolve(iframe);
-                // document.body.removeChild(iframe);
             }
             iframe!.src = url;
         })

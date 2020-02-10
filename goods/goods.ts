@@ -1,37 +1,44 @@
 import Utils from "../utils/utils";
 import Config from "../config/config";
-
+import fj from "../utils/fetch-jsonp";
 type goodsDetails = {
     skuid: string
     name: string
     src: string
     cat: string
     venderId: string
-    pType: number //1:上架 2:下架
+    stockState?: string
+    area?: string
 }
 
 export default class Goods {
     areaId: string = "19_1607_3155_0";
-    goodsIdArr: Array<string> = ["100011199522"];
+    goodsIdArr: Array<string> = [];
     goodsMsgArr: Array<goodsDetails> = [];
     container: HTMLDivElement;
     outputTextarea: HTMLTextAreaElement;
     detailURL: string = "https://item.jd.com/{skuid}.html";
-    stockURL: string = "https://c0.3.cn/stock?skuId=100005290843&area=19_1607_3155_0&venderId=1000000225&cat=670,677,688";
+    stockURL: string = "https://c0.3.cn/stock?skuId={skuId}&area=19_1607_3155_0&venderId={venderId}&cat={cat}";
     constructor(containerDiv: HTMLDivElement, outputTextarea: HTMLTextAreaElement, goodsId?: string) {
         if (goodsId) {
             this.goodsIdArr.push(goodsId);
         }
         this.container = containerDiv;
         this.outputTextarea = outputTextarea;
+        //获取默认地址
+        fj.fetchJsonp('https://cd.jd.com/usual/address').then((res) => { return res.json() }).then((json) => {console.log(json)});
     }
 
     get() {
         this.goodsMsgArr = [];
         Promise.all(this.goodsIdArr.map((item: string) => { return this.getMsg(item) })).then((data) => {
             this.goodsMsgArr = data;
-            console.log(this.goodsMsgArr);
-            this.list();
+            Promise.all(this.goodsMsgArr.map((item) => {
+                return this.getStock(item);
+            })).then((goods) => {
+                this.goodsMsgArr = goods;
+                this.list();
+            })
         })
     }
 
@@ -48,11 +55,24 @@ export default class Goods {
                             src: product.src,
                             cat: product.cat,
                             venderId: product.venderId,
-                            pType: product.pType,
                         };
-                    // document.body.removeChild(iframe);
+                    document.body.removeChild(iframe);
                     resolve(goods);
                 });
+        })
+    }
+
+    getStock(goods: goodsDetails): Promise<goodsDetails> {
+        let url = this.stockURL.replace("{skuId}", goods.skuid).replace("{venderId}", goods.venderId).replace("{cat}", goods.cat);
+        return new Promise((resolve, reject) => {
+            fj.fetchJsonp(url).then(function (response) {
+                return response.json()
+            }).then((res) => {
+                let stock = res.stock, area = stock.area;
+                goods.stockState = stock.StockStateName;
+                goods.area = `${area.provinceName}-${area.cityName}-${area.countyName}`;
+                resolve(goods);
+            })
         })
     }
 
@@ -63,20 +83,21 @@ export default class Goods {
 
     list() {
         const content = document.createElement("div");
+        content.setAttribute('style', 'display:flex;flex-direction:column;padding: 5px;margin-top: 5px;border: 1px solid #000;');
         for (let i = 0; i < this.goodsMsgArr.length; i++) {
             const item = this.goodsMsgArr[i],
                 itemDiv = document.createElement("div");
-            itemDiv.setAttribute('style', 'padding:10px 0;border:1px solid gray;border-radius: 10px;margin-top:5px;padding: 5px');
-            itemDiv.setAttribute('data-item', "coupon");
-            itemDiv.innerHTML = `<img style="user-select: none;pointer-events:none;width:120px;height:100%;padding-right:10vw;display: block;" src="${Config.JDIMGSOURCESURL}${item.src}" />
+            itemDiv.setAttribute('style', 'display:flex;flex-direction:row;border:1px solid gray;border-radius: 10px;margin-top:5px;padding: 5px');
+            itemDiv.innerHTML = `<img style="user-select: none;pointer-events:none;width:120px;height:120px;display: block;" src="${Config.JDIMGSourcesURL}${item.src}" />
             <div">
-                <h2>商品名称：${item.name}</h2>
-                <p style="user-select: none;pointer-events:none;margin-bottom:10px">状态：${item.pType == 1 ? "上架中" : "已下架"}</p>
+                <h2 width="60vw">商品名称：${item.name}</h2>
+                <p style="font-weight:700;margin-bottom:10px">状态：<span style="color:red">${item.stockState}</span>
+                <br>地区：<span style="color:red">${item.area}</span></p>
                 <button style="width: 100px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">
-                    <a href='https://so.m.jd.com/list/couponSearch.action?couponbatch=${item.skuid}' target="_blank" style="color: #fff;text-decoration: none;">可用商品</a>
+                    <a href='https://skunotify.jd.com/storenotify.html?skuId=${item.skuid}' target="_blank" style="color: #fff;text-decoration: none;">预约自动下单</a>
                 </button>
                 <button style="width: 100px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">
-                    <a href='' target="_blank" style="color: #fff;text-decoration: none;">提取链接</a>
+                    <a href='//cart.jd.com/gate.action?pid=${item.skuid}&pcount=1&ptype=1' target="_blank" style="color: #fff;text-decoration: none;">加入购物车</a>
                 </button>
             </div>`
             content.appendChild(itemDiv);
