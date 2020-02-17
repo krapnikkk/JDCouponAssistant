@@ -2,10 +2,10 @@ import Coupon from "../interface/Coupon";
 import Utils from "../utils/utils";
 type couponDetails = {
     ckey: string
-    actId:string
-    quota:string
-    batchId:string
-    discount:string
+    actId: string
+    quota: string
+    batchId: string
+    discount: string
     title: string
     flag: boolean
 }
@@ -26,7 +26,7 @@ export default class getCouponCenter implements Coupon {
 
     jsonp(response: any): void {
         const json = JSON.parse(response.data), data = json["data"];
-        Utils.outPutLog(this.outputTextarea,`领券结果:${response.data}`);
+        Utils.outPutLog(this.outputTextarea, `领券结果:${response.data}`);
     }
 
     get(): void {
@@ -42,16 +42,16 @@ export default class getCouponCenter implements Coupon {
                 if (json.success) {
                     const data = json["result"]["couponList"];
                     for (let i = 0; i < data.length; i++) {
-                            let coupon = data[i];
-                            this.couponList.push({
-                                ckey: coupon.ckey,
-                                title: coupon.title,
-                                quota: coupon.quota,
-                                discount: coupon.discount,
-                                actId: coupon.actId ,
-                                batchId: coupon["batchId"],
-                                flag: false
-                            });
+                        let coupon = data[i];
+                        this.couponList.push({
+                            ckey: coupon.ckey,
+                            title: coupon.title,
+                            quota: coupon.quota,
+                            discount: coupon.discount,
+                            actId: coupon.actId,
+                            batchId: coupon["batchId"],
+                            flag: false
+                        });
                     }
                     this.list();
                 } else {
@@ -91,16 +91,14 @@ export default class getCouponCenter implements Coupon {
     }
 
     send(): void {
-        this.outputTextarea.style.display = "block";
         for (let i = 0; i < this.couponList.length; i++) {
             let item = this.couponList[i], url = this.url.replace("{actId}", item.actId).replace("{ckey}", item.ckey).replace("{batchid}", item.batchId);
-            if(item.flag){
+            if (item.flag) {
                 Utils.createJsonp(url, true);
             }
         }
     }
     singleSend(i: number): void {
-        this.outputTextarea.style.display = "block";
         let item = this.couponList[i], url = this.url.replace("{actId}", item.actId).replace("{ckey}", item.ckey).replace("{batchid}", item.batchId);
         Utils.createJsonp(url, true);
     }

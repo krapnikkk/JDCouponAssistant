@@ -84,7 +84,7 @@ export default class Mfreecoupon implements Coupon {
 
 
     send(): void {
-        this.outputTextarea.style.display = "block";
+        
         let url = this.url.replace("{key}", this.couponParams["key"]).replace("{roleId}", this.couponParams["roleId"]);
         Utils.createJsonp(url, false);
     }

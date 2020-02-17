@@ -79,7 +79,7 @@ export default class Exchange implements Coupon {
     }
 
     send(): void {
-        this.outputTextarea.style.display = "block";
+        
         for (let i = 0; i < this.couponList.length; i++) {
             let item = this.couponList[i];
             fetch(this.url, {

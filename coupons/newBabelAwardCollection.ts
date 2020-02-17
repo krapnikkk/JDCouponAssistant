@@ -104,7 +104,7 @@ export default class NewBabelAwardCollection implements Coupon {
 
 
     send(): void {
-        this.outputTextarea.style.display = "block";
+        
         for (let i = 0; i < this.couponList.length; i++) {
             let item = this.couponList[i], url = "";
             if (item.scene == "1") {

@@ -89,7 +89,7 @@ export default class ReceiveDayCoupon implements Coupon {
 
 
     send(): void {
-        this.outputTextarea.style.display = "block";
+        
         for (let i = 0; i < this.couponList.length; i++) {
             let item = this.couponList[i], url = this.url.replace("{activityId}", item["activityId"]);
             if (item.flag) {
@@ -104,7 +104,7 @@ export default class ReceiveDayCoupon implements Coupon {
     }
 
     singleSend(index: number): void {
-        this.outputTextarea.style.display = "block";
+        
         let item = this.couponList[index],
             url = this.url.replace("{activityId}", item["activityId"]);
         fetch(url, { credentials: "include" })
