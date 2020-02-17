@@ -11,14 +11,20 @@ type goodsDetails = {
     area?: string
 }
 
+type addressDetails = {
+    id: string
+    dec: string
+}
+
 export default class Goods {
-    areaId: string = "19_1607_3155_0";
+    areaId: string = "1_72_0_0";//北京 朝阳区
+    areaIdArr: Array<addressDetails> = [{ id: "1_72_0_0", dec: "北京 朝阳区" }];
     goodsIdArr: Array<string> = [];
     goodsMsgArr: Array<goodsDetails> = [];
     container: HTMLDivElement;
     outputTextarea: HTMLTextAreaElement;
     detailURL: string = "https://item.jd.com/{skuid}.html";
-    stockURL: string = "https://c0.3.cn/stock?skuId={skuId}&area=19_1607_3155_0&venderId={venderId}&cat={cat}";
+    stockURL: string = "https://c0.3.cn/stock?skuId={skuId}&area={area}&venderId={venderId}&cat={cat}";
     constructor(containerDiv: HTMLDivElement, outputTextarea: HTMLTextAreaElement, goodsId?: string) {
         if (goodsId) {
             this.goodsIdArr.push(goodsId);
@@ -26,7 +32,25 @@ export default class Goods {
         this.container = containerDiv;
         this.outputTextarea = outputTextarea;
         //获取默认地址
-        fj.fetchJsonp('https://cd.jd.com/usual/address').then((res) => { return res.json() }).then((json) => {console.log(json)});
+        fj.fetchJsonp('https://cd.jd.com/usual/address').then((res) => { return res.json() }).then((json) => {
+            if (Object.keys(json).length !== 0) {
+                this.areaIdArr = [];
+                Object.keys(json).map((key, idx) => {
+                    let item = json[key];
+                    let id = `${item.provinceId}_${item.cityId}_${item.countyId ? item.countyId : 0}_${item.townId ? item.townId : 0}`,
+                        dec = item.areaName;
+                    if (idx == 0) {
+                        this.areaId = id;
+                    }
+                    this.areaIdArr.push({
+                        id: id,
+                        dec: dec
+                    })
+                })
+                console.log(this.areaIdArr);
+            }
+
+        });
     }
 
     get() {
@@ -63,7 +87,7 @@ export default class Goods {
     }
 
     getStock(goods: goodsDetails): Promise<goodsDetails> {
-        let url = this.stockURL.replace("{skuId}", goods.skuid).replace("{venderId}", goods.venderId).replace("{cat}", goods.cat);
+        let url = this.stockURL.replace("{skuId}", goods.skuid).replace("{venderId}", goods.venderId).replace("{cat}", goods.cat).replace("{area}", this.areaId);
         return new Promise((resolve, reject) => {
             fj.fetchJsonp(url).then(function (response) {
                 return response.json()
@@ -99,6 +123,10 @@ export default class Goods {
                 <button style="width: 100px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">
                     <a href='//cart.jd.com/gate.action?pid=${item.skuid}&pcount=1&ptype=1' target="_blank" style="color: #fff;text-decoration: none;">加入购物车</a>
                 </button>
+                <br>
+                <button style="width: 100px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">
+                    <a href='https://p.m.jd.com/norder/order.action?wareId=${item.skuid}&wareNum=1&enterOrder=true' target="_blank" style="color: #fff;text-decoration: none;">订单结算</a>
+                </button>
             </div>`
             content.appendChild(itemDiv);
         }
@@ -106,8 +134,6 @@ export default class Goods {
     }
 
     buildOperate() {
-        //area
-        //timer
-        //
+
     }
 }
