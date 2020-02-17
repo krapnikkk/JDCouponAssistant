@@ -1,10 +1,10 @@
 import Coupon from "./interface/Coupon";
 import Activity from "./interface/Activity";
+import Game from "./interface/Game";
+import Goods from "./goods/goods";
 
 import Utils, { _$ } from "./utils/utils";
 import Config from "./config/config";
-
-import Goods from "./goods/goods";
 
 import BabelAwardCollection from "./coupons/newBabelAwardCollection";
 import WhiteCoupon from "./coupons/whtieCoupon";
@@ -15,23 +15,26 @@ import Mfreecoupon from "./coupons/mfreecoupon";
 import CoinPurchase from "./coupons/coinPurchase";
 import GcConvert from "./coupons/gcConvert";
 import ReceiveCoupons from "./coupons/receiveCoupons";
+import ReceiveCoupon from "./coupons/receiveCoupon";
+import GetCouponCenter from "./coupons/getCouponCenter";
+import Exchange from "./coupons/exchange";
 
 import MonsterNian from "./activitys/MonsterNian";
 import BrandCitySpring from "./activitys/brandCitySpring";
 import Palace from "./activitys/palace";
 import ReceiveBless from "./activitys/receiveBless";
-import ReceiveCoupon from "./coupons/receiveCoupon";
-import GetCouponCenter from "./coupons/getCouponCenter";
-import Exchange from "./coupons/exchange";
+
+import Cloudpig from "./game/cloudpig";
 
 import { activityType } from "./enum/activityType";
 import { couponType } from "./enum/couponType";
 import { goodsType } from "./enum/goodsType";
-
-
+import { gameType } from "./enum/gameType";
+import CookieManager from "./cookie/CookieManager";
 
 let coupon: Coupon,
     goods: Goods,
+    game: Game,
     activity: Activity;
 
 const container: HTMLDivElement = document.createElement("div"),
@@ -47,9 +50,8 @@ let getLoginMsg = function (res: any) {
     if (res.base.nickname) {
         loginMsgDiv.innerHTML = "当前登录京东帐号：" + res.base.nickname;
     }
-},
-    krapnik = function (res: any) {
-    };
+}, krapnik = function (res: any) {
+};
 
 
 function buildOperate() {
@@ -224,8 +226,14 @@ function buildSensorArea() {
     let sensorArea: HTMLDivElement = document.createElement("div");
     sensorArea.innerHTML = `<div style="border: 1px solid #000;margin:10px;font-weight:bold"><h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>高级操作区</h3><p>功能扩展中，后期补教程</p>
     <button style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block" onclick="Utils.copyText(document.cookie)">复制Cookie</button>
-    <button style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">配置多帐号</button></div>`;
+    <button  id="import" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">配置多帐号</button></div>`;
     container.append(sensorArea);
+    _$("#import").addEventListener('click', () => {
+        Utils.importFile("text/plain").then((ck)=>{
+            CookieManager.parseCK(<string>ck);
+            CookieManager.outPutLog(outputTextArea);
+        });
+    })
 }
 
 function buildTimeoutArea() {
@@ -243,8 +251,8 @@ function buildTimeoutArea() {
     container.append(timeoutDiv);
 }
 
-function getCouponType(): couponType | activityType | goodsType {
-    let type: couponType | activityType | goodsType = couponType.none;
+function getEntryType(): couponType | activityType | goodsType | gameType {
+    let type: couponType | activityType | goodsType | gameType = couponType.none;
     if (!window.location.host.includes("jd.com")) {
         return type;
     }
@@ -294,16 +302,24 @@ function getCouponType(): couponType | activityType | goodsType {
         type = activityType.palace;
     }
 
+    if (Config.locationHref.includes("uc-fe-wxgrowing")) {
+        if (Config.locationHref.includes("moneytree")) {
+            // type = gameType.moneytree;
+        } else if (Config.locationHref.includes("cloudpig")) {
+            type = gameType.cloudpig;
+        }
+    }
+
     return type;
 }
 
-function getCouponDesc(type: couponType | activityType | goodsType) {
+function getEntryDesc(type: couponType | activityType | goodsType | gameType) {
     buildTitle();
     buildPromotion();
     switch (type) {
         case goodsType.goods:
             const goodsId = Config.locationHref.match(/jd.com\/(\S*).html/)![1];
-            goods = new Goods(container, outputTextArea,goodsId);
+            goods = new Goods(container, outputTextArea, goodsId);
             break;
         case couponType.newBabelAwardCollection:
             const activityId = Config.locationHref.match(/active\/(\S*)\/index/)![1];
@@ -362,6 +378,9 @@ function getCouponDesc(type: couponType | activityType | goodsType) {
             activity = new ReceiveBless(null, container, outputTextArea);
             Config.UAFlag = true;
             break;
+        case gameType.cloudpig:
+            game = new Cloudpig(null, container, outputTextArea);
+            break;
         default:
             break;
     }
@@ -372,17 +391,22 @@ function getCouponDesc(type: couponType | activityType | goodsType) {
     buildActivity();
     if (coupon) {
         Config.intervalId = window.setInterval(getTime, Config.intervalSpan);
-        // buildSensorArea();
+        buildSensorArea();
         buildOperate();
         coupon.get();
     } else if (activity) {
-        // buildSensorArea();
+        buildSensorArea();
         // buildActivity();
         buildOperate();
         buildTimeoutArea();
         activity.get();
     } else if (goods) {
         goods.get();
+    } else if (game) {
+        buildSensorArea();
+        buildOperate();
+        buildTimeoutArea();
+        game.get();
     } else {
         Utils.loadCss("https://meyerweb.com/eric/tools/css/reset/reset200802.css");
         buildTips();
@@ -443,7 +467,7 @@ function statistical() {
 }
 
 copyRights();
-getCouponDesc(getCouponType());
+getEntryDesc(getEntryType());
 statistical();
 
 Object.assign(window, { "getLoginMsg": getLoginMsg, "krapnik": krapnik, "Utils": Utils, "Config": Config });
