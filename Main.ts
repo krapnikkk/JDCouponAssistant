@@ -31,6 +31,7 @@ import { couponType } from "./enum/couponType";
 import { goodsType } from "./enum/goodsType";
 import { gameType } from "./enum/gameType";
 import CookieManager from "./cookie/CookieManager";
+import CookieHandler from "./cookie/CookieHandler";
 
 let coupon: Coupon,
     goods: Goods,
@@ -170,6 +171,7 @@ function buildTitle() {
     const html: HTMLElement = _$('html') as HTMLElement;
     html.style.fontSize = "18px";
     document.body.innerHTML = "";
+    document.body.style.overflow = "scroll";
     document.body.style.backgroundColor = "#ffffff";
     document.body.style.textAlign = "center";
     document.body.style.maxWidth = "100vw";
@@ -229,9 +231,29 @@ function buildSensorArea() {
     <button  id="import" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">配置多帐号</button></div>`;
     container.append(sensorArea);
     _$("#import").addEventListener('click', () => {
-        Utils.importFile("text/plain").then((ck)=>{
+        Utils.importFile("text/plain").then(async (ck) => {
+            Config.multiFlag = false;
+            Config.importFlag = false;
             CookieManager.parseCK(<string>ck);
-            CookieManager.outPutLog(outputTextArea);
+            if (Config.importFlag) {
+                CookieManager.outPutLog(outputTextArea);
+                Promise.all(
+                    CookieManager.cookieArr.map((item) => {
+                        return CookieManager.checkLogin(outputTextArea, item);
+                    })
+                ).then((data) => {
+                    if (data.every((res) => {
+                        return res;
+                    })) {
+                        Utils.outPutLog(outputTextArea,"所有ck校验成功，开启多账号模式成功!");
+                        Config.multiFlag = true;
+                    }else{
+                        Utils.outPutLog(outputTextArea,"部分ck校验失败,开启多账号模式失败!请检查ck有效性!");
+                    }
+
+                })
+            }
+
         });
     })
 }

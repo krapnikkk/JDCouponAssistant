@@ -1,10 +1,12 @@
 import Utils from "../utils/utils";
 import Config from "../config/config";
+import fj from "../utils/fetch-jsonp";
+import CookieHandler from "./CookieHandler";
 
 type CookieType = {
     ck: string
     mark: string
-    flag?:boolean
+    flag?: boolean
 }
 export default class CookieManager {
     constructor(container: HTMLDivElement) {
@@ -16,8 +18,8 @@ export default class CookieManager {
             this.cookieArr = this.splitCookies(str);
             if (this.cookieArr.length == 0) {
                 alert("导入的文本文档格式内容有误或者读取识别！");
-            }else{
-                Config.multiFlag = true;
+            } else {
+                Config.importFlag = true;
             }
         } catch (err) {
             console.log(err);
@@ -41,11 +43,30 @@ export default class CookieManager {
     static outPutLog(output: HTMLTextAreaElement) {
         if (this.cookieArr.length > 0) {
             let str = "";
-             this.cookieArr.map((item) => {
-                str+=`\n【${item["mark"]}】导入成功!`
+            this.cookieArr.map((item) => {
+                str += `\n【${item["mark"]}】导入成功!`
             })
-            Utils.outPutLog(output,str);
+            Utils.outPutLog(output, str);
         }
+    }
+
+    static checkLogin(output: HTMLTextAreaElement, ckObj: CookieType): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            setTimeout(async () => {
+                CookieHandler.coverCookie(ckObj);
+                await fj.fetchJsonp(Config.JDUserInfoURL).then(function (response) {
+                    return response.json()
+                }).then((res) => {
+                    if (res.base.nickname) {
+                        Utils.outPutLog(output, `【${ckObj.mark}】:京东账号->${res.base.nickname}`);
+                        resolve(true);
+                    } else {
+                        Utils.outPutLog(output, `【${ckObj.mark}】:该ck校验失败，请检查有效性!`);
+                        resolve(false);
+                    }
+                })
+            }, 1000)
+        })
     }
 
 }

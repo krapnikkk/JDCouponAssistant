@@ -47,7 +47,6 @@ export default class Goods {
                         dec: dec
                     })
                 })
-                console.log(this.areaIdArr);
             }
 
         });

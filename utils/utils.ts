@@ -121,7 +121,7 @@ export default class Utils {
         }
         if (timeFlag) {
             if (output.value) {
-                output.value = `${output.value}\n${new Date().toLocaleString()} ${log}`;
+                output.value = `${output.value}\n${new Date().toLocaleString()}\n${log}`;
             } else {
                 output.value = new Date().toLocaleString() + log;
             }
@@ -156,13 +156,10 @@ export default class Utils {
 
     static importFile(ext: string): Promise<string | ArrayBuffer | null> {
         return new Promise((resolve, reject) => {
-            let fInput: HTMLInputElement = <HTMLInputElement>this.querySelector('.fInput');
-            if (!fInput) {
-                fInput = document.createElement('input');
-                fInput.className = 'fInput';
-                fInput.type = "file";
-                document.body.appendChild(fInput);
-            }
+            let fInput: HTMLInputElement = document.createElement('input');
+            fInput.className = 'fInput';
+            fInput.type = "file";
+            document.body.appendChild(fInput);
             fInput.style.display = 'block';
             fInput.onchange = function (e: any) {
                 fInput.style.display = "none";
@@ -175,14 +172,17 @@ export default class Utils {
                 }
                 reader.onabort = function () {
                     //读取中断
+                    document.body.removeChild(fInput);
                 };
                 reader.onerror = function () {
                     //读取发生错误
+                    document.body.removeChild(fInput);
                 };
                 reader.onload = function () {
                     if (reader.readyState == 2) {
                         const result = reader.result;
                         resolve(result);
+                        document.body.removeChild(fInput);
                     }
                 }
             }

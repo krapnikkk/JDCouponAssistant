@@ -45,11 +45,13 @@ export default class Cloudpig implements Game {
         const content = document.createElement("div");
         let msg = `
         <div style="margin:10px;">
+        <button class="pigPetLogin" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">查看猪猪详情</button>
         <button class="pigPetOpenBox" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键开箱子</button>
         </div>`;
         content.innerHTML = msg;
         this.container.appendChild(content);
-        const o = _$('.pigPetOpenBox');
+        const o = _$('.pigPetOpenBox'),
+            l = _$('.pigPetLogin');
 
 
         o!.addEventListener('click', async () => {
@@ -59,22 +61,44 @@ export default class Cloudpig implements Game {
                 CookieManager.cookieArr.map((item) => {
                     item["flag"] = true;
                 })
-                do {
-                    await this.sendMulti("pigPetOpenBox", this.openBoxFlag);
+            }
+            do {
+                if (Config.multiFlag) {
+                    await this.openBoxMulti("pigPetOpenBox");
+                    if (CookieManager.cookieArr.every((i) => {
+                        return !i["flag"];
+                    })) {
+                        this.openBoxFlag = false;
+                        Utils.outPutLog(this.outputTextarea, `所有账号今天已经木有开盒子机会了~`);
+                    }
+                } else {
+                    await this.openBox("pigPetOpenBox");
+                }
+            }
+            while (this.openBoxFlag);
+        });
+
+        l!.addEventListener('click', async () => {
+            Utils.outPutLog(this.outputTextarea, `开始查看猪猪详情`);
+            do {
+                if (Config.multiFlag) {
+                    await this.openBoxMulti("pigPetOpenBox");
                     if (CookieManager.cookieArr.every((i) => {
                         return !i["flag"];
                     })) {
                         this.openBoxFlag = false;
                     }
+                } else {
+                    await this.openBox("pigPetOpenBox");
                 }
-                while (this.openBoxFlag);
-            } else {
-                await this.send("pigPetOpenBox", this.openBoxFlag);
+
             }
+            while (this.openBoxFlag);
         });
+
     }
 
-    async sendMulti(url: string, flag: boolean) {
+    async openBoxMulti(url: string) {
         await Promise.all(
             CookieManager.cookieArr.map(async (item) => {
                 await new Promise(resolve => {
@@ -105,7 +129,7 @@ export default class Cloudpig implements Game {
                                         Utils.outPutLog(this.outputTextarea, `【${item["mark"]}】:今天已经木有开盒子机会了~`);
                                     }
                                 } else {
-                                    Utils.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+                                    Utils.outPutLog(this.outputTextarea, `【${item["mark"]}】:${res.resultMsg}`);
                                 }
                                 resolve();
                             })
@@ -116,38 +140,35 @@ export default class Cloudpig implements Game {
         );
     }
 
-    async send(url: string, flag: boolean) {
-        do {
-            await new Promise(resolve => {
-                setTimeout(async () => {
-                    await fetch(`${this.rootURI}${url}`, {
-                        method: "POST",
-                        mode: "cors",
-                        credentials: "include",
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        },
-                        body: "reqData=" + JSON.stringify(this.baseReqData)
-                    }).then(function (response) {
-                        return response.json()
-                    }).then((res) => {
-                        if (res.resultCode == 0) {
-                            if (res.resultData.resultCode == 0) {
-                                let result = res.resultData.resultData;
-                                Utils.outPutLog(this.outputTextarea, `${result?.award?.name ? "获得:" + result?.award?.name : "这是个空箱子"}`);
-                            } else {
-                                flag = !flag;
-                                Utils.outPutLog(this.outputTextarea, `今天已经木有开盒子机会了~`);
-                            }
+    async openBox(url: string) {
+        await new Promise(resolve => {
+            setTimeout(async () => {
+                await fetch(`${this.rootURI}${url}`, {
+                    method: "POST",
+                    mode: "cors",
+                    credentials: "include",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: "reqData=" + JSON.stringify(this.baseReqData)
+                }).then(function (response) {
+                    return response.json()
+                }).then((res) => {
+                    if (res.resultCode == 0) {
+                        if (res.resultData.resultCode == 0) {
+                            let result = res.resultData.resultData;
+                            Utils.outPutLog(this.outputTextarea, `${result?.award?.name ? "获得:" + result?.award?.name : "这是个空箱子"}`);
                         } else {
-                            Utils.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+                            this.openBoxFlag = !this.openBoxFlag;
+                            Utils.outPutLog(this.outputTextarea, `今天已经木有开盒子机会了~`);
                         }
-                        resolve();
-                    })
-                }, (Config.timeoutSpan + Utils.random(300, 500)));
-            })
-        }
-        while (flag);
+                    } else {
+                        Utils.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+                    }
+                    resolve();
+                })
+            }, (Config.timeoutSpan + Utils.random(300, 500)));
+        })
     }
 
 

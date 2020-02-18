@@ -98,6 +98,7 @@ export default class getCouponCenter implements Coupon {
             }
         }
     }
+    
     singleSend(i: number): void {
         let item = this.couponList[i], url = this.url.replace("{actId}", item.actId).replace("{ckey}", item.ckey).replace("{batchid}", item.batchId);
         Utils.createJsonp(url, true);

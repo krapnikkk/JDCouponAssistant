@@ -1,6 +1,6 @@
 export default class Config {
     static title: string = "京东领券助手";
-    static version: string = "v0.3.1";
+    static version: string = "v0.4.1";
     static author: string = "krapnik";
 
     static timingFlag: boolean = false;
@@ -21,4 +21,5 @@ export default class Config {
     static JDIMGSourcesURL: string = "https://img13.360buyimg.com/n1/s450x450_";
 
     static multiFlag: boolean = false;
+    static importFlag: boolean = false;
 }
