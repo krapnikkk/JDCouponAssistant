@@ -245,10 +245,10 @@ function buildSensorArea() {
                     if (data.every((res) => {
                         return res;
                     })) {
-                        Utils.outPutLog(outputTextArea,"所有ck校验成功，开启多账号模式成功!");
+                        Utils.outPutLog(outputTextArea, "所有ck校验成功，开启多账号模式成功!");
                         Config.multiFlag = true;
-                    }else{
-                        Utils.outPutLog(outputTextArea,"部分ck校验失败,开启多账号模式失败!请检查ck有效性!");
+                    } else {
+                        Utils.outPutLog(outputTextArea, "部分ck校验失败,开启多账号模式失败!请检查ck有效性!");
                     }
 
                 })

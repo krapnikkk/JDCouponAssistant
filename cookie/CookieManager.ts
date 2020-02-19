@@ -7,6 +7,7 @@ type CookieType = {
     ck: string
     mark: string
     flag?: boolean
+    index: number
 }
 export default class CookieManager {
     constructor(container: HTMLDivElement) {
@@ -30,11 +31,12 @@ export default class CookieManager {
     static splitCookies(ck: string): Array<CookieType> {
         const str = ck.split('\n');
         let o: Array<CookieType> = [];
-        str.map((item) => {
+        str.map((item, index) => {
             let result = item.split('----');
             o.push({
                 mark: result[0],
-                ck: result[1]
+                ck: result[1],
+                index: index
             });
         })
         return o;
@@ -65,7 +67,7 @@ export default class CookieManager {
                         resolve(false);
                     }
                 })
-            }, 1000)
+            }, 500 * ckObj.index)
         })
     }
 

@@ -146,7 +146,6 @@ export default class Utils {
             oInput.className = 'oInput';
             document.body.appendChild(oInput);
         }
-        oInput.style.display = 'block';
         oInput.value = text;
         oInput.select();
         document.execCommand("Copy");
@@ -160,9 +159,8 @@ export default class Utils {
             fInput.className = 'fInput';
             fInput.type = "file";
             document.body.appendChild(fInput);
-            fInput.style.display = 'block';
             fInput.onchange = function (e: any) {
-                fInput.style.display = "none";
+
                 const file = e.target.files[0], reader = new FileReader();
                 if (file && file.type.includes(ext)) {
                     reader.readAsText(file)
@@ -187,23 +185,21 @@ export default class Utils {
                 }
             }
             fInput.click();
-        }
-        )
-
+            fInput.style.display = "none";
+        })
     }
 
     static loadiFrame(url: string): Promise<HTMLIFrameElement> {
         return new Promise(resolve => {
             var iframe: HTMLIFrameElement = document.createElement('iframe');
             document.body.appendChild(iframe);
-            iframe.style.display = 'block';
             iframe.width = "1";
             iframe.height = "1";
             iframe!.onload = () => {
-                iframe!.style.display = 'none';
                 resolve(iframe);
             }
             iframe!.src = url;
+            iframe!.style.display = 'none';
         })
     }
 
