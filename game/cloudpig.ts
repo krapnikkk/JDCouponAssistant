@@ -1,14 +1,9 @@
 import Game from "../interface/Game";
 import Utils, { _$ } from "../utils/utils";
 import Config from "../config/config";
+import { CookieType, CookieHandler } from "../cookie/CookieHandler";
 import CookieManager from "../cookie/CookieManager";
-import CookieHandler from "../cookie/CookieHandler";
-type CookieType = {
-    ck: string
-    mark: string
-    flag?: boolean
-    index: number
-}
+
 
 export default class Cloudpig implements Game {
     rootURI: string = "https://ms.jr.jd.com/gw/generic/uc/h5/m/";
@@ -84,7 +79,6 @@ export default class Cloudpig implements Game {
             } else {
                 this.addFood();
             }
-
         });
         o!.addEventListener('click', async () => {
             this.openBoxFlag = true;
@@ -134,7 +128,13 @@ export default class Cloudpig implements Game {
             window.clearInterval(this.autoAddFoodTimer);
         })
         lotteryPlay.addEventListener('click', () => {
-            this.lotteryPlay();
+            Utils.outPutLog(this.outputTextarea, `开始大转盘抽奖`);
+            if (Config.multiFlag) {
+                this.addFoodMulti();
+            } else {
+                this.lotteryPlay();
+            }
+
         })
     }
 
@@ -153,16 +153,16 @@ export default class Cloudpig implements Game {
             if (res.resultCode == 0) {
                 let data = res.resultData;
                 if (data.resultCode == 0) {
-                    let award = data.resultData.award,
-                        name = award.name,
-                        count = award.count;
+                    let award = data.resultData.award;
                     if (award) {
+                        let name = award.name,
+                            count = award.count
                         if (Config.multiFlag && ckObj) {
                             Utils.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 获得【${name} * ${count}】！`);
                         } else {
                             Utils.outPutLog(this.outputTextarea, `获得【${name} * ${count}】！`);
                         }
-                    }else{
+                    } else {
                         if (Config.multiFlag && ckObj) {
                             Utils.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 什么也木有抽到~`);
                         } else {
@@ -174,6 +174,15 @@ export default class Cloudpig implements Game {
                 Utils.outPutLog(this.outputTextarea, `${res.resultMsg}`);
             }
         })
+    }
+
+    lotteryPlayMulti() {
+        CookieManager.cookieArr.map((item: CookieType) => {
+            setTimeout(() => {
+                CookieHandler.coverCookie(item);
+                this.lotteryPlay(item);
+            }, item.index * 750)
+        });
     }
 
     async openBoxMulti(url: string) {

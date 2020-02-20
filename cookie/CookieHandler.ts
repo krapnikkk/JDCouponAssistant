@@ -1,8 +1,10 @@
-type CookieType = {
+export interface CookieType {
     ck: string
     mark: string
+    flag?: boolean
+    index: number
 }
-export default class CookieHandler {
+export class CookieHandler {
     static getCookie(): string {
         return document.cookie;
     }

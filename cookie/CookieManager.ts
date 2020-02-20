@@ -1,14 +1,9 @@
 import Utils from "../utils/utils";
 import Config from "../config/config";
 import fj from "../utils/fetch-jsonp";
-import CookieHandler from "./CookieHandler";
+import  { CookieHandler,CookieType } from "./CookieHandler";
 
-type CookieType = {
-    ck: string
-    mark: string
-    flag?: boolean
-    index: number
-}
+
 export default class CookieManager {
     constructor(container: HTMLDivElement) {
 

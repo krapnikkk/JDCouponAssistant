@@ -31,7 +31,7 @@ import { couponType } from "./enum/couponType";
 import { goodsType } from "./enum/goodsType";
 import { gameType } from "./enum/gameType";
 import CookieManager from "./cookie/CookieManager";
-import CookieHandler from "./cookie/CookieHandler";
+import  { CookieHandler } from "./cookie/CookieHandler";
 
 let coupon: Coupon,
     goods: Goods,
@@ -226,7 +226,7 @@ function buildUAarea() {
 
 function buildSensorArea() {
     let sensorArea: HTMLDivElement = document.createElement("div");
-    sensorArea.innerHTML = `<div style="border: 1px solid #000;margin:10px;font-weight:bold"><h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>高级操作区</h3><p>功能扩展中，后期补教程</p>
+    sensorArea.innerHTML = `<div style="border: 1px solid #000;margin:10px;font-weight:bold"><h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>高级操作区</h3><p>ck格式：备注----ck</p>
     <button style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block" onclick="Utils.copyText(document.cookie)">复制Cookie</button>
     <button  id="import" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">配置多帐号</button></div>`;
     container.append(sensorArea);
@@ -248,6 +248,7 @@ function buildSensorArea() {
                         Utils.outPutLog(outputTextArea, "所有ck校验成功，开启多账号模式成功!");
                         Config.multiFlag = true;
                     } else {
+                        CookieHandler.clearAllCookie();
                         Utils.outPutLog(outputTextArea, "部分ck校验失败,开启多账号模式失败!请检查ck有效性!");
                     }
 
@@ -413,11 +414,11 @@ function getEntryDesc(type: couponType | activityType | goodsType | gameType) {
     buildActivity();
     if (coupon) {
         Config.intervalId = window.setInterval(getTime, Config.intervalSpan);
-        buildSensorArea();
+        // buildSensorArea();
         buildOperate();
         coupon.get();
     } else if (activity) {
-        buildSensorArea();
+        // buildSensorArea();
         // buildActivity();
         buildOperate();
         buildTimeoutArea();
