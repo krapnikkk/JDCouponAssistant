@@ -31,7 +31,7 @@ import { couponType } from "./enum/couponType";
 import { goodsType } from "./enum/goodsType";
 import { gameType } from "./enum/gameType";
 import CookieManager from "./cookie/CookieManager";
-import  { CookieHandler } from "./cookie/CookieHandler";
+import { CookieHandler } from "./cookie/CookieHandler";
 
 let coupon: Coupon,
     goods: Goods,
@@ -84,28 +84,25 @@ function buildOperate() {
             window.clearInterval(Config.intervalId);
             Config.intervalId = window.setInterval(getTime, Config.intervalSpan);
         });
+        receiveTipsDiv.innerHTML = `<h3>定时时间使用年月日+24小时制</h3><p style="color:red">零点领券设置参考<br>刷新频率:500 | 定时时间：2020-01-01 23:59:59:490<br>tips:部分券其实是提前发放的</p>`;
+        receiveTextInput.type = "text";
+        receiveTextInput.placeholder = "定时领券时间【格式:2020-01-01 09:59:59:950】";
+        receiveTextInput.setAttribute("style", "width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px;");
+        receiveCountInput.type = "text";
+        receiveCountInput.placeholder = "领券提交次数【默认：1次】";
+        receiveCountInput.setAttribute("style", "width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px;");
         spanTextInput.type = "text";
         spanTextInput.placeholder = "请输入重复领券的提交频率【默认：500毫秒】";
         spanTextInput.setAttribute("style", "width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;");
-        spanResetBtn.innerHTML = "重置提交频率";
-        spanResetBtn.setAttribute("style", "width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;");
-        spanResetBtn.addEventListener("click", () => {
+        receiveTimerBtn.innerHTML = "定时指定领取";
+        receiveTimerBtn.addEventListener("click", () => {
             const span = Math.trunc(+spanTextInput.value);
             if (!span) {
                 alert("请检查输入的提交频率是否有误！(只能为大于0的数字)");
                 return false;
             }
             Config.postSpan = span;
-        });
-        receiveTipsDiv.innerHTML = `<h3>定时时间使用年月日+24小时制</h3><p style="color:red">零点领券设置参考<br>刷新频率:500 | 定时时间：2020-01-01 23:59:59:490<br>tips:部分券其实是提前发放的</p>`;
-        receiveTextInput.type = "text";
-        receiveTextInput.placeholder = "定时领券时间【格式:2020-01-01 09:59:59:950】";
-        receiveTextInput.setAttribute("style", "width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px;");
-        receiveCountInput.type = "text";
-        receiveCountInput.placeholder = "领券提交次数【默认为1】";
-        receiveCountInput.setAttribute("style", "width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px;");
-        receiveTimerBtn.innerHTML = "定时指定领取";
-        receiveTimerBtn.addEventListener("click", () => {
+
             Config.postCount = parseInt(receiveCountInput.value) > 0 ? parseInt(receiveCountInput.value) : 1;
             const time = Utils.formateTime(receiveTextInput.value);
             // console.log(time);
@@ -119,7 +116,7 @@ function buildOperate() {
                 receiveTextInput.disabled = Config.timingFlag;
                 receiveCountInput.disabled = Config.timingFlag;
                 if (Config.timingFlag) {
-                    receiveTimerBtn.innerHTML = "取消指定领取";
+                    receiveTimerBtn.innerHTML = "取消定时领取";
                     Utils.outPutLog(outputTextArea, `已开启定时领取！定时领取时间：${receiveTextInput.value}`);
                 } else {
                     receiveTimerBtn.innerHTML = "定时指定领取";
@@ -148,6 +145,7 @@ function buildOperate() {
         receiveDiv.append(receiveTipsDiv);
         receiveDiv.append(receiveTextInput);
         receiveDiv.append(receiveCountInput);
+        receiveDiv.append(spanTextInput);
         receiveDiv.append(receiveAreaDiv);
         receiveAreaDiv.append(receiveAllBtn);
         receiveAreaDiv.append(receiveTimerBtn);
