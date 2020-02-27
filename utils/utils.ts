@@ -135,6 +135,10 @@ export default class Utils {
         return Math.floor(Math.random() * (m - n + 1) + n);
     }
 
+    static getTimestamp():number{
+        return new Date().getTime();
+    }
+
     static copyText(text: string) {
         if (text === "") {
             alert("好像没有需要复制的内容哦！");
