@@ -7,7 +7,7 @@ import CookieManager from "../cookie/CookieManager";
 
 export default class Cloudpig implements Game {
     rootURI: string = "https://ms.jr.jd.com/gw/generic/uc/h5/m/";
-    baseReqData: Object = { "source": 0, "skuId": "{skuId}", "channelLV": "yqs", "riskDeviceParam": "{}" };
+    baseReqData: Object = { "source": 0, "channelLV": "yqs", "riskDeviceParam": "{}" };
     // baseReqData: Object = { "source": 0, "channelLV": "yqs", "riskDeviceParam": "{\"fp\":\"\",\"eid\":\"\",\"sdkToken\":\"\",\"sid\":\"\"}" };
     // {"source":0,"skuId":"1001003004","channelLV":"yqs","riskDeviceParam":"{\"eid\":\"\",\"fp\":\"\",\"token\":\"\"}"}
     detailurl: string = "https://api.m.jd.com/client.action?functionId=bombnian_getTaskDetail";
@@ -37,6 +37,7 @@ export default class Cloudpig implements Game {
         <div style="margin:10px;">
         <button class="Login" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">查看猪猪详情</button>
         <button class="Achievements" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">可提现红包</button>
+        <button class="SignOne" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键每日签到</button>
         <button class="OpenBox" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键开箱子</button>
         <p>喂养食物:<select class="food" name="food" style="border: 1px solid #333;padding: 2px;">
             <option value ="1001003003">普通猪粮</option>
@@ -68,6 +69,7 @@ export default class Cloudpig implements Game {
             autoAddFood = _$('.AutoAddFood'),
             cancelAutoAddFood = _$('.cancelAutoAddFood'),
             a = _$('.AddFood'),
+            signOne = _$('.SignOne'),
             l = _$('.Login');
 
         foodSelect.onchange = (event) => {
@@ -76,6 +78,15 @@ export default class Cloudpig implements Game {
         foodSpanSelect.onchange = (event) => {
             this.foodSpan = +foodSpanSelect.value;
         }
+
+        signOne.addEventListener("click", () => {
+            Utils.outPutLog(this.outputTextarea, `开始每日签到`);
+            if (Config.multiFlag) {
+                this.signOneMulti();
+            } else {
+                this.signOne();
+            }
+        })
 
         lotteryIndex.addEventListener("click", () => {
             Utils.outPutLog(this.outputTextarea, `开始查看当天大转盘记录`);
@@ -292,30 +303,30 @@ export default class Cloudpig implements Game {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             },
-            body: "reqData=" + JSON.stringify(this.baseReqData).replace("{skuId}", this.foodskuId)
+            body: "reqData=" + JSON.stringify(Object.assign(this.baseReqData, { "skuId": this.foodskuId }))
         }).then(function (response) {
-            return response.json()
-        }).then((res) => {
-            if (res.resultCode == 0) {
-                let data = res.resultData;
-                if (data.resultCode == 0) {
-                    if (Config.multiFlag && ckObj) {
-                        Utils.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 喂养成功！`);
-                    } else {
-                        Utils.outPutLog(this.outputTextarea, `喂养成功！`);
+                return response.json()
+            }).then((res) => {
+                if (res.resultCode == 0) {
+                    let data = res.resultData;
+                    if (data.resultCode == 0) {
+                        if (Config.multiFlag && ckObj) {
+                            Utils.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 喂养成功！`);
+                        } else {
+                            Utils.outPutLog(this.outputTextarea, `喂养成功！`);
+                        }
+                    } else if (data.resultCode == 406) {
+                        if (Config.multiFlag && ckObj) {
+                            Utils.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 猪猪现在还有粮食哦~`);
+                        } else {
+                            Utils.outPutLog(this.outputTextarea, `${res.resultData.resultMsg}`);
+                        }
                     }
-                } else if (data.resultCode == 406) {
-                    if (Config.multiFlag && ckObj) {
-                        Utils.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 猪猪现在还有粮食哦~`);
-                    } else {
-                        Utils.outPutLog(this.outputTextarea, `${res.resultData.resultMsg}`);
-                    }
-                }
 
-            } else {
-                Utils.outPutLog(this.outputTextarea, `${res.resultMsg}`);
-            }
-        })
+                } else {
+                    Utils.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+                }
+            })
     }
 
     addFoodMulti() {
@@ -455,5 +466,48 @@ export default class Cloudpig implements Game {
             }, item.index * 500)
         });
     }
+
+    signOne(ckObj?: CookieType) {
+        fetch(this.rootURI + "pigPetSignOne?_=" + Utils.getTimestamp(), {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "reqData=" + JSON.stringify(Object.assign(this.baseReqData, { "no": 2 }))
+        }).then(function (response) {
+            return response.json()
+        }).then((res) => {
+            if (res.resultCode == 0) {
+                let data = res.resultData.resultData;
+                if (res.resultData.resultCode == 0) {
+                    let today = data?.today,
+                        name = data?.award?.name;
+                    if (Config.multiFlag && ckObj) {
+                        Utils.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 已签到${today}天 获得奖励：${name}`);
+                    } else {
+                        Utils.outPutLog(this.outputTextarea, `已签到${today}天 获得奖励：${name}`);
+                    }
+                } else {
+                    Utils.outPutLog(this.outputTextarea, `${res.resultData.resultMsg}`);
+                }
+            } else {
+                if (Config.multiFlag && ckObj) {
+                    Utils.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+                }
+            }
+        })
+    }
+
+    signOneMulti() {
+        CookieManager.cookieArr.map((item: CookieType) => {
+            setTimeout(() => {
+                CookieHandler.coverCookie(item);
+                this.signOne(item);
+            }, item.index * 500)
+        });
+    }
+
 
 }
