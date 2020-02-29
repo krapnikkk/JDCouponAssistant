@@ -1,8 +1,10 @@
 export interface CookieType {
     ck: string
     mark: string
-    flag?: boolean
     index: number
+    flag?: boolean
+    signNo?: number
+    favoriteFood?: string
 }
 export class CookieHandler {
     static getCookie(): string {

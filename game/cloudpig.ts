@@ -31,6 +31,8 @@ export default class Cloudpig implements Game {
     foodskuId: string = "1001003004";
     foodSpan: number = 1800000;
     autoAddFoodTimer: number = 0;
+    signNo: number = 1;
+    favoriteFood: string = "";
     list(): void {
         const content = document.createElement("div");
         let msg = `
@@ -39,6 +41,7 @@ export default class Cloudpig implements Game {
         <button class="Achievements" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">可提现红包</button>
         <button class="SignOne" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键每日签到</button>
         <button class="OpenBox" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键开箱子</button>
+        <button class="UserBag" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">查看食物背包</button>
         <p>喂养食物:<select class="food" name="food" style="border: 1px solid #333;padding: 2px;">
             <option value ="1001003003">普通猪粮</option>
             <option value ="1001003001">白菜</option>
@@ -54,6 +57,8 @@ export default class Cloudpig implements Game {
         </select>
         </p>
         <button class="AutoAddFood" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">自动定时喂养</button>
+        <button class="AddFavoriteFood" style="width: 120px;height:30px;background-color: #a7bcce;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">喂养喜爱食物</button>
+        <p style="border: 1px solid #000;fontsize:14px;padding:2px">查看猪猪详情后可以喂养喜爱食物和自动喂养喜爱食物【前提要存在喜爱食物】</p>
         <button class="cancelAutoAddFood" style="display:none;width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">取消定时喂养</button>
         <button class="pigPetLotteryIndex" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">大转盘情况</button>
         <button class="LotteryPlay" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键大转盘</button>
@@ -70,6 +75,7 @@ export default class Cloudpig implements Game {
             cancelAutoAddFood = _$('.cancelAutoAddFood'),
             a = _$('.AddFood'),
             signOne = _$('.SignOne'),
+            UserBag = _$('.UserBag'),
             l = _$('.Login');
 
         foodSelect.onchange = (event) => {
@@ -79,12 +85,21 @@ export default class Cloudpig implements Game {
             this.foodSpan = +foodSpanSelect.value;
         }
 
+        UserBag.addEventListener("click", () => {
+            Utils.outPutLog(this.outputTextarea, `查看我的背包`);
+            if (Config.multiFlag) {
+                this.userBagMulti();
+            } else {
+                this.userBag();
+            }
+        })
+
         signOne.addEventListener("click", () => {
             Utils.outPutLog(this.outputTextarea, `开始每日签到`);
             if (Config.multiFlag) {
-                this.signOneMulti();
+                this.signIndexMulti();
             } else {
-                this.signOne();
+                this.signIndex();
             }
         })
 
@@ -305,28 +320,28 @@ export default class Cloudpig implements Game {
             },
             body: "reqData=" + JSON.stringify(Object.assign(this.baseReqData, { "skuId": this.foodskuId }))
         }).then(function (response) {
-                return response.json()
-            }).then((res) => {
-                if (res.resultCode == 0) {
-                    let data = res.resultData;
-                    if (data.resultCode == 0) {
-                        if (Config.multiFlag && ckObj) {
-                            Utils.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 喂养成功！`);
-                        } else {
-                            Utils.outPutLog(this.outputTextarea, `喂养成功！`);
-                        }
-                    } else if (data.resultCode == 406) {
-                        if (Config.multiFlag && ckObj) {
-                            Utils.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 猪猪现在还有粮食哦~`);
-                        } else {
-                            Utils.outPutLog(this.outputTextarea, `${res.resultData.resultMsg}`);
-                        }
+            return response.json()
+        }).then((res) => {
+            if (res.resultCode == 0) {
+                let data = res.resultData;
+                if (data.resultCode == 0) {
+                    if (Config.multiFlag && ckObj) {
+                        Utils.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 喂养成功！`);
+                    } else {
+                        Utils.outPutLog(this.outputTextarea, `喂养成功！`);
                     }
-
-                } else {
-                    Utils.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+                } else if (data.resultCode == 406) {
+                    if (Config.multiFlag && ckObj) {
+                        Utils.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 猪猪现在还有粮食哦~`);
+                    } else {
+                        Utils.outPutLog(this.outputTextarea, `${res.resultData.resultMsg}`);
+                    }
                 }
-            })
+
+            } else {
+                Utils.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+            }
+        })
     }
 
     addFoodMulti() {
@@ -475,7 +490,7 @@ export default class Cloudpig implements Game {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             },
-            body: "reqData=" + JSON.stringify(Object.assign(this.baseReqData, { "no": 2 }))
+            body: "reqData=" + JSON.stringify(Object.assign(this.baseReqData, { "no": ckObj ? ckObj.signNo : this.signNo }))
         }).then(function (response) {
             return response.json()
         }).then((res) => {
@@ -500,7 +515,100 @@ export default class Cloudpig implements Game {
         })
     }
 
-    signOneMulti() {
+    // signOneMulti() {
+    //     CookieManager.cookieArr.map((item: CookieType) => {
+    //         setTimeout(() => {
+    //             CookieHandler.coverCookie(item);
+    //             this.signOne(item);
+    //         }, item.index * 500)
+    //     });
+    // }
+
+    signIndex(ckObj?: CookieType) {
+        fetch(this.rootURI + "pigPetSignIndex?_=" + Utils.getTimestamp(), {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "reqData=" + JSON.stringify(this.baseReqData)
+        }).then(function (response) {
+            return response.json()
+        }).then((res) => {
+            if (res.resultCode == 0) {
+                let data = res.resultData.resultData;
+                if (res.resultData.resultCode == 0) {
+                    let today = data?.today;
+                    if (Config.multiFlag && ckObj) {
+                        ckObj.signNo = today;
+                        Utils.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 已签到${today}天 `);
+                        this.signOne(ckObj);
+                    } else {
+                        this.signNo = today;
+                        Utils.outPutLog(this.outputTextarea, `已签到${today}天`);
+                        this.signOne()
+                    }
+                } else {
+                    Utils.outPutLog(this.outputTextarea, `${res.resultData.resultMsg}`);
+                }
+            } else {
+                if (Config.multiFlag && ckObj) {
+                    Utils.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+                }
+            }
+        })
+    }
+
+    signIndexMulti() {
+        CookieManager.cookieArr.map((item: CookieType) => {
+            setTimeout(() => {
+                CookieHandler.coverCookie(item);
+                this.signIndex(item);
+            }, item.index * 500)
+        });
+
+    }
+
+    userBag(ckObj?: CookieType) {
+        fetch(this.rootURI + "pigPetUserBag?_=" + Utils.getTimestamp(), {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "reqData=" + JSON.stringify(Object.assign(this.baseReqData, { "category": "1001" }))
+        }).then(function (response) {
+            return response.json()
+        }).then((res) => {
+            if (res.resultCode == 0) {
+                let data = res.resultData.resultData;
+                if (res.resultData.resultCode == 0) {
+                    let goods = data?.goods, goodStr = "";
+                    if (Config.multiFlag && ckObj) {
+                        goodStr += goods.map((good: any) => {
+                            return `\n名称:${good.goodsName} 数量：${good.count}g`;
+                        })
+                        Utils.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 ----食物背包一览----${goodStr}`);
+                    } else {
+                        goodStr += goods.map((good: any) => {
+                            return `\n名称:${good.goodsName} 数量：${good.count}g`;
+                        })
+                        Utils.outPutLog(this.outputTextarea, `----食物背包一览----${goodStr}`);
+                    }
+                } else {
+                    Utils.outPutLog(this.outputTextarea, `${res.resultData.resultMsg}`);
+                }
+            } else {
+                if (Config.multiFlag && ckObj) {
+                    Utils.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+                }
+            }
+        })
+    }
+
+    userBagMulti() {
         CookieManager.cookieArr.map((item: CookieType) => {
             setTimeout(() => {
                 CookieHandler.coverCookie(item);
@@ -508,6 +616,5 @@ export default class Cloudpig implements Game {
             }, item.index * 500)
         });
     }
-
 
 }
