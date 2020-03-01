@@ -31,7 +31,8 @@ export default class CookieManager {
             o.push({
                 mark: result[0],
                 ck: result[1],
-                index: index
+                index: index,
+                favoriteFood:"南瓜"
             });
         })
         return o;
