@@ -116,8 +116,8 @@ export default class Utils {
     }
 
     static outPutLog(output: HTMLTextAreaElement, log: string, timeFlag: boolean = true): void {
-        if (output.style.display == 'none') {
-            output.style.display = 'block';
+        if (output.parentElement!.style.display == 'none') {
+            output.parentElement!.style.display = 'block';
         }
         if (timeFlag) {
             if (output.value) {
