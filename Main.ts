@@ -44,7 +44,9 @@ const container: HTMLDivElement = document.createElement("div"),
     receiveTextInput: HTMLInputElement = document.createElement("input"),
     receiveCountInput: HTMLInputElement = document.createElement("input"),
     receiveTimerBtn: HTMLButtonElement = document.createElement("button"),
+    operateAreaDiv: HTMLDivElement = document.createElement("div"),
     outputTextArea: HTMLTextAreaElement = document.createElement("textarea"),
+    outputTextAreaDiv: HTMLDivElement = document.createElement("div"),
     loginMsgDiv: HTMLDivElement = document.createElement("div");
 
 let getLoginMsg = function (res: any) {
@@ -56,101 +58,112 @@ let getLoginMsg = function (res: any) {
 
 
 function buildOperate() {
-    const operateAreaDiv: HTMLDivElement = document.createElement("div");
+    operateAreaDiv.setAttribute("style", "border: 1px solid #000;");
+    operateAreaDiv.innerHTML = "<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;padding: 0 37.5vw 5px;'>操作区</h3>";
     if (coupon) {
-        const receiveDiv: HTMLDivElement = document.createElement("div"),
-            receiveAreaDiv: HTMLDivElement = document.createElement("div"),
-            receiveTipsDiv: HTMLDivElement = document.createElement("div"),
-            receiveAllBtn: HTMLButtonElement = document.createElement("button"),
-            timerTextInput: HTMLInputElement = document.createElement("input"),
-            timerResetBtn: HTMLButtonElement = document.createElement("button"),
-            spanTextInput: HTMLInputElement = document.createElement("input"),
-            spanResetBtn: HTMLButtonElement = document.createElement("button"),
-            timerDiv: HTMLDivElement = document.createElement("div");
-        operateAreaDiv.setAttribute("style", "border: 1px solid #000;");
-        operateAreaDiv.innerHTML = "<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;padding: 0 37.5vw 5px;'>操作区</h3>";
-        timerTextInput.type = "text";
-        timerTextInput.placeholder = "请输入获取时间的刷新频率【毫秒】";
-        timerTextInput.setAttribute("style", "width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;");
-        timerResetBtn.innerHTML = "重置刷新频率";
-        timerResetBtn.setAttribute("style", "width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;");
-        timerResetBtn.addEventListener("click", () => {
-            const span = Math.trunc(+timerTextInput.value);
-            if (!span) {
-                alert("请检查输入的刷新频率是否有误！(只能为大于0的数字)");
-                return false;
-            }
-            Config.intervalSpan = span;
-            window.clearInterval(Config.intervalId);
-            Config.intervalId = window.setInterval(getTime, Config.intervalSpan);
-        });
-        receiveTipsDiv.innerHTML = `<h3>定时时间使用年月日+24小时制</h3><p style="color:red">零点领券设置参考<br>刷新频率:500 | 定时时间：2020-01-01 23:59:59:490<br>tips:部分券其实是提前发放的</p>`;
-        receiveTextInput.type = "text";
-        receiveTextInput.placeholder = "定时领券时间【格式:2020-01-01 09:59:59:950】";
-        receiveTextInput.setAttribute("style", "width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px;");
-        receiveCountInput.type = "text";
-        receiveCountInput.placeholder = "领券提交次数【默认：1次】";
-        receiveCountInput.setAttribute("style", "width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px;");
-        spanTextInput.type = "text";
-        spanTextInput.placeholder = "请输入重复领券的提交频率【默认：500毫秒】";
-        spanTextInput.setAttribute("style", "width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;");
-        receiveTimerBtn.innerHTML = "定时指定领取";
-        receiveTimerBtn.addEventListener("click", () => {
-            Config.postSpan = parseInt(spanTextInput.value) > 0 ? parseInt(spanTextInput.value) : 500;
-            Config.postCount = parseInt(receiveCountInput.value) > 0 ? parseInt(receiveCountInput.value) : 1;
-            const time = Utils.formateTime(receiveTextInput.value);
-            // console.log(time);
-            if (!time || time < 0) {
-                alert("请检查定时领券时间的格式是否有误！");
-                return false;
-            } else {
-                Config.timingFlag = !Config.timingFlag;
-                Config.startTime = time;
-                outputTextArea.style.display = "block";
-                receiveTextInput.disabled = Config.timingFlag;
-                receiveCountInput.disabled = Config.timingFlag;
-                if (Config.timingFlag) {
-                    receiveTimerBtn.innerHTML = "取消定时领取";
-                    Utils.outPutLog(outputTextArea, `已开启定时领取！定时领取时间：${receiveTextInput.value}`);
-                } else {
-                    receiveTimerBtn.innerHTML = "定时指定领取";
-                    Utils.outPutLog(outputTextArea, `已关闭定时领取`);
-                }
-            }
-
-        });
-        receiveAllBtn.addEventListener("click", () => {
-            if (coupon) {
-                coupon.send(outputTextArea);
-            }
-        });
-        receiveTimerBtn.setAttribute("style", "width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px;");
-        receiveAllBtn.innerHTML = "一键指定领取";
-        receiveAllBtn.setAttribute("style", "width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px;");
-        outputTextArea.setAttribute("style", "width: 90vw;height: 40vw;border: 1px solid #868686;border-radius: 10px;overflow-y: scroll;margin:5px auto;display:none");
-        outputTextArea.setAttribute("disabled", "disabled");
-        operateAreaDiv.append(timerDiv);
-        timerDiv.append(timerTittleDiv);
-        timerDiv.append(timerTextInput);
-        timerDiv.append(timerResetBtn);
-        timerDiv.append(spanTextInput);
-        timerDiv.append(spanResetBtn);
-        operateAreaDiv.append(receiveDiv);
-        receiveDiv.append(receiveTipsDiv);
-        receiveDiv.append(receiveTextInput);
-        receiveDiv.append(receiveCountInput);
-        receiveDiv.append(spanTextInput);
-        receiveDiv.append(receiveAreaDiv);
-        receiveAreaDiv.append(receiveAllBtn);
-        receiveAreaDiv.append(receiveTimerBtn);
-    } else {
-        outputTextArea.setAttribute("style", "width: 90vw;height: 40vw;border: 1px solid #868686;border-radius: 10px;overflow-y: scroll;margin:5px auto;");
-        outputTextArea.setAttribute("disabled", "disabled");
+        buildTimerControl();
     }
     loginMsgDiv.innerHTML = "当前京东帐号：<a href='https://plogin.m.jd.com/login/login' target='_blank'>点击登录</a>";
     operateAreaDiv.append(loginMsgDiv);
     container.append(operateAreaDiv);
-    operateAreaDiv.append(outputTextArea);
+    buildOutput();
+}
+
+function buildOutput() {
+    outputTextAreaDiv.style.display = "none";
+    outputTextArea.setAttribute("style", "width: 90vw;height: 40vw;border: 1px solid #868686;border-radius: 10px;overflow-y: scroll;margin:5px auto;");
+    outputTextArea.setAttribute("disabled", "disabled");
+    let clearOutLogBtn: HTMLButtonElement = document.createElement("button");
+    clearOutLogBtn.innerHTML = "清空日志";
+    clearOutLogBtn.setAttribute("style", "width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px;");
+    clearOutLogBtn.addEventListener("click", () => {
+        outputTextArea.value = "";
+    })
+    outputTextAreaDiv.append(outputTextArea);
+    outputTextAreaDiv.append(clearOutLogBtn);
+    operateAreaDiv.append(outputTextAreaDiv);
+}
+
+function buildTimerControl() {
+    const receiveDiv: HTMLDivElement = document.createElement("div"),
+        receiveAreaDiv: HTMLDivElement = document.createElement("div"),
+        receiveTipsDiv: HTMLDivElement = document.createElement("div"),
+        receiveAllBtn: HTMLButtonElement = document.createElement("button"),
+        timerTextInput: HTMLInputElement = document.createElement("input"),
+        timerResetBtn: HTMLButtonElement = document.createElement("button"),
+        spanTextInput: HTMLInputElement = document.createElement("input"),
+        spanResetBtn: HTMLButtonElement = document.createElement("button"),
+        timerDiv: HTMLDivElement = document.createElement("div");
+    timerTextInput.type = "text";
+    timerTextInput.placeholder = "请输入获取时间的刷新频率【毫秒】";
+    timerTextInput.setAttribute("style", "width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;");
+    timerResetBtn.innerHTML = "重置刷新频率";
+    timerResetBtn.setAttribute("style", "width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;");
+    timerResetBtn.addEventListener("click", () => {
+        const span = Math.trunc(+timerTextInput.value);
+        if (!span) {
+            alert("请检查输入的刷新频率是否有误！(只能为大于0的数字)");
+            return false;
+        }
+        Config.intervalSpan = span;
+        window.clearInterval(Config.intervalId);
+        Config.intervalId = window.setInterval(getTime, Config.intervalSpan);
+    });
+    receiveTipsDiv.innerHTML = `<h3>定时时间使用年月日+24小时制</h3><p style="color:red">零点领券设置参考<br>刷新频率:500 | 定时时间：2020-01-01 23:59:59:490<br>tips:部分券其实是提前发放的</p>`;
+    receiveTextInput.type = "text";
+    receiveTextInput.placeholder = "定时领券时间【格式:2020-01-01 09:59:59:950】";
+    receiveTextInput.setAttribute("style", "width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px;");
+    receiveCountInput.type = "text";
+    receiveCountInput.placeholder = "领券提交次数【默认：1次】";
+    receiveCountInput.setAttribute("style", "width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px;");
+    spanTextInput.type = "text";
+    spanTextInput.placeholder = "请输入重复领券的提交频率【默认：500毫秒】";
+    spanTextInput.setAttribute("style", "width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;");
+    receiveTimerBtn.innerHTML = "定时指定领取";
+    receiveTimerBtn.addEventListener("click", () => {
+        Config.postSpan = parseInt(spanTextInput.value) > 0 ? parseInt(spanTextInput.value) : 500;
+        Config.postCount = parseInt(receiveCountInput.value) > 0 ? parseInt(receiveCountInput.value) : 1;
+        const time = Utils.formateTime(receiveTextInput.value);
+        if (!time || time < 0) {
+            alert("请检查定时领券时间的格式是否有误！");
+            return false;
+        } else {
+            Config.timingFlag = !Config.timingFlag;
+            Config.startTime = time;
+            receiveTextInput.disabled = Config.timingFlag;
+            receiveCountInput.disabled = Config.timingFlag;
+            if (Config.timingFlag) {
+                receiveTimerBtn.innerHTML = "取消定时领取";
+                Utils.outPutLog(outputTextArea, `已开启定时领取！定时领取时间：${receiveTextInput.value}`);
+            } else {
+                receiveTimerBtn.innerHTML = "定时指定领取";
+                Utils.outPutLog(outputTextArea, `已关闭定时领取`);
+            }
+        }
+
+    });
+    receiveAllBtn.addEventListener("click", () => {
+        if (coupon) {
+            coupon.send(outputTextArea);
+        }
+    });
+    receiveTimerBtn.setAttribute("style", "width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px;");
+    receiveAllBtn.innerHTML = "一键指定领取";
+    receiveAllBtn.setAttribute("style", "width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px;");
+    operateAreaDiv.append(timerDiv);
+    timerDiv.append(timerTittleDiv);
+    timerDiv.append(timerTextInput);
+    timerDiv.append(timerResetBtn);
+    timerDiv.append(spanTextInput);
+    timerDiv.append(spanResetBtn);
+    operateAreaDiv.append(receiveDiv);
+    receiveDiv.append(receiveTipsDiv);
+    receiveDiv.append(receiveTextInput);
+    receiveDiv.append(receiveCountInput);
+    receiveDiv.append(spanTextInput);
+    receiveDiv.append(receiveAreaDiv);
+    receiveAreaDiv.append(receiveAllBtn);
+    receiveAreaDiv.append(receiveTimerBtn);
 }
 
 function buildTips() {
@@ -220,9 +233,7 @@ function buildSensorArea() {
     let sensorArea: HTMLDivElement = document.createElement("div");
     sensorArea.innerHTML = `<div style="border: 1px solid #000;margin:10px;font-weight:bold"><h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>高级操作区</h3><p>ck格式：备注----ck</p>
     <button style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block" onclick="Utils.copyText(document.cookie)">复制Cookie</button>
-    <button id="import" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">配置多帐号</button>
-    <button id="save" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">帐号本地存储</button>
-    <button id="clear" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">清除本地存储</button></div>`;
+    <button id="import" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">配置多帐号</button>`;
     container.append(sensorArea);
     _$("#import").addEventListener('click', () => {
         Utils.importFile("text/plain").then(async (ck) => {
@@ -265,7 +276,7 @@ function buildTimeoutArea() {
             Config.timeoutSpan = +timeoutInput!.value || 1500;
         }
     }
-    container.append(timeoutDiv);
+    operateAreaDiv.append(timeoutDiv);
 }
 
 function getEntryType(): couponType | activityType | goodsType | gameType {
@@ -422,7 +433,6 @@ function getEntryDesc(type: couponType | activityType | goodsType | gameType) {
     } else if (game) {
         buildSensorArea();
         buildOperate();
-        buildTimeoutArea();
         game.get();
     } else {
         Utils.loadCss("https://meyerweb.com/eric/tools/css/reset/reset200802.css");
