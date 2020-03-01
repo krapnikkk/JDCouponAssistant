@@ -17,13 +17,14 @@ export default class Cloudpig implements Game {
     params: any;
     taskToken: string = "";
     outputTextarea: HTMLTextAreaElement;
+    favFoodMap: { [key: string]: string } = { "南瓜": "1001003004", "胡萝卜": "1001003002", "白菜": "1001003001", "普通猪粮": "1001003003" };
     constructor(params: any, containerDiv: HTMLDivElement, outputTextarea: HTMLTextAreaElement) {
         this.params = params;
         this.container = containerDiv;
         this.outputTextarea = outputTextarea;
     }
     get(): void {
-        this.login();
+        // this.login();
         this.list();
     }
 
@@ -33,10 +34,11 @@ export default class Cloudpig implements Game {
     autoAddFoodTimer: number = 0;
     signNo: number = 1;
     favoriteFood: string = "";
+    AddFavoriteFood!: HTMLInputElement;
     list(): void {
         const content = document.createElement("div");
         let msg = `
-        <div style="margin:10px;">
+        <div style="padding: 5px;margin-top: 5px;border: 1px solid #000;">
         <button class="Login" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">查看猪猪详情</button>
         <button class="Achievements" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">可提现红包</button>
         <button class="SignOne" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键每日签到</button>
@@ -50,6 +52,7 @@ export default class Cloudpig implements Game {
         </select>
         </p>
         <button class="AddFood" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">喂养食物</button>
+        <button class="AddFavoriteFood" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:none">喂养喜爱食物</button>
         <p>自动喂养间隔：<select class="foodSpan" name="foodSpan" style="border: 1px solid #333;padding: 2px;">
             <option value ="1800000">30分钟</option>
             <option value ="3600000">60分钟</option>
@@ -57,8 +60,6 @@ export default class Cloudpig implements Game {
         </select>
         </p>
         <button class="AutoAddFood" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">自动定时喂养</button>
-        <button class="AddFavoriteFood" style="width: 120px;height:30px;background-color: #a7bcce;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">喂养喜爱食物</button>
-        <p style="border: 1px solid #000;fontsize:14px;padding:2px">查看猪猪详情后可以喂养喜爱食物和自动喂养喜爱食物【前提要存在喜爱食物】</p>
         <button class="cancelAutoAddFood" style="display:none;width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">取消定时喂养</button>
         <button class="pigPetLotteryIndex" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">大转盘情况</button>
         <button class="LotteryPlay" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键大转盘</button>
@@ -77,7 +78,7 @@ export default class Cloudpig implements Game {
             signOne = _$('.SignOne'),
             UserBag = _$('.UserBag'),
             l = _$('.Login');
-
+        this.AddFavoriteFood = <HTMLInputElement>_$('.AddFavoriteFood');
         foodSelect.onchange = (event) => {
             this.foodskuId = foodSelect.value;
         }
@@ -129,6 +130,16 @@ export default class Cloudpig implements Game {
                 this.addFood();
             }
         });
+
+        this.AddFavoriteFood.addEventListener("click", () => {
+            Utils.outPutLog(this.outputTextarea, `开始喂养喜爱食物给猪猪`);
+            if (Config.multiFlag) {
+                this.addFoodMulti(true);
+            } else {
+                this.addFood(true);
+            }
+        })
+
 
         o!.addEventListener('click', async () => {
             this.openBoxFlag = true;
@@ -310,7 +321,8 @@ export default class Cloudpig implements Game {
         })
     }
 
-    addFood(ckObj?: CookieType) {
+    addFood(favBool: boolean = false, ckObj?: CookieType) {
+        let skuId = ckObj ? favBool ? ckObj.favoriteFood : this.foodskuId: favBool ? this.favFoodMap[this.favoriteFood] : this.foodskuId;
         fetch(this.rootURI + "pigPetAddFood", {
             method: "POST",
             mode: "cors",
@@ -318,7 +330,7 @@ export default class Cloudpig implements Game {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             },
-            body: "reqData=" + JSON.stringify(Object.assign(this.baseReqData, { "skuId": this.foodskuId }))
+            body: "reqData=" + JSON.stringify(Object.assign(this.baseReqData, { "skuId": skuId }))
         }).then(function (response) {
             return response.json()
         }).then((res) => {
@@ -344,11 +356,11 @@ export default class Cloudpig implements Game {
         })
     }
 
-    addFoodMulti() {
+    addFoodMulti(favBool: boolean = false) {
         CookieManager.cookieArr.map((item: CookieType) => {
             setTimeout(() => {
                 CookieHandler.coverCookie(item);
-                this.addFood(item);
+                this.addFood(favBool, item);
             }, item.index * 750)
         });
     }
@@ -368,14 +380,18 @@ export default class Cloudpig implements Game {
             if (res.resultCode == 0) {
                 let data = res.resultData.resultData;
                 if (data.hasPig) {
+                    this.AddFavoriteFood.style.display = "block";
                     let pig = data?.cote?.pig,
                         pigName = pig?.pigName,
                         percent = pig.percent,
-                        weight = pig.weight;
+                        weight = pig.weight,
+                        favFood = pig.favFood;
                     if (Config.multiFlag && ckObj) {
-                        Utils.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 猪猪：${pigName} 价值：${percent}% 体重：${weight}`);
+                        ckObj.favoriteFood = this.favFoodMap[favFood];
+                        Utils.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 猪猪：${pigName} 价值：${percent}% 体重：${weight} 喜欢：${favFood}`);
                     } else {
-                        Utils.outPutLog(this.outputTextarea, `猪猪：${pigName} 价值：${percent}% 体重：${weight}`);
+                        this.favoriteFood = favFood;
+                        Utils.outPutLog(this.outputTextarea, `猪猪：${pigName} 价值：${percent}% 体重：${weight} 喜欢：${favFood}`);
                     }
                 } else {
                     Utils.outPutLog(this.outputTextarea, `该账号尚未领养猪猪哦！`);
