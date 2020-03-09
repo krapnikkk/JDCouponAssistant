@@ -628,7 +628,7 @@ export default class Cloudpig implements Game {
         CookieManager.cookieArr.map((item: CookieType) => {
             setTimeout(() => {
                 CookieHandler.coverCookie(item);
-                this.signOne(item);
+                this.userBag(item);
             }, item.index * 500)
         });
     }
