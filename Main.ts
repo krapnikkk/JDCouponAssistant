@@ -19,10 +19,10 @@ import ReceiveCoupon from "./coupons/receiveCoupon";
 import GetCouponCenter from "./coupons/getCouponCenter";
 import Exchange from "./coupons/exchange";
 
-import MonsterNian from "./activitys/MonsterNian";
-import BrandCitySpring from "./activitys/brandCitySpring";
-import Palace from "./activitys/palace";
-import ReceiveBless from "./activitys/receiveBless";
+// import MonsterNian from "./activitys/MonsterNian";
+// import BrandCitySpring from "./activitys/brandCitySpring";
+// import Palace from "./activitys/palace";
+// import ReceiveBless from "./activitys/receiveBless";
 
 import Cloudpig from "./game/cloudpig";
 
@@ -392,20 +392,20 @@ function getEntryDesc(type: couponType | activityType | goodsType | gameType) {
             const itemId = Utils.GetQueryString("id");
             coupon = new Exchange({ "itemId": itemId }, container, outputTextArea);
             break;
-        case activityType.monsterNian:
-            activity = new MonsterNian(null, container, outputTextArea);
-            Config.UAFlag = true;
-            break;
-        case activityType.brandCitySpring:
-            activity = new BrandCitySpring(null, container, outputTextArea);
-            break;
-        case activityType.palace:
-            activity = new Palace(null, container, outputTextArea);
-            break;
-        case activityType.receiveBless:
-            activity = new ReceiveBless(null, container, outputTextArea);
-            Config.UAFlag = true;
-            break;
+        // case activityType.monsterNian:
+        //     activity = new MonsterNian(null, container, outputTextArea);
+        //     Config.UAFlag = true;
+        //     break;
+        // case activityType.brandCitySpring:
+        //     activity = new BrandCitySpring(null, container, outputTextArea);
+        //     break;
+        // case activityType.palace:
+        //     activity = new Palace(null, container, outputTextArea);
+        //     break;
+        // case activityType.receiveBless:
+        //     activity = new ReceiveBless(null, container, outputTextArea);
+        //     Config.UAFlag = true;
+        //     break;
         case gameType.cloudpig:
             game = new Cloudpig(null, container, outputTextArea);
             break;
