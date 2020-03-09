@@ -1,5 +1,6 @@
 import Coupon from "../interface/Coupon";
 import Utils from "../utils/utils";
+import fj from "../utils/fetch-jsonp";
 type couponDetails = {
     ckey: string
     actId: string
@@ -11,7 +12,7 @@ type couponDetails = {
 }
 
 export default class getCouponCenter implements Coupon {
-    url: string = "https://s.m.jd.com/activemcenter/mcouponcenter/receivecoupon?coupon={actId},{ckey}&batchid={batchid}&sceneval=2&g_login_type=1&callback=";
+    url: string = "https://s.m.jd.com/activemcenter/mcouponcenter/receivecoupon?coupon={actId},{ckey}&batchid={batchid}&sceneval=2&g_login_type=1";
     detailurl: string = "https://api.m.jd.com/client.action?functionId=getCcFeedInfo&clientVersion=8.4.6&client=android&uuid=869782023101754-c40bcb2a081c&st=1580274952976&sign=5e8edb6a1063a25d2a8d98b537974329&sv=120";
     couponList: couponDetails[] = [];
     couponParams: any;
@@ -21,12 +22,6 @@ export default class getCouponCenter implements Coupon {
         this.couponParams = couponParams;
         this.container = containerDiv;
         this.outputTextarea = outputTextarea;
-        window.addEventListener("message", this.jsonp.bind(this), false);
-    }
-
-    jsonp(response: any): void {
-        const json = JSON.parse(response.data), data = json["data"];
-        Utils.outPutLog(this.outputTextarea, `领券结果:${response.data}`);
     }
 
     get(): void {
@@ -94,13 +89,21 @@ export default class getCouponCenter implements Coupon {
         for (let i = 0; i < this.couponList.length; i++) {
             let item = this.couponList[i], url = this.url.replace("{actId}", item.actId).replace("{ckey}", item.ckey).replace("{batchid}", item.batchId);
             if (item.flag) {
-                Utils.createJsonp(url, true);
+                fj.fetchJsonp(url).then(function (response) {
+                    return response.json()
+                }).then((res) => {
+                    Utils.outPutLog(this.outputTextarea, `领券结果:${JSON.stringify(res)}`);
+                })
             }
         }
     }
-    
+
     singleSend(i: number): void {
         let item = this.couponList[i], url = this.url.replace("{actId}", item.actId).replace("{ckey}", item.ckey).replace("{batchid}", item.batchId);
-        Utils.createJsonp(url, true);
+        fj.fetchJsonp(url).then(function (response) {
+            return response.json()
+        }).then((res) => {
+            Utils.outPutLog(this.outputTextarea, `领券结果:${JSON.stringify(res)}`);
+        })
     }
 }
