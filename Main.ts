@@ -36,7 +36,7 @@ import { CookieHandler } from "./cookie/CookieHandler";
 let coupon: Coupon,
     goods: Goods,
     game: Game,
-    activity: Activity;
+    activity: Activity,isJDcontext = true;
 
 const container: HTMLDivElement = document.createElement("div"),
     title: HTMLDivElement = document.createElement("div"),
@@ -231,9 +231,9 @@ function buildUAarea() {
 
 function buildSensorArea() {
     let sensorArea: HTMLDivElement = document.createElement("div");
-    sensorArea.innerHTML = `<div style="border: 1px solid #000;margin:10px;font-weight:bold"><h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>高级操作区</h3><p>ck格式：备注----ck</p>
+    sensorArea.innerHTML = `<div style="border: 1px solid #000;margin:10px;font-weight:bold"><h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>高级操作区</h3><p>导入ck格式：备注----ck</p><p>暂时只对扩展功能区有效</p>
     <button style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block" onclick="Utils.copyText(document.cookie)">复制Cookie</button>
-    <button id="import" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">配置多帐号</button>`;
+    <button id="import" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">导入多帐号</button></div>`;
     container.append(sensorArea);
     _$("#import").addEventListener('click', () => {
         Utils.importFile("text/plain").then(async (ck) => {
@@ -279,9 +279,34 @@ function buildTimeoutArea() {
     operateAreaDiv.append(timeoutDiv);
 }
 
+function buildExtensionTab() {
+    let extensionTab: HTMLDivElement = document.createElement("div");
+    extensionTab.innerHTML = `<div style="border: 1px solid #000;margin:10px;font-weight:bold"><h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>扩展功能区</h3>
+        <button style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block"><a href="http://m.baidu.com">下载插件</a></button>
+        <ul class="list"><li class="pig">养猪猪</li><li class="moneyTree">金果树</li></ul>
+        <div class="extensionDiv"></div>
+    </div>`;
+    container.append(extensionTab);
+    _$(".list").addEventListener("click", (e: MouseEvent) => {
+        let target = <HTMLElement>e.target!, extensionDiv = _$(".extensionDiv") as HTMLDivElement;
+        let nodes = extensionDiv.childNodes;
+        if (nodes.length > 0) {
+            extensionDiv.removeChild(nodes[0]);
+        }
+        if (target.getAttribute("class") == "pig") {
+            game = new Cloudpig(null, extensionDiv, outputTextArea);
+            game.get();
+        }else{
+            alert("该功能正在开发中，晚点再来吧~");
+        }
+    });
+
+}
+
 function getEntryType(): couponType | activityType | goodsType | gameType {
     let type: couponType | activityType | goodsType | gameType = couponType.none;
     if (!window.location.host.includes("jd.com")) {
+        isJDcontext = false;
         return type;
     }
 
@@ -417,28 +442,30 @@ function getEntryDesc(type: couponType | activityType | goodsType | gameType) {
     }
     buildRecommend();
     buildActivity();
+    if(isJDcontext){
+        buildOperate();
+        buildSensorArea();
+        buildExtensionTab();
+    }
     if (coupon) {
         Config.intervalId = window.setInterval(getTime, Config.intervalSpan);
-        // buildSensorArea();
-        buildOperate();
         coupon.get();
     } else if (activity) {
-        // buildSensorArea();
         // buildActivity();
-        buildOperate();
         buildTimeoutArea();
         activity.get();
+        Utils.createJsonp(`${Config.JDUserInfoURL}&callback=getLoginMsg`);
     } else if (goods) {
         goods.get();
+        Utils.createJsonp(`${Config.JDUserInfoURL}&callback=getLoginMsg`);
     } else if (game) {
-        buildSensorArea();
-        buildOperate();
         game.get();
+        Utils.createJsonp(`${Config.JDUserInfoURL}&callback=getLoginMsg`);
     } else {
         Utils.loadCss("https://meyerweb.com/eric/tools/css/reset/reset200802.css");
         buildTips();
     }
-    Utils.createJsonp(`${Config.JDUserInfoURL}&callback=getLoginMsg`);
+
 
 }
 
