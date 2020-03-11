@@ -1,1 +1,2783 @@
-"use strict";var a="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},p=function(){function n(t,e){for(var o=0;o<e.length;o++){var n=e[o];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(t,n.key,n)}}return function(t,e,o){return e&&n(t.prototype,e),o&&n(t,o),t}}();function f(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}!function a(r,u,s){function d(e,t){if(!u[e]){if(!r[e]){var o="function"==typeof require&&require;if(!t&&o)return o(e,!0);if(l)return l(e,!0);var n=new Error("Cannot find module '"+e+"'");throw n.code="MODULE_NOT_FOUND",n}var i=u[e]={exports:{}};r[e][0].call(i.exports,function(t){return d(r[e][1][t]||t)},i,i.exports,a,r,u,s)}return u[e].exports}for(var l="function"==typeof require&&require,t=0;t<s.length;t++)d(s[t]);return d}({1:[function(t,e,o){var m=this&&this.__awaiter||function(t,r,u,s){return new(u=u||Promise)(function(o,e){function n(t){try{a(s.next(t))}catch(t){e(t)}}function i(t){try{a(s.throw(t))}catch(t){e(t)}}function a(t){var e;t.done?o(t.value):((e=t.value)instanceof u?e:new u(function(t){t(e)})).then(n,i)}a((s=s.apply(t,r||[])).next())})};Object.defineProperty(o,"__esModule",{value:!0});var v=t("../utils/utils"),d=t("../config/config"),n=(p(i,[{key:"get",value:function(){var e=this;fetch(this.detailurl,{method:"POST",mode:"cors",credentials:"include",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:"functionId=bombnian_getTaskDetail&body={}&client=wh5&clientVersion=1.0.0"}).then(function(t){return t.json()}).then(function(t){e.data=t.data.result,e.data?(e.taskToken=e.data.taskVos[1].shoppingActivityVos[0].taskToken,e.outputTextarea.value="获取数据成功\n已加购物车："+e.data.taskVos[2].times+"/"+e.data.taskVos[2].productInfoVos.length+"\n已逛店铺："+e.data.taskVos[3].times+"/"+e.data.taskVos[3].browseShopVo.length+"\n已逛会场："+e.data.taskVos[1].times+"/"+e.data.taskVos[1].shoppingActivityVos.length+"\n已参与互动："+e.data.taskVos[4].times+"/"+e.data.taskVos[4].shoppingActivityVos.length+"\n已看直播："+e.data.taskVos[5].times+"/"+e.data.taskVos[5].shoppingActivityVos.length+"\n已LBS定位："+e.data.taskVos[7].times+"/1",e.list()):e.outputTextarea.value="请先进入活动页开启红包后再开启最后任务吧~"})}},{key:"list",value:function(){var e=this,t=document.createElement("div");t.innerHTML='\n        <div style="margin:10px;">\n        <button class="auto" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键完成任务</button>\n        <button class="help" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">帮助作者队伍助力</button>\n        <button class="invite" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">获取我的助力链接</button>\n        <input class="inviteLink" type="text" style="width:80vw;height: 25px;font-size:14px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;" placeholder="请输入需要助力的分享链接">\n        <button class="assist" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">为TA助力</button>\n        <button class="group" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">获取我的队伍分享链接</button>\n        <input class="groupLink" type="text" style="width:80vw;height: 25px;font-size:14px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;" placeholder="请输入需要助力的队伍的分享链接">\n        <button class="assistGroup" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">为这个队伍助力</button>\n        <button class="raise" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">炸年兽</button>\n        <button class="shop" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">逛逛好店</button>\n        <button class="browser" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">逛逛主会场</button>\n        <button class="product" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">好物加购</button>\n        <button class="shopping" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">逛逛会场</button>\n        <button class="activity" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">好玩互动</button>\n        <button class="video" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">视频直播</button>\n        <button class="record" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">LBS定位</button>\n        </div>',this.container.appendChild(t);var o=v._$(".shop"),n=v._$(".help"),i=v._$(".activity"),a=v._$(".video"),r=v._$(".record"),u=v._$(".shopping"),s=v._$(".invite"),d=v._$(".group"),l=v._$(".raise"),c=v._$(".auto"),p=v._$(".browser"),f=v._$(".assistGroup"),h=(v._$(".inviteLink"),v._$(".assist")),g=v._$(".product");o.addEventListener("click",function(){v.default.outPutLog(e.outputTextarea,"开始自动逛逛好店任务"),e.send(e.data.taskVos[3].browseShopVo,e.data.taskVos[3].taskId)}),g.addEventListener("click",function(){v.default.outPutLog(e.outputTextarea,"开始自动好物加购任务"),e.send(e.data.taskVos[2].productInfoVos,e.data.taskVos[2].taskId)}),u.addEventListener("click",function(){v.default.outPutLog(e.outputTextarea,"开始自动逛逛会场任务"),e.send(e.data.taskVos[4].shoppingActivityVos,e.data.taskVos[4].taskId)}),i.addEventListener("click",function(){v.default.outPutLog(e.outputTextarea,"开始自动好玩互动任务"),e.send(e.data.taskVos[5].shoppingActivityVos,e.data.taskVos[5].taskId)}),a.addEventListener("click",function(){v.default.outPutLog(e.outputTextarea,"开始自动视频直播任务"),e.send(e.data.taskVos[6].shoppingActivityVos,e.data.taskVos[6].taskId)}),r.addEventListener("click",function(){v.default.outPutLog(e.outputTextarea,"开始自动LBS定位任务"),e.send([e.data.taskVos[7].simpleRecordInfoVo],e.data.taskVos[7].taskId)}),p.addEventListener("click",function(){v.default.outPutLog(e.outputTextarea,"开始自动逛主会场任务"),e.doTask()}),n.addEventListener("click",function(){e.help()}),s.addEventListener("click",function(){v.default.copyText("https://bunearth.m.jd.com/babelDiy/SGFJVMOZADGTQCZWGEYU/4PWgqmrFHunn8C38mJA712fufguU/index.html?shareType=taskHelp&inviteId="+e.data.inviteId+"&taskId=1&itemId="+e.data.taskVos[0].assistTaskDetailVo.itemId+"&shareFrom=key")}),d.addEventListener("click",function(){e.group()}),f.addEventListener("click",function(){var t=v._$(".groupLink");e.assistGroup(t.value)}),h.addEventListener("click",function(){var t=v._$(".inviteLink");e.assist(t.value)}),l.addEventListener("click",function(){e.raise()}),document.createEvent("MouseEvents").initEvent("click",!0,!0),c.addEventListener("click",function(){return m(e,void 0,void 0,regeneratorRuntime.mark(function t(){return regeneratorRuntime.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:return v.default.outPutLog(this.outputTextarea,"一键自动开始任务！"),this.help(),v.default.outPutLog(this.outputTextarea,"开始自动逛逛好店任务"),t.next=5,this.send(this.data.taskVos[3].browseShopVo,this.data.taskVos[3].taskId);case 5:return v.default.outPutLog(this.outputTextarea,"开始自动好物加购任务"),t.next=8,this.send(this.data.taskVos[2].productInfoVos,this.data.taskVos[2].taskId);case 8:return v.default.outPutLog(this.outputTextarea,"开始自动逛逛会场任务"),t.next=11,this.send(this.data.taskVos[4].shoppingActivityVos,this.data.taskVos[4].taskId);case 11:return v.default.outPutLog(this.outputTextarea,"开始自动好玩互动任务"),t.next=14,this.send(this.data.taskVos[5].shoppingActivityVos,this.data.taskVos[5].taskId);case 14:return v.default.outPutLog(this.outputTextarea,"开始自动视频直播任务"),t.next=17,this.send(this.data.taskVos[6].shoppingActivityVos,this.data.taskVos[6].taskId);case 17:v.default.outPutLog(this.outputTextarea,"全部任务完成");case 18:case"end":return t.stop()}},t,this)}))})}},{key:"send",value:function(u,s){return m(this,void 0,void 0,regeneratorRuntime.mark(function t(){var n,i,e,o,a,r=this;return regeneratorRuntime.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:n=this,i=u.length,e=regeneratorRuntime.mark(function t(o){return regeneratorRuntime.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:return a='functionId=bombnian_collectScore&body={"taskId":'+s+',"itemId":"'+u[o].itemId+'"}&client=wh5&clientVersion=1.0.0',t.next=3,new Promise(function(e){setTimeout(function(){return m(r,void 0,void 0,regeneratorRuntime.mark(function t(){return regeneratorRuntime.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:return t.next=2,fetch("https://api.m.jd.com/client.action?functionId=bombnian_collectScore",{method:"POST",mode:"cors",credentials:"include",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:a}).then(function(t){return t.json()}).then(function(t){v.default.outPutLog(n.outputTextarea,"操作成功！任务序号："+(o+1)+"/"+i),i<=o+1&&v.default.outPutLog(n.outputTextarea,"当前任务已完成!"),e()});case 2:case"end":return t.stop()}},t,this)}))},d.default.timeoutSpan+v.default.random(300,500))});case 3:case"end":return t.stop()}},t,r)}),o=0;case 3:if(o<i)return t.delegateYield(e(o),"t0",5);t.next=8;break;case 5:o++,t.next=3;break;case 8:case"end":return t.stop()}},t,this)}))}},{key:"invite",value:function(){var e=this;fetch("https://api.m.jd.com/client.action?functionId=bombnian_collectScore",{method:"POST",mode:"cors",credentials:"include",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:'functionId=bombnian_collectScore&body={"inviteId":"DgxlSNRnRyNRPa01oWqgYGmh6fowp7KSdvYh_P9xeptD0UnvN0zMq6o","taskId":1,"itemId":"ACTNUmK-SyjcNFWT523lDlA"}&client=wh5&clientVersion=1.0.0'}).then(function(t){return t.json()}).then(function(t){v.default.outPutLog(e.outputTextarea,"操作成功！谢谢你的助力！")})}},{key:"join",value:function(){var e=this;fetch("https://api.m.jd.com/client.action?functionId=bombnian_pk_joinGroup",{method:"POST",mode:"cors",credentials:"include",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:'functionId=bombnian_pk_joinGroup&body={"inviteId":"VlU-EZopQidWJ6s2oG2sfIHInYsPApTbtntxKA1MAWPJSGYsX6Se6Dv3","confirmFlag":1}&client=wh5&clientVersion=1.0.0'}).then(function(t){return t.json()}).then(function(t){0==t.data.bizCode?v.default.outPutLog(e.outputTextarea,"操作成功！加入成功！"):v.default.outPutLog(e.outputTextarea,"操作失败，好像满人了哦")})}},{key:"doTask",value:function(){var e=this;fetch(" https://api.m.jd.com/client.action?functionId=tc_doTask_mongo",{method:"POST",mode:"cors",credentials:"include",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:'functionId=tc_doTask_mongo&body={"taskToken":'+this.taskToken+',"actionType":1}&client=wh5&clientVersion=1.0.0'}).then(function(t){return t.json()}).then(function(t){v.default.outPutLog(e.outputTextarea,"任务领取成功！"),e.broswer()})}},{key:"broswer",value:function(){var e=this;fetch("https://api.m.jd.com/client.action?functionId=tc_doTask_mongo&body=%7B%22taskToken%22%3A%22"+this.taskToken+"%22%2C%22actionType%22%3A0%7D&area=&networkType=&t=1578487649503&appid=publicUseApi&client=wh5&clientVersion=1.0.0",{credentials:"include"}).then(function(t){return t.json()}).then(function(t){0==t.data.bizCode&&v.default.outPutLog(e.outputTextarea,"操作成功！")})}},{key:"raise",value:function(){var e=this;fetch("https://api.m.jd.com/client.action?functionId=bombnian_raise",{method:"POST",mode:"cors",credentials:"include",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:"functionId=bombnian_raise&body={}&client=wh5&clientVersion=1.0.0"}).then(function(t){return t.json()}).then(function(t){0==t.data.bizCode?v.default.outPutLog(e.outputTextarea,"操作成功！获取奖励如下:"+JSON.stringify(t.data.result.levelUpAward)):v.default.outPutLog(e.outputTextarea,"操作失败！"+t.data.bizMsg)})}},{key:"help",value:function(){v.default.outPutLog(this.outputTextarea,"操作成功！谢谢你为我的队伍助力！"),fetch("https://api.m.jd.com/client.action?functionId=bombnian_pk_assistGroup",{method:"POST",mode:"cors",credentials:"include",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:'functionId=bombnian_pk_assistGroup&body={"confirmFlag":1,"inviteId":"XUkkFpUhDG1WJqszpW2uY-4mR3ZvVGMfViX3iMWdE4FeIvO3rYjOC-K6cox9EhXE"}&client=wh5&clientVersion=1.0.0'}).then(function(t){return t.json()}).then(function(t){fetch("https://api.m.jd.com/client.action?functionId=bombnian_pk_assistGroup",{method:"POST",mode:"cors",credentials:"include",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:'functionId=bombnian_pk_assistGroup&body={"confirmFlag":1,"inviteId":"XUkkFpUhDG0XY-p35CzwPZgzlWgNooCLIHRgCJ6uCcsnnwdlDlo"}&client=wh5&clientVersion=1.0.0'}).then(function(t){return t.json()}).then(function(t){})})}},{key:"group",value:function(){var o=this;fetch("https://api.m.jd.com/client.action?functionId=bombnian_pk_getHomeData",{method:"POST",mode:"cors",credentials:"include",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:"functionId=bombnian_pk_getHomeData&body={}&client=wh5&clientVersion=1.0.0"}).then(function(t){return t.json()}).then(function(t){var e=t.data.result.groupPkInfo.groupAssistInviteId;v.default.outPutLog(o.outputTextarea,"获取到邀请id:"+e),v.default.copyText("https://bunearth.m.jd.com/babelDiy/ZTSKYQHOPNHCVTWNJSQF/4PWgqmrFHunn8C38mJA712fufguU/index.html?shareType=pk&inviteId="+e)})}},{key:"assistGroup",value:function(t){var e=this;if(t&&t.includes("inviteId")){var o=v.default.getSearchString(t,"inviteId")||t;fetch("https://api.m.jd.com/client.action?functionId=bombnian_pk_assistGroup",{method:"POST",mode:"cors",credentials:"include",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:'functionId=bombnian_pk_assistGroup&body={"confirmFlag":1,"inviteId":"'+o+'"}&client=wh5&clientVersion=1.0.0'}).then(function(t){return t.json()}).then(function(t){v.default.outPutLog(e.outputTextarea,"助力结果："+t.data.bizMsg)})}else alert("请输入要助力的队伍分享链接或输入正确的队伍分享地址！")}},{key:"assist",value:function(t){var e=this;if(!t&&t.includes("itemId")&&t.includes("inviteId"))alert("请输入要助力的分享链接或输入正确的分享地址！");else{var o=v.default.getSearchString(t,"inviteId"),n=v.default.getSearchString(t,"itemId");fetch("https://api.m.jd.com/client.action?functionId=bombnian_collectScore",{method:"POST",mode:"cors",credentials:"include",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:'functionId=bombnian_collectScore&body={"taskId":1,"inviteId":"'+o+'","itemId":"'+n+'"}&client=wh5&clientVersion=1.0.0'}).then(function(t){return t.json()}).then(function(t){v.default.outPutLog(e.outputTextarea,"助力结果："+t.data.bizMsg)})}}}]),i);function i(t,e,o){f(this,i),this.detailurl="https://api.m.jd.com/client.action?functionId=bombnian_getTaskDetail",this.data=[],this.timer=1e3,this.taskToken="",this.params=t,this.container=e,this.outputTextarea=o,this.outputTextarea.value="当你看到这行文字时，说明你还没有配置好浏览器UA或者还没有登录京东帐号！"}o.default=n},{"../config/config":5,"../utils/utils":28}],2:[function(t,e,o){var d=this&&this.__awaiter||function(t,r,u,s){return new(u=u||Promise)(function(o,e){function n(t){try{a(s.next(t))}catch(t){e(t)}}function i(t){try{a(s.throw(t))}catch(t){e(t)}}function a(t){var e;t.done?o(t.value):((e=t.value)instanceof u?e:new u(function(t){t(e)})).then(n,i)}a((s=s.apply(t,r||[])).next())})};Object.defineProperty(o,"__esModule",{value:!0});var l=t("../utils/utils"),c=t("../config/config"),n=(p(i,[{key:"get",value:function(){this.list()}},{key:"list",value:function(){var t=this,e=document.createElement("div");e.innerHTML='\n        <div style="margin:10px;">\n        <button class="visit" style="width: 200px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键浏览店铺</button>\n        <button class="linkgame" style="width: 200px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键小游戏</button>\n        <button class="exchange" style="width: 200px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键福币兑换</button>\n        <button class="auto" style="width: 200px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键自动完成</button></div>',this.container.appendChild(e);var o=l._$(".exchange"),n=l._$(".visit"),i=l._$(".linkgame"),a=l._$(".auto");o.addEventListener("click",function(){l.default.outPutLog(t.outputTextarea,"开始自动福币兑换"),t.lottery()}),n.addEventListener("click",function(){l.default.outPutLog(t.outputTextarea,"开始自动浏览店铺"),t.visit()}),i.addEventListener("click",function(){l.default.outPutLog(t.outputTextarea,"开始自动小游戏"),t.game()}),a.addEventListener("click",function(){return d(t,void 0,void 0,regeneratorRuntime.mark(function t(){return regeneratorRuntime.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:return l.default.outPutLog(this.outputTextarea,"开始自动全部任务"),l.default.outPutLog(this.outputTextarea,"开始自动浏览店铺"),t.next=4,this.send("brandcity_spring_randomVisit",null,80);case 4:return l.default.outPutLog(this.outputTextarea,"开始自动小游戏"),t.next=7,this.send("brandcity_spring_getLottery",4,6);case 7:return l.default.outPutLog(this.outputTextarea,"开始自动福币兑换"),t.next=10,this.send("brandcity_spring_getLottery",2,12);case 10:l.default.outPutLog(this.outputTextarea,"全部任务完成");case 11:case"end":return t.stop()}},t,this)}))})}},{key:"send",value:function(r,u,s){return d(this,void 0,void 0,regeneratorRuntime.mark(function t(){var i,e,o,a=this;return regeneratorRuntime.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:i=this,e=regeneratorRuntime.mark(function t(n){return regeneratorRuntime.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:return t.next=2,new Promise(function(e){var o={clientVersion:"1.0.0",client:"wh5",uuid:"15727505818691431184273",area:"",appid:"publicUseApi",functionId:r,body:u?{actionType:u,taskId:""+(n+1)}:{uuid:"15727505818691431184273"}};setTimeout(function(){return d(a,void 0,void 0,regeneratorRuntime.mark(function t(){return regeneratorRuntime.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:fetch(i.url+"?"+l.default.stringify(o),{credentials:"include"}).then(function(t){return t.json()}).then(function(t){l.default.outPutLog(i.outputTextarea,"操作成功！任务序号："+(n+1)+"/"+s),s<=n+1&&l.default.outPutLog(i.outputTextarea,"当前任务已完成!"),e()});case 1:case"end":return t.stop()}},t,this)}))},c.default.timeoutSpan+l.default.random(300,500))});case 2:case"end":return t.stop()}},t,a)}),o=0;case 3:if(o<s)return t.delegateYield(e(o),"t0",5);t.next=8;break;case 5:o++,t.next=3;break;case 8:case"end":return t.stop()}},t,this)}))}},{key:"lottery",value:function(){for(var n=this,t=function(t){var e,o;o={clientVersion:"1.0.0",client:"wh5",uuid:"15727505818691431184273",area:"",appid:"publicUseApi",functionId:"brandcity_spring_getLottery",body:{actionType:2,taskId:""+((e=t)+1)}},setTimeout(function(){fetch(n.url+"?"+l.default.stringify(o),{credentials:"include"}).then(function(t){return t.json()}).then(function(t){l.default.outPutLog(n.outputTextarea,"操作成功！任务序号："+(e+1)+"/12"),12<=e+1&&l.default.outPutLog(n.outputTextarea,"当前任务已完成!")})},(c.default.timeoutSpan+l.default.random(300,500))*e)},e=0;e<12;e++)t(e)}},{key:"visit",value:function(){for(var n=this,t=function(t){var e,o;o={clientVersion:"1.0.0",client:"wh5",uuid:"15727505818691431184273",area:"",appid:"publicUseApi",functionId:"brandcity_spring_randomVisit",body:{actionType:2,taskId:(e=t)+1+",",uuid:"15727505818691431184273"}},setTimeout(function(){fetch(n.url+"?"+l.default.stringify(o),{credentials:"include"}).then(function(t){return t.json()}).then(function(t){l.default.outPutLog(n.outputTextarea,"操作成功！任务序号："+(e+1)+"/80"),80<=e+1&&l.default.outPutLog(n.outputTextarea,"当前任务已完成!")})},(c.default.timeoutSpan+l.default.random(300,500))*e)},e=0;e<80;e++)t(e)}},{key:"game",value:function(){for(var n=this,t=function(t){var e,o;o={clientVersion:"1.0.0",client:"wh5",uuid:"15727505818691431184273",area:"",appid:"publicUseApi",functionId:"brandcity_spring_getLottery",body:{actionType:4,taskId:(e=t)+1}},setTimeout(function(){fetch(n.url+"?"+l.default.stringify(o),{credentials:"include"}).then(function(t){return t.json()}).then(function(t){l.default.outPutLog(n.outputTextarea,"操作成功！任务序号："+(e+1)+"/6"),6<=e+1&&l.default.outPutLog(n.outputTextarea,"当前任务已完成!")})},(c.default.timeoutSpan+l.default.random(300,500))*e)},e=0;e<6;e++)t(e)}}]),i);function i(t,e,o){f(this,i),this.url="https://api.m.jd.com/client.action",this.params=t,this.container=e,this.outputTextarea=o}o.default=n},{"../config/config":5,"../utils/utils":28}],3:[function(t,e,o){var d=this&&this.__awaiter||function(t,r,u,s){return new(u=u||Promise)(function(o,e){function n(t){try{a(s.next(t))}catch(t){e(t)}}function i(t){try{a(s.throw(t))}catch(t){e(t)}}function a(t){var e;t.done?o(t.value):((e=t.value)instanceof u?e:new u(function(t){t(e)})).then(n,i)}a((s=s.apply(t,r||[])).next())})};Object.defineProperty(o,"__esModule",{value:!0});var l=t("../utils/utils"),c=t("../config/config"),n=(p(i,[{key:"get",value:function(){var e=this;fetch("https://api.m.jd.com/?functionId=pokerTaskList&body={}&client=megatron&clientVersion=1.0.0",{credentials:"include"}).then(function(t){return t.json()}).then(function(t){e.data=t.data,e.taskType=e.data[2].type,e.taskCnt=e.data[2].status.finishCondition,e.outputTextarea.value="获取数据成功\n每日签到："+e.data[0].status.userTimes+"/"+e.data[0].status.finishCondition+"\n关注店铺："+e.data[1].status.userTimes+"/"+e.data[1].status.finishCondition+"\n浏览商品|会场："+e.data[2].status.userTimes+"/"+e.data[2].status.finishCondition+"\n邀请好友："+e.data[3].status.userTimes+"/"+e.data[3].status.finishCondition,e.list()})}},{key:"list",value:function(){var t=this,e=document.createElement("div");e.innerHTML='\n        <div style="margin:10px;">\n        <button style="width: 200px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block"><a href="https://t.jd.com/follow/vender/list.do" target="_blank">取消关注店铺</a></button>\n        <button class="visit" style="width: 200px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键关注店铺</button>\n        <button class="browse" style="width: 200px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键浏览商品|会场</button>\n        <button class="sign" style="width: 200px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键每日签到</button>\n        <button class="auto" style="width: 200px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键自动完成</button></div>',this.container.appendChild(e);var o=l._$(".sign"),n=l._$(".visit"),i=l._$(".browse"),a=l._$(".auto");o.addEventListener("click",function(){l.default.outPutLog(t.outputTextarea,"开始自动签到"),t.sign()}),n.addEventListener("click",function(){l.default.outPutLog(t.outputTextarea,"开始自动关注店铺"),t.visit()}),i.addEventListener("click",function(){l.default.outPutLog(t.outputTextarea,"开始自动浏览会场"),t.browse()}),a.addEventListener("click",function(){return d(t,void 0,void 0,regeneratorRuntime.mark(function t(){return regeneratorRuntime.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:return l.default.outPutLog(this.outputTextarea,"开始自动全部任务"),l.default.outPutLog(this.outputTextarea,"开始自动签到"),this.sign(),l.default.outPutLog(this.outputTextarea,"开始自动关注店铺"),t.next=6,this.send("FOLLOW_SHOP",3);case 6:return l.default.outPutLog(this.outputTextarea,"开始自动浏览会场|商品"),t.next=9,this.send(this.taskType,this.taskCnt);case 9:l.default.outPutLog(this.outputTextarea,"全部任务完成");case 10:case"end":return t.stop()}},t,this)}))})}},{key:"send",value:function(u,s){return d(this,void 0,void 0,regeneratorRuntime.mark(function t(){var r,e=this;return regeneratorRuntime.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:return r=this,t.next=3,fetch("https://api.m.jd.com/?functionId=taskDetail&body={%22taskType%22:%22"+u+"%22}&client=megatron&clientVersion=1.0.0",{credentials:"include"}).then(function(t){return t.json()}).then(function(n){return d(e,void 0,void 0,regeneratorRuntime.mark(function t(){var i,e,o,a=this;return regeneratorRuntime.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:i=n.data.items,e=regeneratorRuntime.mark(function t(o){var e,n;return regeneratorRuntime.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:return e=i[o],n="https://api.m.jd.com/?functionId=doPokerTask&body={%22taskType%22:%22"+u+"%22,%22taskId%22:%22"+e.itemId+"%22}&client=megatron&clientVersion=1.0.0",t.next=3,new Promise(function(e){setTimeout(function(){return d(a,void 0,void 0,regeneratorRuntime.mark(function t(){return regeneratorRuntime.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:fetch(n,{credentials:"include"}).then(function(t){return t.json()}).then(function(t){l.default.outPutLog(r.outputTextarea,"操作成功！任务序号："+(o+1)+"/"+s),s<=o+1&&l.default.outPutLog(r.outputTextarea,"当前任务已完成!"),e()});case 1:case"end":return t.stop()}},t,this)}))},c.default.timeoutSpan+l.default.random(300,500))});case 3:case"end":return t.stop()}},t,a)}),o=0;case 3:if(o<s)return t.delegateYield(e(o),"t0",5);t.next=8;break;case 5:o++,t.next=3;break;case 8:case"end":return t.stop()}},t,this)}))});case 3:case"end":return t.stop()}},t,this)}))}},{key:"sign",value:function(){var e=this;fetch("https://api.m.jd.com/?functionId=doPokerTask&body={%22taskType%22:%22SIGN%22,%22taskId%22:%221%22}&client=megatron&clientVersion=1.0.0",{credentials:"include"}).then(function(t){return t.json()}).then(function(t){l.default.outPutLog(e.outputTextarea,"签到成功！")})}},{key:"visit",value:function(){var n=this;fetch("https://api.m.jd.com/?functionId=taskDetail&body={%22taskType%22:%22FOLLOW_SHOP%22}&client=megatron&clientVersion=1.0.0",{credentials:"include"}).then(function(t){return t.json()}).then(function(t){for(var e=t.data.items,o=0;o<3;o++)!function(e,t){setTimeout(function(){fetch(t,{credentials:"include"}).then(function(t){return t.json()}).then(function(t){l.default.outPutLog(n.outputTextarea,"操作成功！任务序号："+(e+1)+"/3"),3<=e+1&&l.default.outPutLog(n.outputTextarea,"当前任务已完成!")})},(c.default.timeoutSpan+l.default.random(300,500))*e)}(o,"https://api.m.jd.com/?functionId=doPokerTask&body={%22taskType%22:%22FOLLOW_SHOP%22,%22taskId%22:%22"+e[o].itemId+"%22}&client=megatron&clientVersion=1.0.0")})}},{key:"browse",value:function(){var i=this,a=this;fetch("https://api.m.jd.com/?functionId=taskDetail&body={%22taskType%22:%22"+this.taskType+"%22}&client=megatron&clientVersion=1.0.0",{credentials:"include"}).then(function(t){return t.json()}).then(function(t){for(var e=t.data.items,o=0;o<4;o++){var n=e[o];!function(e,t){setTimeout(function(){fetch(t,{credentials:"include"}).then(function(t){return t.json()}).then(function(t){l.default.outPutLog(a.outputTextarea,"操作成功！任务序号："+(e+1)+"/4"),4<=e+1&&l.default.outPutLog(a.outputTextarea,"当前任务已完成!")})},(c.default.timeoutSpan+l.default.random(300,500))*e)}(o,"https://api.m.jd.com/?functionId=doPokerTask&body={%22taskType%22:%22"+i.taskType+"%22,%22taskId%22:%22"+n.itemId+"%22}&client=megatron&clientVersion=1.0.0")}})}}]),i);function i(t,e,o){f(this,i),this.url="https://api.m.jd.com/client.action",this.taskType="BROWSE_PRODUCT",this.taskCnt=5,this.params=t,this.container=e,this.outputTextarea=o}o.default=n},{"../config/config":5,"../utils/utils":28}],4:[function(t,e,o){var i=this&&this.__awaiter||function(t,r,u,s){return new(u=u||Promise)(function(o,e){function n(t){try{a(s.next(t))}catch(t){e(t)}}function i(t){try{a(s.throw(t))}catch(t){e(t)}}function a(t){var e;t.done?o(t.value):((e=t.value)instanceof u?e:new u(function(t){t(e)})).then(n,i)}a((s=s.apply(t,r||[])).next())})};Object.defineProperty(o,"__esModule",{value:!0});var u=t("../utils/utils"),a=t("../config/config"),n=(p(r,[{key:"get",value:function(){var e=this;fetch("https://api.m.jd.com/client.action?functionId=getDefaultTpl&body={%22templateId%22:1001}&appid=content_ecology&clientVersion=1.0.0&client=wh5",{credentials:"include"}).then(function(t){return t.json()}).then(function(t){"60001"!==t.code&&(e.data=t.result,e.shareLink="https://bunearth.m.jd.com/babelDiy/ZAEYNFNMBSWTXROQWKCR/21tFbS6Xm4tpon3oJnwzbnCJBo1Z/index.html?ad_od=1&DDid="+e.data.uuid+"&ukey="+e.data.ukey+"&modelid="+e.data.templateId+"&go=CARD",e.list(),e.shareList(),e.container.appendChild(e.shareListDiv),e.outputTextarea.value="")})}},{key:"list",value:function(){var e=this,t=document.createElement("div");t.innerHTML='\n        <div style="margin:10px;">\n        <a href="https://gitee.com/krapnik/res/raw/master/Bless.png" target="_blank">点击打开新窗口查看活动攻略</a>\n        <button class="copy" style="width: 200px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">复制我的拜年链接</button>\n        <button class="share" style="width: 200px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">提交我的拜年链接</button>\n        <input class="inviteLink" type="text" style="width:80vw;height: 25px;font-size:14px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;" placeholder="请输入需要助力的拜年链接">\n        <button class="assist" style="width: 200px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">为TA助力</button>\n        <input class="inviteCnt" type="text" style="width:80vw;height: 25px;font-size:14px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;" placeholder="需要获取的拜年库数据数量【默认：50】">\n        <button class="inviteGet" style="width: 200px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">获取拜年库数据</button>\n        <button class="assistAll" style="width: 200px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键为拜年库数据拜年</button>\n        <p style="font-size:14px;color:red;">一键为拜年库的前50个数据拜年<br>【提交时间倒序】<br>你也可以将你的拜年链接提交上去<br>复制拜年链接后设置京东UA再打开可查看活动首页</p>\n        </div>',this.container.appendChild(t);var o=u._$(".inviteGet"),n=u._$(".copy"),i=u._$(".share"),a=u._$(".assist"),r=u._$(".assistAll");n.addEventListener("click",function(){u.default.copyText(e.shareLink)}),r.addEventListener("click",function(){u.default.outPutLog(e.outputTextarea,"开始自动为拜年库数据拜年"),e.assistAll()}),a.addEventListener("click",function(){var t=u._$(".inviteLink");e.assist(t.value)}),o.addEventListener("click",function(){var t=u._$(".inviteCnt");u.default.isNumber(t.value)&&alert("该内容非数字！请检查无误后再输入！"),e.shareList(+t.value)}),i.addEventListener("click",function(){u.default.outPutLog(e.outputTextarea,"提交我的数据到拜年库"),e.send()})}},{key:"assist",value:function(a){return i(this,void 0,void 0,regeneratorRuntime.mark(function t(){var i=this;return regeneratorRuntime.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:if(a&&a.includes("modelid")&&a.includes("ukey")&&a.includes("DDid")){t.next=3;break}return alert("请输入要助力的分享链接或输入正确的分享地址！"),t.abrupt("return");case 3:new Promise(function(e){var t=u.default.getSearchString(a,"modelid"),o=u.default.getSearchString(a,"ukey"),n=u.default.getSearchString(a,"DDid");fetch('https://api.m.jd.com/client.action?functionId=guestReceiveBlessing&appid=content_ecology&body={"modelid":'+t+',"uuid":"'+n+'","ukey":"'+o+'"}&client=wh5&clientVersion=1.0.0',{credentials:"include"}).then(function(t){return t.json()}).then(function(t){0==t.code?u.default.outPutLog(i.outputTextarea,"拜年结果："+JSON.stringify(t)):u.default.outPutLog(i.outputTextarea,"拜年结果：你好像已经给这个人拜过年啦~"),e()})});case 4:case"end":return t.stop()}},t,this)}))}},{key:"assistAll",value:function(){return i(this,void 0,void 0,regeneratorRuntime.mark(function t(){var e,o,n=this;return regeneratorRuntime.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:e=regeneratorRuntime.mark(function t(e){var o;return regeneratorRuntime.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:return o=n.shareData[e],t.next=3,new Promise(function(e){setTimeout(function(){return i(n,void 0,void 0,regeneratorRuntime.mark(function t(){return regeneratorRuntime.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:return t.next=2,this.assist(o);case 2:e();case 3:case"end":return t.stop()}},t,this)}))},a.default.timeoutSpan+u.default.random(300,500))});case 3:case"end":return t.stop()}},t,n)}),o=0;case 2:if(o<this.shareData.length)return t.delegateYield(e(o),"t0",4);t.next=7;break;case 4:o++,t.next=2;break;case 7:u.default.outPutLog(this.outputTextarea,"自动拜年结束");case 8:case"end":return t.stop()}},t,this)}))}},{key:"shareList",value:function(t){var a=this,e=0<arguments.length&&void 0!==t?t:50;this.shareData=[];var r="";fetch(this.detailurl+"?limit="+e).then(function(t){return t.json()}).then(function(t){if(t.success){for(var e=t.data.data,o=0;o<e.length;o++){var n=e[o],i="https://bunearth.m.jd.com/babelDiy/ZAEYNFNMBSWTXROQWKCR/21tFbS6Xm4tpon3oJnwzbnCJBo1Z/index.html?ad_od=1&DDid="+n.DDid+"&ukey="+n.ukey+"&modelid="+n.modelid+"&go=CARD";a.shareData.push(i),r+='<div style="margin:10px;border-bottom:1px solid #333"><p>id：'+n.id+"<br>DDid："+n.DDid+"<br>ukey："+n.ukey+"<br>提交时间："+n.create_time+'</p>\n                        <button class="help" value="'+i+'" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block"">手动拜年</button></div>'}a.shareListDiv.innerHTML=r,u._$(".shareList").addEventListener("click",function(t){var e=t.target;if("BUTTON"==e.tagName){var o=e.getAttribute("value");a.assist(o)}})}})}},{key:"send",value:function(){var e=this;if(this.data){var t="modelid="+this.data.templateId+"&ukey="+this.data.ukey+"&DDid="+this.data.uuid;fetch(this.sendUrl,{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"},body:t}).then(function(t){return t.json()}).then(function(t){u.default.outPutLog(e.outputTextarea,JSON.stringify(t))})}else alert("获取活动数据失败！")}}]),r);function r(t,e,o){f(this,r),this.url="https://api.m.jd.com/client.action",this.detailurl="https://krapnik.cn/api/bless/list",this.sendUrl="https://krapnik.cn/api/bless/register",this.shareLink="",this.shareData=[],this.params=t,this.container=e,this.outputTextarea=o,this.outputTextarea.value="当你看到这行文字时，说明你还没有登录京东帐号或者账号接口没有返回数据！",this.shareListDiv=document.createElement("div"),this.shareListDiv.setAttribute("style","margin:10px; border:1px solid #000;font-size: 14px;"),this.shareListDiv.setAttribute("class","shareList")}o.default=n},{"../config/config":5,"../utils/utils":28}],5:[function(t,e,o){Object.defineProperty(o,"__esModule",{value:!0});function n(){f(this,n)}(o.default=n).title="京东领券助手",n.version="v0.4.1",n.author="krapnik",n.timingFlag=!1,n.UAFlag=!1,n.locationHref=window.location.href,n.postCount=1,n.localeTime="",n.serverTime="",n.startTime=0,n.intervalId=0,n.intervalSpan=500,n.postSpan=500,n.timeoutSpan=1500,n.JDAppUA="jdapp;android;8.4.2;8.0.0;;network/wifi;model/Mi Note 2;osVer/26;appBuild/71043;psn/|7;psq/1;uid/;adk/;ads/;pap/JA2015_311210|8.4.2|ANDROID 8.0.0;osv/8.0.0;pv/2.23;jdv/;ref/com.jingdong.app.mall.WebActivity;partner/huawei;apprpd/Home_Main;Mozilla/5.0 (Linux; Android 8.0.0; Mi Note 2 Build/OPR1.170623.032; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/71.0.3578.99 Mobile Safari/537.36",n.JDUserInfoURL="https://wq.jd.com/user/info/QueryJDUserInfo?sceneid=11110&sceneval=2&g_login_type=1",n.JDTimeInfoURL="https://api.m.jd.com/client.action?functionId=babelActivityGetShareInfo&client=wh5",n.JDIMGSourcesURL="https://img13.360buyimg.com/n1/s450x450_",n.multiFlag=!1,n.importFlag=!1},{}],6:[function(t,e,o){Object.defineProperty(o,"__esModule",{value:!0});var n=(p(i,null,[{key:"getCookie",value:function(){return document.cookie}},{key:"getCookieObj",value:function(t){if(t){for(var e={},o=t.split(";"),n=0;n<o.length;n++){var i=o[n].trim(),a=i.indexOf("="),r=i.substring(0,a),u=i.substring(a+1,i.length);e[r]=u}return e}alert("ck内容格式有误！")}},{key:"setCookie",value:function(t,e,o,n){var i=2<arguments.length&&void 0!==o?o:".jd.com",a=3<arguments.length&&void 0!==n?n:"/",r=new Date;r.setTime(r.getTime()+864e5);var u="expires="+r.toUTCString();document.cookie=t+"="+e+";"+u+";domain="+i+";path="+a}},{key:"clearAllCookie",value:function(t,e){var o=0<arguments.length&&void 0!==t?t:".jd.com",n=1<arguments.length&&void 0!==e?e:"/",i=document.cookie.match(/[^ =;]+(?=\=)/g);if(i)for(var a=i.length;a--;)document.cookie=i[a]+"=0;expires="+new Date(0).toUTCString()+";domain="+o+";path="+n}},{key:"coverCookie",value:function(t){this.clearAllCookie();var e=this.getCookieObj(t.ck);for(var o in e){var n=o,i=e[o];this.setCookie(n,i)}}}]),i);function i(){f(this,i)}o.CookieHandler=n},{}],7:[function(t,e,o){var a=this&&this.__awaiter||function(t,r,u,s){return new(u=u||Promise)(function(o,e){function n(t){try{a(s.next(t))}catch(t){e(t)}}function i(t){try{a(s.throw(t))}catch(t){e(t)}}function a(t){var e;t.done?o(t.value):((e=t.value)instanceof u?e:new u(function(t){t(e)})).then(n,i)}a((s=s.apply(t,r||[])).next())})};Object.defineProperty(o,"__esModule",{value:!0});var r=t("../utils/utils"),u=t("../config/config"),s=t("../utils/fetch-jsonp"),d=t("./CookieHandler"),n=(p(i,null,[{key:"parseCK",value:function(t){try{this.cookieArr=this.splitCookies(t),0==this.cookieArr.length?alert("导入的文本文档格式内容有误或者读取识别！"):u.default.importFlag=!0}catch(t){console.log(t),alert("导入CK文本文档有误！")}}},{key:"splitCookies",value:function(t){var e=t.split("\n"),n=[];return e.map(function(t,e){var o=t.split("----");n.push({mark:o[0],ck:o[1],index:e})}),n}},{key:"outPutLog",value:function(t){if(0<this.cookieArr.length){var e="";this.cookieArr.map(function(t){e+="\n【"+t.mark+"】导入成功!"}),r.default.outPutLog(t,e)}}},{key:"checkLogin",value:function(o,n){var i=this;return new Promise(function(e,t){setTimeout(function(){return a(i,void 0,void 0,regeneratorRuntime.mark(function t(){return regeneratorRuntime.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:return d.CookieHandler.coverCookie(n),t.next=3,s.default.fetchJsonp(u.default.JDUserInfoURL).then(function(t){return t.json()}).then(function(t){t.base.nickname?(r.default.outPutLog(o,"【"+n.mark+"】:京东账号->"+t.base.nickname),e(!0)):(r.default.outPutLog(o,"【"+n.mark+"】:该ck校验失败，请检查有效性!"),e(!1))});case 3:case"end":return t.stop()}},t,this)}))},500*n.index)})}}]),i);function i(t){f(this,i)}(o.default=n).cookieArr=[]},{"../config/config":5,"../utils/fetch-jsonp":27,"../utils/utils":28,"./CookieHandler":6}],8:[function(t,e,o){Object.defineProperty(o,"__esModule",{value:!0});var a=t("../utils/utils"),n=(p(i,[{key:"get",value:function(){var t=this.detailurl.replace("{pid}",this.couponParams.pid);a.default.createJsonp(t,!0)}},{key:"jsonp",value:function(t){console.log(t);var e=JSON.parse(t.data),o=e.data;o?(this.couponList=[],e.success?(this.couponList.push({pid:o.productId,title:o.name,detail:o.description,imgUrl:o.imgUrl}),this.list()):alert("请检查该页面优惠券的有效性！")):a.default.outPutLog(this.outputTextarea,"领券结果:"+t.data)}},{key:"list",value:function(){var t=this,e=document.createElement("div");e.innerHTML="<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin-top: 5px;padding: 0 37.5vw 5px;'>优惠券</h3>",e.setAttribute("style","display:flex;flex-direction:column;padding: 5px;margin-top: 5px;border: 1px solid #000;");for(var o=0;o<this.couponList.length;o++){var n=this.couponList[o],i=document.createElement("div");i.setAttribute("style","display:flex;flex-direction:row;padding:10px 0;border-bottom:1px solid #999"),i.innerHTML='<img style="width:120px;height:100%;margin-right:10vw;display: block;" src="'+n.imgUrl+'" />\n                <div>\n                    <h3 style="margin-bottom:10px">'+n.title+'</h3><p style="margin-bottom:10px">'+n.detail+'</p>\n                    <button class="receive" style="width: 80px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">\n                        <a style="color: #fff;text-decoration: none;">直接领取</a>\n                    </button>\n                </div>',e.appendChild(i)}this.container.appendChild(e),a._$(".receive").addEventListener("click",function(){t.send()})}},{key:"send",value:function(){for(var t=0;t<this.couponList.length;t++){var e=this.couponList[t],o=this.url.replace("{pid}",e.pid);a.default.createJsonp(o,!0)}}}]),i);function i(t,e,o){f(this,i),this.url="https://vip.jr.jd.com/goldcoin/purchase?id={pid}&callback=",this.detailurl="https://vip.jr.jd.com/goldcoin/goods/{pid}?callback=",this.couponList=[],this.couponParams=t,this.container=e,this.outputTextarea=o,window.addEventListener("message",this.jsonp.bind(this),!1)}o.default=n},{"../utils/utils":28}],9:[function(t,e,o){Object.defineProperty(o,"__esModule",{value:!0});var n=t("../utils/utils"),i=(p(a,[{key:"get",value:function(){var s=this;this.couponList=[];var t=this.detailurl.replace("{itemId}",this.couponParams.itemId);fetch(t,{credentials:"include"}).then(function(t){return t.json()}).then(function(t){if(t.success){var e=t.result.fuliAct,o=e.actPriceScoreMap,n=t.result.userInfo.userScore.score,i=void 0;for(var a in o){var r=a,u=JSON.parse(r);if(u[0]<n&&u[1]>n){i=o[a][0].id;break}}s.couponList.push({actId:s.couponParams.itemId,priceRuleId:i,groupId:e.actCodeGroups[0].id,title:e.name,detail:e.detail}),s.list()}else alert("请检查该页面优惠券的有效性！")})}},{key:"list",value:function(){var e=this,t=document.createElement("div");t.innerHTML="<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin-top: 5px;padding: 0 37.5vw 5px;'>优惠券</h3>",t.setAttribute("style","display:flex;flex-direction:column;padding: 5px;margin-top: 5px;border: 1px solid #000;");for(var o=0;o<this.couponList.length;o++){var n=this.couponList[o],i=document.createElement("div");i.setAttribute("style","padding:10px 0;border:1px solid gray;border-radius: 10px;margin-top:5px;padding: 5px"),i.setAttribute("data-item","coupon"),i.innerHTML='<h4 style="user-select: none;pointer-events:none;">'+n.title+'</h4>\n                                <p style="user-select: none;pointer-events:none;margin-bottom:10px">详情：'+n.detail+'</p>\n                                <button data="coupon" style="width: 80px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;">直接领取</button>',t.appendChild(i),i.addEventListener("click",function(t){t.target.getAttribute("data")&&e.send()})}this.container.appendChild(t)}},{key:"send",value:function(){for(var e=this,t=0;t<this.couponList.length;t++){var o=this.couponList[t];fetch(this.url,{method:"POST",mode:"cors",credentials:"include",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:"actId="+o.actId+"&groupId="+o.groupId+"&priceRuleId="+o.priceRuleId+"&client=m"}).then(function(t){return t.json()}).then(function(t){n.default.outPutLog(e.outputTextarea," 领券结果："+JSON.stringify(t))})}}}]),a);function a(t,e,o){f(this,a),this.url="https://vip.m.jd.com/fuli/exchange.html",this.detailurl="https://vip.m.jd.com/fuli/detail.html?itemId={itemId}",this.couponList=[],this.couponParams=t,this.container=e,this.outputTextarea=o}o.default=i},{"../utils/utils":28}],10:[function(t,e,o){Object.defineProperty(o,"__esModule",{value:!0});var n=t("../utils/utils"),i=(p(a,[{key:"get",value:function(){var i=this;fetch(this.detailurl,{credentials:"include"}).then(function(t){return t.json()}).then(function(t){if(i.couponList=[],0==t.resultCode){for(var e=t.resultData.data.data,o=0;o<e.length;o++){var n=e[o];n&&i.couponList.push({pid:n.productId,exchangeStatus:3==n.exchangeStatus?"已抢光":2==n.exchangeStatus?"已领取":"可领取",detail:n.description,startDate:new Date(n.startDate).toLocaleString(),discountAmount:n.discountAmount,imgUrl:n.imgUrl,flag:!1})}i.list()}else alert("请检查该页面优惠券的有效性！")})}},{key:"jsonp",value:function(t){JSON.parse(t.data).data,n.default.outPutLog(this.outputTextarea,"领券结果:"+t.data)}},{key:"list",value:function(){var i=this,e=document.createElement("div");e.innerHTML="<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin-top: 5px;padding: 0 37.5vw 5px;'>优惠券</h3><p style='margin: 5px 0;color:red'>请先点击列表项选择领取的券</p>",e.setAttribute("style","display:flex;flex-direction:column;padding: 5px;margin-top: 5px;border: 1px solid #000;");for(var t=function(t){var o=i.couponList[t],n=document.createElement("div");n.setAttribute("style","display:flex;flex-direction:row;text-align:left;border:1px solid gray;border-radius: 10px;margin-top:5px;padding: 5px"),n.setAttribute("data-item","coupon"),n.innerHTML='<img style="width:120px;height:100%;margin-right:10vw;display: block;" src="'+o.imgUrl+'" />\n                <div>\n                    <h3 style="margin-bottom:10px user-select: none;pointer-events:none;">'+o.detail+'</h3><p style="user-select: none;pointer-events:none;margin-bottom:10px">消耗金币：'+o.discountAmount+"<br>开始时间："+o.startDate+"<br>状态："+o.exchangeStatus+'</p>\n                    <button class="receive" data-id='+t+' style="width: 80px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">\n                        <a style="color: #fff;text-decoration: none;user-select: none;pointer-events:none;">直接领取</a>\n                    </button>\n                </div>',e.appendChild(n),n.addEventListener("click",function(t){var e=t.target;e.getAttribute("data-item")||e.parentNode==n&&"BUTTON"!=e.tagName?(o.flag?n.style.border="1px solid gray":n.style.border="3px solid red",o.flag=!o.flag):e.getAttribute("data-id")&&i.singleSend(+e.getAttribute("data-id"))})},o=0;o<this.couponList.length;o++)t(o);this.container.appendChild(e)}},{key:"send",value:function(){for(var t=0;t<this.couponList.length;t++){var e=this.couponList[t],o=this.url.replace("{pid}",e.pid);e.flag&&n.default.createJsonp(o,!0)}}},{key:"singleSend",value:function(t){var e=this.couponList[t],o=this.url.replace("{pid}",e.pid);n.default.createJsonp(o,!0)}}]),a);function a(t,e,o){f(this,a),this.url="https://vip.jr.jd.com/goldcoin/purchase?id={pid}&callback=",this.detailurl="https://ms.jr.jd.com/gw/generic/hy/h5/m/gateFloorById?reqData={%22floorId%22:44,%22pageChannel%22:%22spike%22}",this.couponList=[],this.couponParams=t,this.container=e,this.outputTextarea=o,window.addEventListener("message",this.jsonp.bind(this),!1)}o.default=i},{"../utils/utils":28}],11:[function(t,e,o){Object.defineProperty(o,"__esModule",{value:!0});var n=t("../utils/utils"),i=(p(a,[{key:"jsonp",value:function(t){JSON.parse(t.data).data,n.default.outPutLog(this.outputTextarea,"领券结果:"+t.data)}},{key:"get",value:function(){var i=this;this.couponList=[],fetch(this.detailurl,{method:"POST",body:"body="+encodeURIComponent('{"categoryId":118,"childActivityUrl":"openapp.jdmobile://virtual?params={\\"category\\":\\"jump\\",\\"des\\":\\"couponCenter\\"}","eid":"eidA34d08122basezJhsrmQRRxmKprHoj2C/qsyYbh5TyzlV40H/a8UVc9Mwqf5fJ3ez02Ja/n0hNrG4CqlQNZ5J5VyfpzABj6gCzqhlaRbPfZI81+d1","monitorRefer":"appClient","monitorSource":"ccfeed_android_index_feed","pageClickKey":"Coupons_GetCenter","pageNum":1,"pageSize":20,"shshshfpb":"hJFvGjgPo+Yfm06tQPQBhVa8JMvNh0ofLojzHNpvuXWBm0H7FUSxeyfZMVsrL7YOK"}'),headers:{"Content-Type":"application/x-www-form-urlencoded"}}).then(function(t){return t.json()}).then(function(t){if(t.success){for(var e=t.result.couponList,o=0;o<e.length;o++){var n=e[o];i.couponList.push({ckey:n.ckey,title:n.title,quota:n.quota,discount:n.discount,actId:n.actId,batchId:n.batchId,flag:!1})}i.list()}else alert("请检查该页面优惠券的有效性！")})}},{key:"list",value:function(){var i=this,e=document.createElement("div");e.innerHTML="<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin-top: 5px;padding: 0 37.5vw 5px;'>优惠券</h3><p style='margin: 5px 0;color:red'>请先点击列表项选择领取的券<br>【接口数据来自APP端-为你推荐】</p>",e.setAttribute("style","display:flex;flex-direction:column;padding: 5px;margin-top: 5px;border: 1px solid #000;");for(var t=function(t){var o=i.couponList[t],n=document.createElement("div");n.setAttribute("style",";margin-top:5px;padding:10px 0;border:1px solid #999"),n.setAttribute("data-item","coupon"),n.innerHTML='\n                    <p style="margin-bottom:10px">标题：'+o.title+"<br>详情："+o.quota+"<br>折扣："+o.discount+"<br></p>\n                    <button  data-id="+t+' style="width: 80px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0; color:#fff">直接领取</button>',e.appendChild(n),n.addEventListener("click",function(t){var e=t.target;e.getAttribute("data-item")||e.parentNode==n&&"BUTTON"!=e.tagName?(o.flag?n.style.border="1px solid gray":n.style.border="3px solid red",o.flag=!o.flag):e.getAttribute("data-id")&&i.singleSend(+e.getAttribute("data-id"))})},o=0;o<this.couponList.length;o++)t(o);this.container.appendChild(e)}},{key:"send",value:function(){for(var t=0;t<this.couponList.length;t++){var e=this.couponList[t],o=this.url.replace("{actId}",e.actId).replace("{ckey}",e.ckey).replace("{batchid}",e.batchId);e.flag&&n.default.createJsonp(o,!0)}}},{key:"singleSend",value:function(t){var e=this.couponList[t],o=this.url.replace("{actId}",e.actId).replace("{ckey}",e.ckey).replace("{batchid}",e.batchId);n.default.createJsonp(o,!0)}}]),a);function a(t,e,o){f(this,a),this.url="https://s.m.jd.com/activemcenter/mcouponcenter/receivecoupon?coupon={actId},{ckey}&batchid={batchid}&sceneval=2&g_login_type=1&callback=",this.detailurl="https://api.m.jd.com/client.action?functionId=getCcFeedInfo&clientVersion=8.4.6&client=android&uuid=869782023101754-c40bcb2a081c&st=1580274952976&sign=5e8edb6a1063a25d2a8d98b537974329&sv=120",this.couponList=[],this.couponParams=t,this.container=e,this.outputTextarea=o,window.addEventListener("message",this.jsonp.bind(this),!1)}o.default=i},{"../utils/utils":28}],12:[function(t,e,o){Object.defineProperty(o,"__esModule",{value:!0});var n=t("../utils/utils"),i=(p(a,[{key:"get",value:function(){this.couponList=[];var t=window._couponData.batchinfo,e=[];for(var o in t)e&&e instanceof Array&&(e=t[o]);for(var n=0;n<e.length;n++){var i=e[n],a=i.limitStr,r=i.discount,u=i.quota,s=i.constraintBeginTime,d=i.constraintEndTime;this.couponList.push({limitStr:a,discount:r,constraintEndTime:d,constraintBeginTime:s,quota:u,flag:!1})}this.list()}},{key:"list",value:function(){var i=this,e=document.createElement("div");e.innerHTML="<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin-top: 5px;padding: 0 37.5vw 5px;'>优惠券</h3><p style='margin: 5px 0;color:red'>请先点击列表项选择领取的券</p>",e.setAttribute("style","display:flex;flex-direction:column;padding: 5px;margin-top: 5px;border: 1px solid #000;");for(var t=function(t){var o=i.couponList[t],n=document.createElement("div");n.setAttribute("style","padding:10px 0;border:1px solid gray;border-radius: 10px;margin-top:5px;padding: 5px"),n.setAttribute("data-item","coupon"),n.innerHTML='<h4 style="user-select: none;pointer-events:none;">'+o.quota+"-"+o.discount+'</h4>\n                                <p style="user-select: none;pointer-events:none;margin-bottom:10px">范围：'+o.limitStr+"<br/>时间："+o.constraintBeginTime+"-"+o.constraintEndTime+'</p>\n                                <button data="coupon" style="width: 80px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;">直接领取</button>',e.appendChild(n),n.addEventListener("click",function(t){var e=t.target;e.getAttribute("data-item")||e.parentNode==n&&"BUTTON"!=e.tagName?(o.flag?n.style.border="1px solid gray":n.style.border="3px solid red",o.flag=!o.flag):e.getAttribute("data")&&i.send()})},o=0;o<this.couponList.length;o++)t(o);this.container.appendChild(e)}},{key:"send",value:function(){var t=this.url.replace("{key}",this.couponParams.key).replace("{roleId}",this.couponParams.roleId);n.default.createJsonp(t,!1)}},{key:"jsonp",value:function(t){n.default.outPutLog(this.outputTextarea,"领券结果:"+JSON.stringify(t))}}]),a);function a(t,e,o){f(this,a),this.url="https://s.m.jd.com/activemcenter/mfreecoupon/getcoupon?key={key}&roleId={roleId}",this.couponList=[],this.couponParams=t,this.container=e,this.outputTextarea=o,window.getcoupon=this.jsonp.bind(this)}o.default=i},{"../utils/utils":28}],13:[function(t,e,o){Object.defineProperty(o,"__esModule",{value:!0});var i=t("../utils/utils"),n=(p(a,[{key:"get",value:function(){this.couponList=[];for(var t=window.__react_data__.activityData.floorList,e=0;e<t.length;e++){var o=t[e];if("free_coupon"==o.template||"finance_coupon"==o.template||"combine_coupon"==o.template)for(var n=0;n<o.couponList.length;n++){var i=o.couponList[n],a=i.scene,r=i.args||i.cpId,u=i.jsonSrv?JSON.parse(i.jsonSrv).cid:"",s=i.discount,d=i.picUrl||i.picture,l=i.status,c=i.limit+","+i.scope;this.couponList.push({discount:s,details:c,scene:a,args:r,status:l,couponbatch:u,picUrl:d,flag:!1})}}this.list()}},{key:"list",value:function(){var e=this,i=document.createElement("div");i.innerHTML="<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin-top: 5px;padding: 0 37.5vw 5px;'>优惠券</h3><p style='margin: 5px 0;color:red'>请先点击列表项选择领取的券</p>",i.setAttribute("style","display:flex;flex-direction:column;padding: 5px;margin-top: 5px;border: 1px solid #000;");for(var t=function(t){var o=e.couponList[t],n=document.createElement("div");n.setAttribute("style","display:flex;flex-direction:row;border:1px solid gray;border-radius: 10px;margin-top:5px;padding: 5px"),n.setAttribute("data-item","coupon"),"1"==o.scene?n.innerHTML='<img style="user-select: none;pointer-events:none;width:120px;height:100%;padding-right:10vw;display: block;" src="'+o.picUrl+'" />\n                <div">\n                    <p style="user-select: none;pointer-events:none;margin-bottom:10px">状态：'+("0"==o.status?"可领取":"1"==o.status?"已领取":"已领光")+"<br/>说明："+o.details+'</p>\n                    <button style="width: 100px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">\n                        <a href=\'https://so.m.jd.com/list/couponSearch.action?couponbatch='+o.couponbatch+'\' target="_blank" style="color: #fff;text-decoration: none;">可用商品</a>\n                    </button>\n                    <button style="width: 100px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">\n                        <a href=\'https://api.m.jd.com/client.action?functionId=newBabelAwardCollection&body={"activityId":"'+e.couponParams.activityId+'","scene":'+o.scene+',"args":"'+o.args+'"}&client=wh5\' target="_blank" style="color: #fff;text-decoration: none;">提取链接</a>\n                    </button>\n                </div>':"3"==o.scene&&(n.innerHTML='<img style="user-select: none;pointer-events:none;width:120px;height:100%;padding-right:10vw;display: block;" src="'+o.picUrl+'" />\n                <div">\n                <p style="user-select: none;pointer-events:none;margin-bottom:10px">状态：'+("0"==o.status?"可领取":"1"==o.status?"已领取":"已领光")+'</p>\n                <button style="width: 100px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">\n                    <a href=\'https://api.m.jd.com/client.action?functionId=newBabelAwardCollection&body={"activityId":"'+e.couponParams.activityId+'","scene":'+o.scene+',"actKey":"'+o.args+'"}&client=wh5\' target="_blank" style="color: #fff;text-decoration: none;">提取链接</a>\n                </button>\n                </div>'),i.appendChild(n),n.addEventListener("click",function(t){var e=t.target;(e.getAttribute("data-item")||e.parentNode==n&&"BUTTON"!=e.tagName)&&(o.flag?n.style.border="1px solid gray":n.style.border="3px solid red",o.flag=!o.flag)})},o=0;o<this.couponList.length;o++)t(o);this.container.appendChild(i)}},{key:"send",value:function(){for(var n=this,t=function(e){var t=n.couponList[e],o="";"1"==t.scene?o='https://api.m.jd.com/client.action?functionId=newBabelAwardCollection&body={"activityId":"'+n.couponParams.activityId+'","scene":'+t.scene+',"args":"'+t.args+'"}&client=wh5':"3"==t.scene&&(o='https://api.m.jd.com/client.action?functionId=newBabelAwardCollection&body={"activityId":"'+n.couponParams.activityId+'","scene":'+t.scene+',"actKey":"'+t.args+'"}&client=wh5'),t.flag&&fetch(o,{credentials:"include"}).then(function(t){return t.json()}).then(function(t){t.errmsg?i.default.outPutLog(n.outputTextarea,"第"+(e+1)+"张 领券结果:"+t.errmsg):i.default.outPutLog(n.outputTextarea,"第"+(e+1)+"张 领券结果:"+t.subCodeMsg)})},e=0;e<this.couponList.length;e++)t(e)}}]),a);function a(t,e,o){f(this,a),this.url="https://api.m.jd.com/client.action?functionId=newBabelAwardCollection",this.couponList=[],this.couponParams=t,this.container=e,this.outputTextarea=o}o.default=n},{"../utils/utils":28}],14:[function(t,e,o){Object.defineProperty(o,"__esModule",{value:!0});var a=t("../utils/utils"),n=(p(i,[{key:"get",value:function(){var t=this.detailurl.replace("{pid}",this.couponParams.pid);a.default.createJsonp(t,!0)}},{key:"jsonp",value:function(t){console.log(t);var e=JSON.parse(t.data),o=e.data;o?(this.couponList=[],e.success?(this.couponList.push({pid:o.productId,title:o.name,detail:o.description,imgUrl:o.imgUrl}),this.list()):alert("请检查该页面优惠券的有效性！")):a.default.outPutLog(this.outputTextarea,"领券结果:"+t.data)}},{key:"list",value:function(){var t=this,e=document.createElement("div");e.innerHTML="<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin-top: 5px;padding: 0 37.5vw 5px;'>优惠券</h3>",e.setAttribute("style","display:flex;flex-direction:column;padding: 5px;margin-top: 5px;border: 1px solid #000;");for(var o=0;o<this.couponList.length;o++){var n=this.couponList[o],i=document.createElement("div");i.setAttribute("style","display:flex;flex-direction:row;padding:10px 0;border-bottom:1px solid #999"),i.innerHTML='<img style="width:120px;height:100%;margin-right:10vw;display: block;" src="'+n.imgUrl+'" />\n                <div>\n                    <h3 style="margin-bottom:10px">'+n.title+'</h3><p style="margin-bottom:10px">'+n.detail+'</p>\n                    <button class="receive" style="width: 80px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">\n                        <a style="color: #fff;text-decoration: none;">直接领取</a>\n                    </button>\n                </div>',e.appendChild(i)}this.container.appendChild(e),a._$(".receive").addEventListener("click",function(){t.send()})}},{key:"send",value:function(){for(var t=0;t<this.couponList.length;t++){var e=this.couponList[t],o=this.url.replace("{pid}",e.pid);a.default.createJsonp(o,!0)}}}]),i);function i(t,e,o){f(this,i),this.url="https://vip.jr.jd.com/goldcoin/purchase?id={pid}&callback=",this.detailurl="https://vip.jr.jd.com/goldcoin/product/{pid}?callback=",this.couponList=[],this.couponParams=t,this.container=e,this.outputTextarea=o,window.addEventListener("message",this.jsonp.bind(this),!1)}o.default=n},{"../utils/utils":28}],15:[function(t,e,o){Object.defineProperty(o,"__esModule",{value:!0});var i=t("../utils/utils"),n=(p(a,[{key:"get",value:function(){var r=this;this.couponList=[],fetch(this.detailurl,{credentials:"include"}).then(function(t){return t.json()}).then(function(t){if(0==t.resultCode){for(var e=t.resultData.jtLimitedResults,o=0;o<e.length;o++)for(var n=e[o].floorInfo,i=0;i<n.length;i++){var a=n[i];r.couponList.push({couponKey:a.activeId,title:a.text2,detail:a.number,couponStatus:5==a.couponStatus?"已领光":1==a.couponStatus?"未开始":"已领取",time:a.time,flag:!1})}r.list()}else alert("请检查该页面优惠券的有效性！")})}},{key:"list",value:function(){var i=this,e=document.createElement("div");e.innerHTML="<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin-top: 5px;padding: 0 37.5vw 5px;'>优惠券</h3><p style='margin: 5px 0;color:red'>请先点击列表项选择领取的券</p>",e.setAttribute("style","display:flex;flex-direction:column;padding: 5px;margin-top: 5px;border: 1px solid #000;");for(var t=function(t){var o=i.couponList[t],n=document.createElement("div");n.setAttribute("style",";margin-top:5px;padding:10px 0;border:1px solid #999"),n.setAttribute("data-item","coupon"),n.innerHTML='\n                    <p style="margin-bottom:10px">类型：'+o.title+"<br>详情："+o.detail+"<br>状态："+o.couponStatus+"<br>开始时间："+o.time+"</p>\n                    <button  data-id="+t+' style="width: 80px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0; color:#fff">直接领取</button>',e.appendChild(n),n.addEventListener("click",function(t){var e=t.target;e.getAttribute("data-item")||e.parentNode==n&&"BUTTON"!=e.tagName?(o.flag?n.style.border="1px solid gray":n.style.border="3px solid red",o.flag=!o.flag):e.getAttribute("data-id")&&i.singleSend(+e.getAttribute("data-id"))})},o=0;o<this.couponList.length;o++)t(o);this.container.appendChild(e)}},{key:"send",value:function(){for(var e=this,t=0;t<this.couponList.length;t++){var o=this.couponList[t],n=this.url.replace("{couponKey}",o.couponKey);o.flag&&fetch(n,{credentials:"include"}).then(function(t){return t.json()}).then(function(t){i.default.outPutLog(e.outputTextarea,"领券结果:"+JSON.stringify(t.resultData))})}}},{key:"singleSend",value:function(t){var e=this,o=this.couponList[t],n=this.url.replace("{couponKey}",o.couponKey);fetch(n,{credentials:"include"}).then(function(t){return t.json()}).then(function(t){i.default.outPutLog(e.outputTextarea,"领券结果:"+JSON.stringify(t.resultData))})}}]),a);function a(t,e,o){f(this,a),this.url="https://ms.jr.jd.com/gw/generic/bt/h5/m/receiveCoupons?reqData=%7B%22couponKey%22:%22{couponKey}%22,%22eid%22:%22170.0.0.1%22,%22appId%22:%22btm%22%7D",this.detailurl="https://ms.jr.jd.com/gw/generic/bt/h5/m/queryBtmLimitedInfo",this.couponList=[],this.couponParams=t,this.container=e,this.outputTextarea=o}o.default=n},{"../utils/utils":28}],16:[function(t,e,o){Object.defineProperty(o,"__esModule",{value:!0});var i=t("../utils/utils"),n=(p(a,[{key:"get",value:function(){i.default.createJsonp(this.detailurl,!0)}},{key:"jsonp",value:function(t){var e=JSON.parse(t.data),o=e.resultData.limitedResult;if(o)if(this.couponList=[],0==e.resultCode){for(var n=0;n<o.length;n++)for(var i=o[n].floorInfo,a=0;a<3;a++){var r=i[a];this.couponList.push({couponKey:r.couponKey,title:r.text1,detail:r.number,couponStatus:5==r.couponStatus?"已领光":1==r.couponStatus?"未开始":"已领取",time:o[n].time,flag:!1})}this.list()}else alert("请检查该页面优惠券的有效性！")}},{key:"list",value:function(){var i=this,e=document.createElement("div");e.innerHTML="<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin-top: 5px;padding: 0 37.5vw 5px;'>优惠券</h3><p style='margin: 5px 0;color:red'>请先点击列表项选择领取的券</p>",e.setAttribute("style","display:flex;flex-direction:column;padding: 5px;margin-top: 5px;border: 1px solid #000;");for(var t=function(t){var o=i.couponList[t],n=document.createElement("div");n.setAttribute("style",";margin-top:5px;padding:10px 0;border:1px solid #999"),n.setAttribute("data-item","coupon"),n.innerHTML='\n                    <p style="margin-bottom:10px">类型：'+o.title+"<br>详情："+o.detail+"<br>状态："+o.couponStatus+"<br>开始时间："+o.time+"</p>\n                    <button  data-id="+t+' style="width: 80px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0; color:#fff">直接领取</button>',e.appendChild(n),n.addEventListener("click",function(t){var e=t.target;e.getAttribute("data-item")||e.parentNode==n&&"BUTTON"!=e.tagName?(o.flag?n.style.border="1px solid gray":n.style.border="3px solid red",o.flag=!o.flag):e.getAttribute("data-id")&&i.singleSend(+e.getAttribute("data-id"))})},o=0;o<this.couponList.length;o++)t(o);this.container.appendChild(e)}},{key:"send",value:function(){for(var e=this,t=0;t<this.couponList.length;t++){var o=this.couponList[t],n=this.url.replace("{couponKey}",o.couponKey);o.flag&&fetch(n,{credentials:"include"}).then(function(t){return t.json()}).then(function(t){i.default.outPutLog(e.outputTextarea,"领券结果:"+JSON.stringify(t.resultData))})}}},{key:"singleSend",value:function(t){var e=this,o=this.couponList[t],n=this.url.replace("{couponKey}",o.couponKey);fetch(n,{credentials:"include"}).then(function(t){return t.json()}).then(function(t){i.default.outPutLog(e.outputTextarea,"领券结果:"+JSON.stringify(t.resultData))})}}]),a);function a(t,e,o){f(this,a),this.url='https://ms.jr.jd.com/gw/generic/bt/h5/m/receiveCoupons?reqData={"couponKey":"{couponKey}","eid":"1"}}',this.detailurl="https://ms.jr.jd.com/gw/generic/bt/h5/m/queryLimitedInfo?callback=",this.couponList=[],this.couponParams=t,this.container=e,this.outputTextarea=o,window.addEventListener("message",this.jsonp.bind(this),!1)}o.default=n},{"../utils/utils":28}],17:[function(t,e,o){Object.defineProperty(o,"__esModule",{value:!0});var i=t("../utils/utils"),n=(p(a,[{key:"get",value:function(){var c=this;this.couponList=[],fetch(this.detailurl,{credentials:"include"}).then(function(t){return t.json()}).then(function(t){for(var e=t.rs.wholeCategoryCoupon,o=0;o<e.length;o++){var n=e[o],i=n.giftAmount,a=n.discount,r=n.quota,u=n.couponState,s=n.activtyId,d=n.limitStr,l=n.hour;c.couponList.push({giftAmount:i,activityId:s,discount:a,quota:r,hour:l,limitStr:d,couponState:u,flag:!1})}c.list()})}},{key:"list",value:function(){var i=this,e=document.createElement("div");e.innerHTML="<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin-top: 5px;padding: 0 37.5vw 5px;'>优惠券</h3><p style='margin: 5px 0;color:red'>点击列表项选择要领取的券</p>",e.setAttribute("style","display:flex;flex-direction:column;padding: 5px;margin-top: 5px;border: 1px solid #000;");for(var t=function(t){var o=i.couponList[t],n=document.createElement("div");n.setAttribute("style","text-align:left;border:1px solid gray;border-radius: 10px;margin-top:5px;padding: 5px"),n.setAttribute("data-item","coupon"),n.innerHTML='<h3 style="user-select: none;pointer-events:none;">折扣：'+o.quota+"-"+o.discount+'</h3>\n                                    <p style="margin-bottom:10px;user-select: none;pointer-events:none;">状态：'+(1==o.couponState?"可领取":6==o.couponState?"已领光":"不可领取")+"<br/>说明："+o.limitStr+"<br/>兑换礼金："+o.giftAmount+"<br/>领取时间："+(o.hour||"现在可领")+'</p>\n                                    <button class="receive" data-id='+t+' style="width: 80px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;">直接领取</button>',e.appendChild(n),n.addEventListener("click",function(t){var e=t.target;e.getAttribute("data-item")||e.parentNode==n&&"BUTTON"!=e.tagName?(o.flag?n.style.border="1px solid gray":n.style.border="3px solid red",o.flag=!o.flag):e.getAttribute("data-id")&&i.singleSend(+e.getAttribute("data-id"))},!1)},o=0;o<this.couponList.length;o++)t(o);this.container.appendChild(e)}},{key:"send",value:function(){for(var n=this,t=function(t){var e=n.couponList[t],o=n.url.replace("{activityId}",e.activityId);e.flag&&fetch(o,{credentials:"include"}).then(function(t){return t.json()}).then(function(t){i.default.outPutLog(n.outputTextarea,e.quota+"-"+e.discount+" 领券结果:"+t.msg)})},e=0;e<this.couponList.length;e++)t(e)}},{key:"singleSend",value:function(t){var e=this,o=this.couponList[t],n=this.url.replace("{activityId}",o.activityId);fetch(n,{credentials:"include"}).then(function(t){return t.json()}).then(function(t){i.default.outPutLog(e.outputTextarea,o.quota+"-"+o.discount+" 领券结果:"+t.msg)})}}]),a);function a(t,e,o){f(this,a),this.url="https://rsp.jd.com/coupon/receiveDayCoupon/v1?locationCode=10002&lt=m&an=plus.mobile&getType=1&discount=10&couponKey=&platform=3&eventId=MPlusCoupon_Get&eid=&fp=&getType=1&activityId={activityId}",this.detailurl="https://rsp.jd.com/coupon/dayCouponList/v1/?lt=m&an=plus.mobile&couponType=0_1",this.couponList=[],this.couponParams=t,this.container=e,this.outputTextarea=o}o.default=n},{"../utils/utils":28}],18:[function(t,e,o){Object.defineProperty(o,"__esModule",{value:!0});var i=t("../utils/utils"),n=(p(a,[{key:"get",value:function(){var p=this;this.couponList=[],fetch(this.detailurl,{credentials:"include"}).then(function(t){return t.json()}).then(function(t){for(var e=t.data.hotFloor.resultList,o=0;o<e.length;o++){var n=e[o],i=n.name,a=n.disCount,r=n.quota,u=n.skuImage,s=n.skuId,d=n.time,l=n.putKey,c=n.batchId;p.couponList.push({name:i,putKey:l,skuImage:u,discount:a,quota:r,skuId:s,batchId:c,time:d,flag:!1})}p.list()})}},{key:"list",value:function(){var i=this,e=document.createElement("div");e.innerHTML="<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin-top: 5px;padding: 0 37.5vw 5px;'>优惠券</h3><p style='margin: 5px 0;color:red'>请先点击列表项选择领取的券</p>",e.setAttribute("style","display:flex;flex-direction:column;padding: 5px;margin-top: 5px;border: 1px solid #000;");for(var t=function(t){var o=i.couponList[t],n=document.createElement("div");n.setAttribute("style","display:flex;flex-direction:row;padding:10px 0;border:1px solid gray;border-radius: 10px;margin-top:5px;padding: 5px"),n.setAttribute("data-item","coupon"),n.innerHTML='<img style="user-select: none;pointer-events:none;width:120px;height:100%;padding-right:10vw;display: block;" src="'+o.skuImage+'" />\n                                <div style="text-align: left">\n                                <h4 style="user-select: none;pointer-events:none;">'+o.name+'</h4>\n                                <p style="user-select: none;pointer-events:none;margin-bottom:10px">折扣：'+o.quota+"-"+o.discount+"<br/>下场时间："+o.time+'</p>\n                                <button  class="receive" data-id='+t+' style="width: 80px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;">直接领取</button>\n                                </div>',e.appendChild(n),n.addEventListener("click",function(t){var e=t.target;e.getAttribute("data-item")||e.parentNode==n&&"BUTTON"!=e.tagName?(o.flag?n.style.border="1px solid gray":n.style.border="3px solid red",o.flag=!o.flag):e.getAttribute("data-id")&&i.singleSend(+e.getAttribute("data-id"))})},o=0;o<this.couponList.length;o++)t(o);this.container.appendChild(e)}},{key:"send",value:function(){for(var n=this,t=function(t){var e=n.couponList[t];if(e.flag){var o='https://api.m.jd.com/client.action?functionId=receiveSeckillCoupon&body=%7B"roleId"%3A"'+encodeURIComponent(e.putKey)+'"%2C"source"%3A"home_subsidy"%2C"floorType"%3A0%2C"skuId"%3A"'+e.skuId+'"%2C"quota"%3A"'+e.quota+'"%2C"disCount"%3A"'+e.discount+'"%2C"batchId"%3A"'+e.batchId+'"%7D&client=m&appid=XPMSGC2019';fetch(o,{method:"POST",mode:"cors",credentials:"include",headers:{"Content-Type":"application/x-www-form-urlencoded"}}).then(function(t){return t.json()}).then(function(t){i.default.outPutLog(n.outputTextarea,e.quota+"-"+e.discount+" 领券结果:"+t.resultMsg)})}},e=0;e<this.couponList.length;e++)t(e)}},{key:"singleSend",value:function(t){var e=this,o=this.couponList[t],n='https://api.m.jd.com/client.action?functionId=receiveSeckillCoupon&body=%7B"roleId"%3A"'+encodeURIComponent(o.putKey)+'"%2C"source"%3A"home_subsidy"%2C"floorType"%3A0%2C"skuId"%3A"'+o.skuId+'"%2C"quota"%3A"'+o.quota+'"%2C"disCount"%3A"'+o.discount+'"%2C"batchId"%3A"'+o.batchId+'"%7D&client=m&appid=XPMSGC2019';fetch(n,{method:"POST",mode:"cors",credentials:"include",headers:{"Content-Type":"application/x-www-form-urlencoded"}}).then(function(t){return t.json()}).then(function(t){i.default.outPutLog(e.outputTextarea,o.quota+"-"+o.discount+" 领券结果:"+t.resultMsg)})}}]),a);function a(t,e,o){f(this,a),this.url="https://api.m.jd.com/client.action?functionId=newBabelAwardCollection",this.detailurl="https://api.m.jd.com/client.action?functionId=getBillionSubsidyInfo&body=%7B%22source%22:%22home_subsidy%22%7D&appid=XPMSGC2019",this.couponList=[],this.couponParams=t,this.container=e,this.outputTextarea=o}o.default=n},{"../utils/utils":28}],19:[function(t,e,o){Object.defineProperty(o,"__esModule",{value:!0});var i=t("../utils/utils"),n=(p(a,[{key:"get",value:function(){var o=this;this.couponList=[];var t=this.detailurl.replace("{couponBusinessId}",this.couponParams.couponBusinessId);fetch(t).then(function(t){return t.json()}).then(function(t){var e=JSON.parse(t.data).baiCouponInfo;t.isSuccess?(o.couponList.push({couponBusinessId:JSON.parse(t.data).baiCouponDetailsNext.couponBusinessId,platform:e.platform,title:e.title,detail:e.detail}),o.list()):alert("请检查该页面优惠券的有效性！")})}},{key:"list",value:function(){var t=document.createElement("div");t.innerHTML="<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin-top: 5px;padding: 0 37.5vw 5px;'>优惠券</h3><p style='margin: 5px 0;color:red'>默认领取单张券，无须选定</p>",t.setAttribute("style","display:flex;flex-direction:column;padding: 5px;margin-top: 5px;border: 1px solid #000;");for(var e=0;e<this.couponList.length;e++){var o=this.couponList[e],n=document.createElement("div");n.setAttribute("style","padding:10px 0;border-bottom:1px solid #999"),n.innerHTML="<h3>"+o.title+"</h3><p>"+o.detail+"</p><p>可用范围："+o.platform+'</p>\n                                <button style="width: 80px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">\n                                    <a href=\'http://opencredit.jd.com/act/get/coupon?couponBusinessId='+o.couponBusinessId+'&actId=004\' target="_blank" style="color: #fff;text-decoration: none;">直接领取</a>\n                                </button>',t.appendChild(n)}this.container.appendChild(t)}},{key:"send",value:function(){for(var n=this,t=function(e){var t=n.couponList[e],o=n.url.replace("{couponBusinessId}",t.couponBusinessId);fetch(o).then(function(t){return t.json()}).then(function(t){t.isSuccess?i.default.outPutLog(n.outputTextarea,"第"+(e+1)+"张 领券结果:领取成功！}"):i.default.outPutLog(n.outputTextarea,"第"+(e+1)+"张 领券结果:领取失败！")})},e=0;e<this.couponList.length;e++)t(e)}}]),a);function a(t,e,o){f(this,a),this.url="https://opencredit.jd.com/act/get/coupon?couponBusinessId={couponBusinessId}&actId=004",this.detailurl="https://opencredit.jd.com/act/get/couponInfo?couponBusinessId={couponBusinessId}",this.couponList=[],this.couponParams=t,this.container=e,this.outputTextarea=o}o.default=n},{"../utils/utils":28}],20:[function(t,e,o){var n;Object.defineProperty(o,"__esModule",{value:!0}),(n=o.activityType||(o.activityType={}))[n.none=0]="none",n.monsterNian="monsterNian",n.brandCitySpring="brandCitySpring",n.palace="palace",n.receiveBless="ReceiveBless"},{}],21:[function(t,e,o){var n;Object.defineProperty(o,"__esModule",{value:!0}),(n=o.couponType||(o.couponType={}))[n.none=0]="none",n.receiveCoupons="receiveCoupons",n.newBabelAwardCollection="newBabelAwardCollection",n.whiteCoupon="whiteCoupon",n.purchase="purchase",n.receiveDayCoupon="receiveDayCoupon",n.secKillCoupon="secKillCoupon",n.mfreecoupon="mfreecoupon",n.coinPurchase="coinPurchase",n.GcConvert="GcConvert",n.ReceiveCoupons="ReceiveCoupons",n.ReceiveCoupon="ReceiveCoupon",n.getCouponCenter="getCouponCenter",n.exchange="exchange"},{}],22:[function(t,e,o){var n;Object.defineProperty(o,"__esModule",{value:!0}),(n=o.gameType||(o.gameType={}))[n.none=0]="none",n.cloudpig="cloudpig",n.moneytree="moneytree"},{}],23:[function(t,e,o){Object.defineProperty(o,"__esModule",{value:!0}),(o.goodsType||(o.goodsType={})).goods="goods"},{}],24:[function(t,e,o){var h=this&&this.__awaiter||function(t,r,u,s){return new(u=u||Promise)(function(o,e){function n(t){try{a(s.next(t))}catch(t){e(t)}}function i(t){try{a(s.throw(t))}catch(t){e(t)}}function a(t){var e;t.done?o(t.value):((e=t.value)instanceof u?e:new u(function(t){t(e)})).then(n,i)}a((s=s.apply(t,r||[])).next())})};Object.defineProperty(o,"__esModule",{value:!0});var g=t("../utils/utils"),m=t("../config/config"),n=t("../cookie/CookieHandler"),v=t("../cookie/CookieManager"),i=(p(a,[{key:"get",value:function(){this.login(),this.list()}},{key:"list",value:function(){var e=this,t=document.createElement("div");t.innerHTML='\n        <div style="margin:10px;">\n        <button class="Login" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">查看猪猪详情</button>\n        <button class="Achievements" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">可提现红包</button>\n        <button class="SignOne" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键每日签到</button>\n        <button class="OpenBox" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键开箱子</button>\n        <button class="UserBag" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">查看食物背包</button>\n        <p>喂养食物:<select class="food" name="food" style="border: 1px solid #333;padding: 2px;">\n            <option value ="1001003003">普通猪粮</option>\n            <option value ="1001003001">白菜</option>\n            <option value="1001003002">胡萝卜</option>\n            <option value="1001003004">南瓜</option>\n        </select>\n        </p>\n        <button class="AddFood" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">喂养食物</button>\n        <p>自动喂养间隔：<select class="foodSpan" name="foodSpan" style="border: 1px solid #333;padding: 2px;">\n            <option value ="1800000">30分钟</option>\n            <option value ="3600000">60分钟</option>\n            <option value ="5400000">90分钟</option>\n        </select>\n        </p>\n        <button class="AutoAddFood" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">自动定时喂养</button>\n        <button class="AddFavoriteFood" style="width: 120px;height:30px;background-color: #a7bcce;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">喂养喜爱食物</button>\n        <p style="border: 1px solid #000;fontsize:14px;padding:2px">查看猪猪详情后可以喂养喜爱食物和自动喂养喜爱食物【前提要存在喜爱食物】</p>\n        <button class="cancelAutoAddFood" style="display:none;width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">取消定时喂养</button>\n        <button class="pigPetLotteryIndex" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">大转盘情况</button>\n        <button class="LotteryPlay" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键大转盘</button>\n        </div>',this.container.appendChild(t);var o=g._$(".OpenBox"),n=g._$(".pigPetLotteryIndex"),i=g._$(".Achievements"),a=g._$(".food"),r=g._$(".foodSpan"),u=g._$(".LotteryPlay"),s=g._$(".AutoAddFood"),d=g._$(".cancelAutoAddFood"),l=g._$(".AddFood"),c=g._$(".SignOne"),p=g._$(".UserBag"),f=g._$(".Login");a.onchange=function(t){e.foodskuId=a.value},r.onchange=function(t){e.foodSpan=+r.value},p.addEventListener("click",function(){g.default.outPutLog(e.outputTextarea,"查看我的背包"),m.default.multiFlag?e.userBagMulti():e.userBag()}),c.addEventListener("click",function(){g.default.outPutLog(e.outputTextarea,"开始每日签到"),m.default.multiFlag?e.signIndexMulti():e.signIndex()}),n.addEventListener("click",function(){g.default.outPutLog(e.outputTextarea,"开始查看当天大转盘记录"),m.default.multiFlag?e.lotteryIndexMulti():e.lotteryIndex()}),i.addEventListener("click",function(){g.default.outPutLog(e.outputTextarea,"开始查看待提现红包"),m.default.multiFlag?e.achievementsMulti():e.achievements()}),l.addEventListener("click",function(){return h(e,void 0,void 0,regeneratorRuntime.mark(function t(){return regeneratorRuntime.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:g.default.outPutLog(this.outputTextarea,"开始喂养猪猪"),m.default.multiFlag?this.addFoodMulti():this.addFood();case 2:case"end":return t.stop()}},t,this)}))}),o.addEventListener("click",function(){return h(e,void 0,void 0,regeneratorRuntime.mark(function t(){return regeneratorRuntime.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:this.openBoxFlag=!0,g.default.outPutLog(this.outputTextarea,"开始一键开箱子"),m.default.multiFlag&&v.default.cookieArr.map(function(t){t.flag=!0});case 3:if(m.default.multiFlag)return t.next=6,this.openBoxMulti("pigPetOpenBox");t.next=9;break;case 6:v.default.cookieArr.every(function(t){return!t.flag})&&(this.openBoxFlag=!1,g.default.outPutLog(this.outputTextarea,"所有账号今天已经木有开盒子机会了~")),t.next=11;break;case 9:return t.next=11,this.openBox("pigPetOpenBox");case 11:if(this.openBoxFlag){t.next=3;break}case 12:case"end":return t.stop()}},t,this)}))}),f.addEventListener("click",function(){return h(e,void 0,void 0,regeneratorRuntime.mark(function t(){return regeneratorRuntime.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:g.default.outPutLog(this.outputTextarea,"开始查看猪猪详情"),m.default.multiFlag?this.loginMulti():this.login();case 2:case"end":return t.stop()}},t,this)}))}),s.addEventListener("click",function(){s.style.display="none",d.style.display="block",g.default.outPutLog(e.outputTextarea,"自动定时喂养已开启！"),e.autoAddFoodTimer=window.setInterval(function(){g.default.outPutLog(e.outputTextarea,"自动定时喂养任务开启！"),l.click()},e.foodSpan)}),d.addEventListener("click",function(){s.style.display="block",d.style.display="none",g.default.outPutLog(e.outputTextarea,"自动定时喂养已关闭！"),window.clearInterval(e.autoAddFoodTimer)}),u.addEventListener("click",function(){g.default.outPutLog(e.outputTextarea,"开始大转盘抽奖"),m.default.multiFlag?e.lotteryPlayMulti():e.lotteryPlay()})}},{key:"lotteryPlay",value:function(a){var r=this;fetch(this.rootURI+"pigPetLotteryPlay",{method:"POST",mode:"cors",credentials:"include",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:"reqData="+JSON.stringify(this.baseReqData)}).then(function(t){return t.json()}).then(function(t){if(0==t.resultCode){var e=t.resultData;if(0==e.resultCode){var o=e.resultData.award;if(o){var n=o.name,i=o.count;m.default.multiFlag&&a?g.default.outPutLog(r.outputTextarea,"【"+a.mark+"】 获得【"+n+" * "+i+"】！"):g.default.outPutLog(r.outputTextarea,"获得【"+n+" * "+i+"】！")}else m.default.multiFlag&&a?g.default.outPutLog(r.outputTextarea,"【"+a.mark+"】 什么也木有抽到~"):g.default.outPutLog(r.outputTextarea,""+t.resultData.resultMsg)}}else g.default.outPutLog(r.outputTextarea,""+t.resultMsg)})}},{key:"lotteryPlayMulti",value:function(){var e=this;v.default.cookieArr.map(function(t){setTimeout(function(){n.CookieHandler.coverCookie(t),e.lotteryPlay(t)},750*t.index)})}},{key:"openBoxMulti",value:function(o){return h(this,void 0,void 0,regeneratorRuntime.mark(function t(){var e=this;return regeneratorRuntime.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:return t.next=2,Promise.all(v.default.cookieArr.map(function(d){return h(e,void 0,void 0,regeneratorRuntime.mark(function t(){var e=this;return regeneratorRuntime.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:return t.next=2,new Promise(function(s){setTimeout(function(){return h(e,void 0,void 0,regeneratorRuntime.mark(function t(){var u=this;return regeneratorRuntime.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:if(n.CookieHandler.coverCookie(d),d.flag){t.next=6;break}return s(),t.abrupt("return");case 6:return t.next=8,fetch(""+this.rootURI+o,{method:"POST",mode:"cors",credentials:"include",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:"reqData="+JSON.stringify(Object.assign(this.baseReqData,{t:g.default.getTimestamp()}))}).then(function(t){return t.json()}).then(function(t){var e,o,n,i;if(0==t.resultCode){var a=t.resultData.resultCode;if(0==a){var r=t.resultData.resultData;g.default.outPutLog(u.outputTextarea,"【"+d.mark+'】:获得【"'+((null===(o=null===(e=r)||void 0===e?void 0:e.award)||void 0===o?void 0:o.name)?null===(i=null===(n=r)||void 0===n?void 0:n.award)||void 0===i?void 0:i.name:"空箱子")+"】")}else 420==a&&(d.flag=!1,g.default.outPutLog(u.outputTextarea,"【"+d.mark+"】:今天已经木有开盒子机会了~"))}else g.default.outPutLog(u.outputTextarea,"【"+d.mark+"】:"+t.resultMsg);s()});case 8:case"end":return t.stop()}},t,this)}))},m.default.timeoutSpan+g.default.random(300,500))});case 2:case"end":return t.stop()}},t,this)}))}));case 2:case"end":return t.stop()}},t,this)}))}},{key:"openBox",value:function(o){return h(this,void 0,void 0,regeneratorRuntime.mark(function t(){var e=this;return regeneratorRuntime.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:return t.next=2,new Promise(function(u){setTimeout(function(){return h(e,void 0,void 0,regeneratorRuntime.mark(function t(){var r=this;return regeneratorRuntime.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:return t.next=2,fetch(""+this.rootURI+o,{method:"POST",mode:"cors",credentials:"include",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:"reqData="+JSON.stringify(Object.assign(this.baseReqData,{t:g.default.getTimestamp()}))}).then(function(t){return t.json()}).then(function(t){var e,o,n,i;if(0==t.resultCode)if(0==t.resultData.resultCode){var a=t.resultData.resultData;g.default.outPutLog(r.outputTextarea,(null===(o=null===(e=a)||void 0===e?void 0:e.award)||void 0===o?void 0:o.name)?"获得:"+(null===(i=null===(n=a)||void 0===n?void 0:n.award)||void 0===i?void 0:i.name):"这是个空箱子")}else r.openBoxFlag=!r.openBoxFlag,g.default.outPutLog(r.outputTextarea,"今天已经木有开盒子机会了~");else g.default.outPutLog(r.outputTextarea,""+t.resultMsg);u()});case 2:case"end":return t.stop()}},t,this)}))},m.default.timeoutSpan+g.default.random(300,500))});case 2:case"end":return t.stop()}},t,this)}))}},{key:"addFood",value:function(o){var n=this;fetch(this.rootURI+"pigPetAddFood",{method:"POST",mode:"cors",credentials:"include",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:"reqData="+JSON.stringify(Object.assign(this.baseReqData,{skuId:this.foodskuId}))}).then(function(t){return t.json()}).then(function(t){if(0==t.resultCode){var e=t.resultData;0==e.resultCode?m.default.multiFlag&&o?g.default.outPutLog(n.outputTextarea,"【"+o.mark+"】 喂养成功！"):g.default.outPutLog(n.outputTextarea,"喂养成功！"):406==e.resultCode&&(m.default.multiFlag&&o?g.default.outPutLog(n.outputTextarea,"【"+o.mark+"】 猪猪现在还有粮食哦~"):g.default.outPutLog(n.outputTextarea,""+t.resultData.resultMsg))}else g.default.outPutLog(n.outputTextarea,""+t.resultMsg)})}},{key:"addFoodMulti",value:function(){var e=this;v.default.cookieArr.map(function(t){setTimeout(function(){n.CookieHandler.coverCookie(t),e.addFood(t)},750*t.index)})}},{key:"login",value:function(d){var l=this;fetch(this.rootURI+"pigPetLogin",{method:"POST",mode:"cors",credentials:"include",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:"reqData="+JSON.stringify(this.baseReqData)}).then(function(t){return t.json()}).then(function(t){var e,o,n;if(0==t.resultCode){var i=t.resultData.resultData;if(i.hasPig){var a=null===(o=null===(e=i)||void 0===e?void 0:e.cote)||void 0===o?void 0:o.pig,r=null===(n=a)||void 0===n?void 0:n.pigName,u=a.percent,s=a.weight;m.default.multiFlag&&d?g.default.outPutLog(l.outputTextarea,"【"+d.mark+"】 猪猪："+r+" 价值："+u+"% 体重："+s):g.default.outPutLog(l.outputTextarea,"猪猪："+r+" 价值："+u+"% 体重："+s)}else g.default.outPutLog(l.outputTextarea,"该账号尚未领养猪猪哦！")}else g.default.outPutLog(l.outputTextarea,""+t.resultMsg)})}},{key:"loginMulti",value:function(){var e=this;v.default.cookieArr.map(function(t){setTimeout(function(){n.CookieHandler.coverCookie(t),e.login(t)},500*t.index)})}},{key:"achievements",value:function(r){var u=this;fetch(this.rootURI+"pigPetAchievements",{method:"POST",mode:"cors",credentials:"include",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:"reqData="+JSON.stringify(this.baseReqData)}).then(function(t){return t.json()}).then(function(t){var e,o;if(0==t.resultCode){var n=t.resultData.resultData;if(0==t.resultData.resultCode){var i=null===(e=n)||void 0===e?void 0:e.currentCash,a=null===(o=n)||void 0===o?void 0:o.limitCash;m.default.multiFlag&&r?g.default.outPutLog(u.outputTextarea,"【"+r.mark+"】 待提现红包："+i/100+"元 满"+a/100+"元提现"):g.default.outPutLog(u.outputTextarea,"待提现红包："+i/100+"元 满"+a+"元提现")}else g.default.outPutLog(u.outputTextarea,""+t.resultData.resultMsg)}else m.default.multiFlag&&r&&g.default.outPutLog(u.outputTextarea,""+t.resultMsg)})}},{key:"achievementsMulti",value:function(){var e=this;v.default.cookieArr.map(function(t){setTimeout(function(){n.CookieHandler.coverCookie(t),e.achievements(t)},500*t.index)})}},{key:"lotteryIndex",value:function(l){var c=this;fetch(this.rootURI+"pigPetLotteryIndex",{method:"POST",mode:"cors",credentials:"include",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:"reqData="+JSON.stringify(this.baseReqData)}).then(function(t){return t.json()}).then(function(t){var e,o,n,i;if(0==t.resultCode){var a=t.resultData.resultData;if(0==t.resultData.resultCode){var r=null===(e=a)||void 0===e?void 0:e.currentCount,u=null===(o=a)||void 0===o?void 0:o.coinCount,s=null===(n=a)||void 0===n?void 0:n.price,d=null===(i=a)||void 0===i?void 0:i.nextFreeTime;m.default.multiFlag&&l?g.default.outPutLog(c.outputTextarea,"【"+l.mark+"】 当前可抽奖次数："+r+" 距下一次免费抽奖时间："+d+"毫秒 金币抽奖次数："+u+" 需花费金币："+s):g.default.outPutLog(c.outputTextarea,"当前可抽奖次数："+r+" 距下一次免费抽奖时间："+d+"毫秒 金币抽奖次数："+u+" 需花费金币："+s)}else g.default.outPutLog(c.outputTextarea,""+t.resultData.resultMsg)}else m.default.multiFlag&&l&&g.default.outPutLog(c.outputTextarea,""+t.resultMsg)})}},{key:"lotteryIndexMulti",value:function(){var e=this;v.default.cookieArr.map(function(t){setTimeout(function(){n.CookieHandler.coverCookie(t),e.lotteryIndex(t)},500*t.index)})}},{key:"signOne",value:function(u){var s=this;fetch(this.rootURI+"pigPetSignOne?_="+g.default.getTimestamp(),{method:"POST",mode:"cors",credentials:"include",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:"reqData="+JSON.stringify(Object.assign(this.baseReqData,{no:u?u.signNo:this.signNo}))}).then(function(t){return t.json()}).then(function(t){var e,o,n;if(0==t.resultCode){var i=t.resultData.resultData;if(0==t.resultData.resultCode){var a=null===(e=i)||void 0===e?void 0:e.today,r=null===(n=null===(o=i)||void 0===o?void 0:o.award)||void 0===n?void 0:n.name;m.default.multiFlag&&u?g.default.outPutLog(s.outputTextarea,"【"+u.mark+"】 已签到"+a+"天 获得奖励："+r):g.default.outPutLog(s.outputTextarea,"已签到"+a+"天 获得奖励："+r)}else g.default.outPutLog(s.outputTextarea,""+t.resultData.resultMsg)}else m.default.multiFlag&&u&&g.default.outPutLog(s.outputTextarea,""+t.resultMsg)})}},{key:"signIndex",value:function(i){var a=this;fetch(this.rootURI+"pigPetSignIndex?_="+g.default.getTimestamp(),{method:"POST",mode:"cors",credentials:"include",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:"reqData="+JSON.stringify(this.baseReqData)}).then(function(t){return t.json()}).then(function(t){var e;if(0==t.resultCode){var o=t.resultData.resultData;if(0==t.resultData.resultCode){var n=null===(e=o)||void 0===e?void 0:e.today;m.default.multiFlag&&i?(i.signNo=n,g.default.outPutLog(a.outputTextarea,"【"+i.mark+"】 已签到"+n+"天 "),a.signOne(i)):(a.signNo=n,g.default.outPutLog(a.outputTextarea,"已签到"+n+"天"),a.signOne())}else g.default.outPutLog(a.outputTextarea,""+t.resultData.resultMsg)}else m.default.multiFlag&&i&&g.default.outPutLog(a.outputTextarea,""+t.resultMsg)})}},{key:"signIndexMulti",value:function(){var e=this;v.default.cookieArr.map(function(t){setTimeout(function(){n.CookieHandler.coverCookie(t),e.signIndex(t)},500*t.index)})}},{key:"userBag",value:function(a){var r=this;fetch(this.rootURI+"pigPetUserBag?_="+g.default.getTimestamp(),{method:"POST",mode:"cors",credentials:"include",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:"reqData="+JSON.stringify(Object.assign(this.baseReqData,{category:"1001"}))}).then(function(t){return t.json()}).then(function(t){var e;if(0==t.resultCode){var o=t.resultData.resultData;if(0==t.resultData.resultCode){var n=null===(e=o)||void 0===e?void 0:e.goods,i="";m.default.multiFlag&&a?(i+=n.map(function(t){return"\n名称:"+t.goodsName+" 数量："+t.count+"g"}),g.default.outPutLog(r.outputTextarea,"【"+a.mark+"】 ----食物背包一览----"+i)):(i+=n.map(function(t){return"\n名称:"+t.goodsName+" 数量："+t.count+"g"}),g.default.outPutLog(r.outputTextarea,"----食物背包一览----"+i))}else g.default.outPutLog(r.outputTextarea,""+t.resultData.resultMsg)}else m.default.multiFlag&&a&&g.default.outPutLog(r.outputTextarea,""+t.resultMsg)})}},{key:"userBagMulti",value:function(){var e=this;v.default.cookieArr.map(function(t){setTimeout(function(){n.CookieHandler.coverCookie(t),e.signOne(t)},500*t.index)})}}]),a);function a(t,e,o){f(this,a),this.rootURI="https://ms.jr.jd.com/gw/generic/uc/h5/m/",this.baseReqData={source:0,channelLV:"yqs",riskDeviceParam:"{}"},this.detailurl="https://api.m.jd.com/client.action?functionId=bombnian_getTaskDetail",this.data=[],this.timer=1e3,this.taskToken="",this.openBoxFlag=!1,this.foodskuId="1001003004",this.foodSpan=18e5,this.autoAddFoodTimer=0,this.signNo=1,this.favoriteFood="",this.params=t,this.container=e,this.outputTextarea=o}o.default=i},{"../config/config":5,"../cookie/CookieHandler":6,"../cookie/CookieManager":7,"../utils/utils":28}],25:[function(t,e,o){Object.defineProperty(o,"__esModule",{value:!0});var a=t("../utils/utils"),i=t("../config/config"),u=t("../utils/fetch-jsonp"),n=(p(s,[{key:"get",value:function(){var e=this;this.goodsMsgArr=[],Promise.all(this.goodsIdArr.map(function(t){return e.getMsg(t)})).then(function(t){e.goodsMsgArr=t,Promise.all(e.goodsMsgArr.map(function(t){return e.getStock(t)})).then(function(t){e.goodsMsgArr=t,e.list()})})}},{key:"getMsg",value:function(i){var e=this.detailURL.replace("{skuid}",i);return new Promise(function(n,t){a.default.loadiFrame(e).then(function(t){var e=t.contentWindow.pageConfig.product,o={skuid:i,name:e.name,src:e.src,cat:e.cat,venderId:e.venderId};document.body.removeChild(t),n(o)})})}},{key:"getStock",value:function(i){var e=this.stockURL.replace("{skuId}",i.skuid).replace("{venderId}",i.venderId).replace("{cat}",i.cat).replace("{area}",this.areaId);return new Promise(function(n,t){u.default.fetchJsonp(e).then(function(t){return t.json()}).then(function(t){var e=t.stock,o=e.area;i.stockState=e.StockStateName,i.area=o.provinceName+"-"+o.cityName+"-"+o.countyName,n(i)})})}},{key:"push",value:function(){this.goodsIdArr.push("1")}},{key:"list",value:function(){var t=document.createElement("div");t.setAttribute("style","display:flex;flex-direction:column;padding: 5px;margin-top: 5px;border: 1px solid #000;");for(var e=0;e<this.goodsMsgArr.length;e++){var o=this.goodsMsgArr[e],n=document.createElement("div");n.setAttribute("style","display:flex;flex-direction:row;border:1px solid gray;border-radius: 10px;margin-top:5px;padding: 5px"),n.innerHTML='<img style="user-select: none;pointer-events:none;width:120px;height:120px;display: block;" src="'+i.default.JDIMGSourcesURL+o.src+'" />\n            <div">\n                <h2 width="60vw">商品名称：'+o.name+'</h2>\n                <p style="font-weight:700;margin-bottom:10px">状态：<span style="color:red">'+o.stockState+'</span>\n                <br>地区：<span style="color:red">'+o.area+'</span></p>\n                <button style="width: 100px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">\n                    <a href=\'https://skunotify.jd.com/storenotify.html?skuId='+o.skuid+'\' target="_blank" style="color: #fff;text-decoration: none;">预约自动下单</a>\n                </button>\n                <button style="width: 100px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">\n                    <a href=\'//cart.jd.com/gate.action?pid='+o.skuid+'&pcount=1&ptype=1\' target="_blank" style="color: #fff;text-decoration: none;">加入购物车</a>\n                </button>\n                <br>\n                <button style="width: 100px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">\n                    <a href=\'https://p.m.jd.com/norder/order.action?wareId='+o.skuid+'&wareNum=1&enterOrder=true\' target="_blank" style="color: #fff;text-decoration: none;">订单结算</a>\n                </button>\n            </div>',t.appendChild(n)}this.container.appendChild(t)}},{key:"buildOperate",value:function(){}}]),s);function s(t,e,o){var r=this;f(this,s),this.areaId="1_72_0_0",this.areaIdArr=[{id:"1_72_0_0",dec:"北京 朝阳区"}],this.goodsIdArr=[],this.goodsMsgArr=[],this.detailURL="https://item.jd.com/{skuid}.html",this.stockURL="https://c0.3.cn/stock?skuId={skuId}&area={area}&venderId={venderId}&cat={cat}",o&&this.goodsIdArr.push(o),this.container=t,this.outputTextarea=e,u.default.fetchJsonp("https://cd.jd.com/usual/address").then(function(t){return t.json()}).then(function(a){0!==Object.keys(a).length&&(r.areaIdArr=[],Object.keys(a).map(function(t,e){var o=a[t],n=o.provinceId+"_"+o.cityId+"_"+(o.countyId?o.countyId:0)+"_"+(o.townId?o.townId:0),i=o.areaName;0==e&&(r.areaId=n),r.areaIdArr.push({id:n,dec:i})}))})}o.default=n},{"../config/config":5,"../utils/fetch-jsonp":27,"../utils/utils":28}],26:[function(t,e,o){var f=this&&this.__awaiter||function(t,r,u,s){return new(u=u||Promise)(function(o,e){function n(t){try{a(s.next(t))}catch(t){e(t)}}function i(t){try{a(s.throw(t))}catch(t){e(t)}}function a(t){var e;t.done?o(t.value):((e=t.value)instanceof u?e:new u(function(t){t(e)})).then(n,i)}a((s=s.apply(t,r||[])).next())})};Object.defineProperty(o,"__esModule",{value:!0});var h=t("./goods/goods"),g=t("./utils/utils"),m=t("./config/config"),v=t("./coupons/newBabelAwardCollection"),b=t("./coupons/whtieCoupon"),y=t("./coupons/purchase"),x=t("./coupons/receiveDayCoupon"),k=t("./coupons/secKillCoupon"),w=t("./coupons/mfreecoupon"),T=t("./coupons/coinPurchase"),L=t("./coupons/gcConvert"),C=t("./coupons/receiveCoupons"),P=t("./coupons/receiveCoupon"),I=t("./coupons/getCouponCenter"),j=t("./coupons/exchange"),_=t("./activitys/MonsterNian"),S=t("./activitys/brandCitySpring"),A=t("./activitys/palace"),F=t("./activitys/receiveBless"),M=t("./game/cloudpig"),D=t("./enum/activityType"),O=t("./enum/couponType"),E=t("./enum/goodsType"),R=t("./enum/gameType"),N=t("./cookie/CookieManager"),H=t("./cookie/CookieHandler"),B=void 0,U=void 0,V=void 0,J=void 0,q=document.createElement("div"),$=document.createElement("div"),l=document.createElement("div"),c=document.createElement("input"),p=document.createElement("input"),G=document.createElement("button"),K=document.createElement("textarea"),z=document.createElement("div");function W(){var t=document.createElement("div");if(B){var e=document.createElement("div"),o=document.createElement("div"),n=document.createElement("div"),i=document.createElement("button"),a=document.createElement("input"),r=document.createElement("button"),u=document.createElement("input"),s=document.createElement("button"),d=document.createElement("div");t.setAttribute("style","border: 1px solid #000;"),t.innerHTML="<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;padding: 0 37.5vw 5px;'>操作区</h3>",a.type="text",a.placeholder="请输入获取时间的刷新频率【毫秒】",a.setAttribute("style","width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;"),r.innerHTML="重置刷新频率",r.setAttribute("style","width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;"),r.addEventListener("click",function(){var t=Math.trunc(+a.value);if(!t)return alert("请检查输入的刷新频率是否有误！(只能为大于0的数字)"),!1;m.default.intervalSpan=t,window.clearInterval(m.default.intervalId),m.default.intervalId=window.setInterval(Y,m.default.intervalSpan)}),n.innerHTML='<h3>定时时间使用年月日+24小时制</h3><p style="color:red">零点领券设置参考<br>刷新频率:500 | 定时时间：2020-01-01 23:59:59:490<br>tips:部分券其实是提前发放的</p>',c.type="text",c.placeholder="定时领券时间【格式:2020-01-01 09:59:59:950】",c.setAttribute("style","width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px;"),p.type="text",p.placeholder="领券提交次数【默认：1次】",p.setAttribute("style","width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px;"),u.type="text",u.placeholder="请输入重复领券的提交频率【默认：500毫秒】",u.setAttribute("style","width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;"),G.innerHTML="定时指定领取",G.addEventListener("click",function(){m.default.postSpan=0<parseInt(u.value)?parseInt(u.value):500,m.default.postCount=0<parseInt(p.value)?parseInt(p.value):1;var t=g.default.formateTime(c.value);if(!t||t<0)return alert("请检查定时领券时间的格式是否有误！"),!1;m.default.timingFlag=!m.default.timingFlag,m.default.startTime=t,K.style.display="block",c.disabled=m.default.timingFlag,p.disabled=m.default.timingFlag,m.default.timingFlag?(G.innerHTML="取消定时领取",g.default.outPutLog(K,"已开启定时领取！定时领取时间："+c.value)):(G.innerHTML="定时指定领取",g.default.outPutLog(K,"已关闭定时领取"))}),i.addEventListener("click",function(){B&&B.send(K)}),G.setAttribute("style","width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px;"),i.innerHTML="一键指定领取",i.setAttribute("style","width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px;"),K.setAttribute("style","width: 90vw;height: 40vw;border: 1px solid #868686;border-radius: 10px;overflow-y: scroll;margin:5px auto;display:none"),K.setAttribute("disabled","disabled"),t.append(d),d.append(l),d.append(a),d.append(r),d.append(u),d.append(s),t.append(e),e.append(n),e.append(c),e.append(p),e.append(u),e.append(o),o.append(i),o.append(G)}else K.setAttribute("style","width: 90vw;height: 40vw;border: 1px solid #868686;border-radius: 10px;overflow-y: scroll;margin:5px auto;"),K.setAttribute("disabled","disabled");z.innerHTML="当前京东帐号：<a href='https://plogin.m.jd.com/login/login' target='_blank'>点击登录</a>",t.append(z),q.append(t),t.append(K)}function Q(){var t=document.createElement("div"),e=document.createElement("input");e.setAttribute("style","width:80vw;height: 25px;font-size:14px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;"),e.placeholder="请输入任务的提交间隔时间【默认:"+m.default.timeoutSpan+"毫秒】",t.innerHTML='<p style="font-size:14px;">任务提交时间将会在设置提交间隔时间的基础上随机增加300~500毫秒</p>',t.append(e),e.onchange=function(){g.default.isNumber(+e.value)&&(m.default.timeoutSpan=+e.value||1500)},q.append(t)}function Y(){fetch(m.default.JDTimeInfoURL).then(function(t){return t.json()}).then(function(t){if(m.default.serverTime=g.default.formatDate(t.time),m.default.localeTime=new Date(+t.time).toLocaleString()+":"+m.default.serverTime.substr(-3,3),l.innerHTML="京东时间："+m.default.localeTime+"<br/>当前获取时间的间隔频率："+m.default.intervalSpan+"毫秒",m.default.timingFlag&&m.default.startTime<=+m.default.serverTime){if(g.default.outPutLog(K,"定时领取开始！"),g.default.outPutLog(K,"当前京东服务器时间："+m.default.localeTime),m.default.timingFlag=!m.default.timingFlag,B)for(var e=0;e<m.default.postCount;e++)!function(t){setTimeout(function(){g.default.outPutLog(K,"第"+(t+1)+"次提交！"),B.send(K)},t*m.default.postSpan)}(e);c.disabled=m.default.timingFlag,p.disabled=m.default.timingFlag,G.innerHTML="定时指定领取",g.default.outPutLog(K,"定时领取已结束！")}})}var n;console.clear(),window.console&&(console.group("%c京东领券助手","color:#009a61; font-size: 36px; font-weight: 400"),console.log("%c本插件仅供学习交流使用\n作者:krapnik \ngithub:https://github.com/krapnikkk/JDCouponAssistant","color:#009a61"),console.groupEnd()),function(t){var e,o,n,i;switch(g._$("html").style.fontSize="18px",document.body.innerHTML="",document.body.style.overflow="scroll",document.body.style.backgroundColor="#ffffff",document.body.style.textAlign="center",document.body.style.maxWidth="100vw",q.setAttribute("style","border: 1px solid #000;padding: 5px;margin: 5px;"),$.innerHTML='<h1 style="font-weight:700">'+m.default.title+" "+m.default.version+"</h1>\n                        <h3>author:"+m.default.author+'</h3>\n                        <div style="display: flex;flex-direction: row;justify-content: center;">\n                        <iframe src="https://ghbtns.com/github-btn.html?user=krapnikkk&repo=JDCouponAssistant&type=star&count=true" frameborder="0" scrolling="0" width="90px" height="21px"></iframe>\n                        <a href="tencent://message/?uin=708873725Menu=yes" target="_blank" title="发起QQ聊天"><img src="http://bizapp.qq.com/webimg/01_online.gif" alt="QQ" style="margin:0px;"></a>\n                        </div>\n                        <button style="font-size:18px;font-weight:bold;color:#000;position:relative;width: 200px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">\n                            把按钮拖动到书签栏\n                            <a style="font-size:0px;width:200px;height:30px;display:inline-block;position:absolute;left:0;top:0;" href="javascript: (function(a, b, c, d) { if(!a[c]){ d = b.createElement(\'script\'), d.id = \'krapnik\', d.setAttribute(\'charset\', \'utf-8\'), d.src = \'https://gitee.com/krapnik/codes/o9nwsxjuy6crftdi824aq79/raw?blob_name=JDCouponAssistant.js\', b.body.appendChild(d) } } )(window, document, \'krapnik\');">\n                                京东领券助手\n                            </a>\n                        </button>',q.append($),document.body.append(q),(e=document.createElement("div")).setAttribute("style","border: 1px solid #000;margin:10px"),e.innerHTML='<h3 style=\'border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;\'>推广区</h3>\n    <p style="color:red;font-weight:bold;"><a style="color:red" href="http://krapnik.cn/project/jd/dayTask.html" target="_blank">每日京东红包汇总</a></p>',q.append(e),t){case E.goodsType.goods:var a=m.default.locationHref.match(/jd.com\/(\S*).html/)[1];U=new h.default(q,K,a);break;case O.couponType.newBabelAwardCollection:var r=m.default.locationHref.match(/active\/(\S*)\/index/)[1];B=new v.default({activityId:r},q,K);break;case O.couponType.whiteCoupon:var u=g.default.GetQueryString("couponBusinessId");B=new b.default({couponBusinessId:u},q,K);break;case O.couponType.purchase:var s=g.default.GetQueryString("pid");B=new y.default({pid:s},q,K);break;case O.couponType.coinPurchase:var d=g.default.GetQueryString("gid");B=new T.default({pid:d},q,K);break;case O.couponType.receiveDayCoupon:B=new x.default(null,q,K);break;case O.couponType.secKillCoupon:B=new k.default(null,q,K);break;case O.couponType.GcConvert:B=new L.default(null,q,K);break;case O.couponType.mfreecoupon:var l=g.default.GetQueryString("roleId"),c=g.default.GetQueryString("key");B=new w.default({roleId:l,key:c},q,K);break;case O.couponType.ReceiveCoupons:B=new C.default(null,q,K);break;case O.couponType.ReceiveCoupon:B=new P.default(null,q,K);break;case O.couponType.getCouponCenter:B=new I.default(null,q,K);break;case O.couponType.exchange:var p=g.default.GetQueryString("id");B=new j.default({itemId:p},q,K);break;case D.activityType.monsterNian:J=new _.default(null,q,K),m.default.UAFlag=!0;break;case D.activityType.brandCitySpring:J=new S.default(null,q,K);break;case D.activityType.palace:J=new A.default(null,q,K);break;case D.activityType.receiveBless:J=new F.default(null,q,K),m.default.UAFlag=!0;break;case R.gameType.cloudpig:V=new M.default(null,q,K)}m.default.UAFlag&&((o=document.createElement("div")).innerHTML='<div style="border: 1px solid #000;margin:10px;font-weight:bold"><h2>该活动需要设置user-Agent为京东APP</h2><p><a style="color:red" href="https://gitee.com/krapnik/res/raw/master/tutorial.mp4" target="_blank">点击下载教程视频</a></p><p>部分浏览器插件会覆盖UA设置，请自行排查并关闭</p><p>【比如：京价保】</p><button style="width: 200px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block" onclick=Utils.copyText(Config.JDAppUA)>点击一键复制User-Agent</button></div>',q.append(o)),(n=document.createElement("div")).setAttribute("style","border: 1px solid #000;margin:10px"),n.innerHTML='<h3 style=\'border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;\'>好券推荐</h3>\n    <p style="color:red;font-weight:bold;">\n    <a style="color:red" href="https://m.jr.jd.com/member/9GcConvert/?channel=01-shouye-191214" target="_blank">9金币抢兑</a>\n    <br><a style="color:red" href="https://m.jr.jd.com/member/rightsCenter/#/white" target="_blank">12期免息券</a>\n    </p>',q.append(n),B?(m.default.intervalId=window.setInterval(Y,m.default.intervalSpan),W(),B.get()):J?(W(),Q(),J.get()):U?U.get():V?(function(){var t=this,e=document.createElement("div");e.innerHTML='<div style="border: 1px solid #000;margin:10px;font-weight:bold"><h3 style=\'border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;\'>高级操作区</h3><p>ck格式：备注----ck</p>\n    <button style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block" onclick="Utils.copyText(document.cookie)">复制Cookie</button>\n    <button id="import" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">配置多帐号</button>\n    <button id="save" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">帐号本地存储</button>\n    <button id="clear" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">清除本地存储</button></div>',q.append(e),g._$("#import").addEventListener("click",function(){g.default.importFile("text/plain").then(function(e){return f(t,void 0,void 0,regeneratorRuntime.mark(function t(){return regeneratorRuntime.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:m.default.multiFlag=!1,m.default.importFlag=!1,N.default.parseCK(e),m.default.importFlag&&(N.default.outPutLog(K),Promise.all(N.default.cookieArr.map(function(t){return N.default.checkLogin(K,t)})).then(function(t){t.every(function(t){return t})?(g.default.outPutLog(K,"所有ck校验成功，开启多账号模式成功!"),m.default.multiFlag=!0):(H.CookieHandler.clearAllCookie(),g.default.outPutLog(K,"部分ck校验失败,开启多账号模式失败!请检查ck有效性!"))}));case 4:case"end":return t.stop()}},t,this)}))})})}(),W(),Q(),V.get()):(g.default.loadCss("https://meyerweb.com/eric/tools/css/reset/reset200802.css"),(i=document.createElement("h4")).innerHTML='<h4>页面地址暂未被扩展或者有误！</h4><p>本插件只能在指定活动地址或领券地址使用！</p><p>如果这是个活动地址或领券地址，<a href="tencent://message/?uin=708873725Menu=yes" target="_blank" title="发起QQ聊天">联系作者</a>扩展~</p><a style="color:red" href="https://gitee.com/krapnik/res/raw/master/tutorial.mp4" target="_blank">点击下载教程视频</a>',$.append(i)),g.default.createJsonp(m.default.JDUserInfoURL+"&callback=getLoginMsg")}((n=O.couponType.none,window.location.host.includes("jd.com")&&((m.default.locationHref.includes("item.jd.com/")||m.default.locationHref.includes("item.m.jd.com/product/"))&&(n=E.goodsType.goods),window.__react_data__?n=O.couponType.newBabelAwardCollection:window.Queries?n=O.couponType.whiteCoupon:m.default.locationHref.includes("gcmall/index.html#/details?pid=")?n=O.couponType.purchase:m.default.locationHref.includes("member/gcmall/index.html#/details?gid")?n=O.couponType.coinPurchase:m.default.locationHref.includes("plus.m.jd.com/coupon/")?n=O.couponType.receiveDayCoupon:m.default.locationHref.includes("9GcConvert")?n=O.couponType.GcConvert:/babelDiy\/(\S*)\/index/.test(m.default.locationHref)?n=O.couponType.secKillCoupon:/coupons\/show.action\?key=(\S*)&roleId=(\S*)/.test(m.default.locationHref)?n=O.couponType.mfreecoupon:m.default.locationHref.includes("4PN6NLSX1vyp8xibC5sk7WZEFF5U")?n=O.couponType.secKillCoupon:m.default.locationHref.includes("m.jr.jd.com/member/rightsCenter/#/white")?n=O.couponType.ReceiveCoupons:m.default.locationHref.includes("m.jr.jd.com/consumer/baitiaom/index.html")?n=O.couponType.ReceiveCoupon:m.default.locationHref.includes("coupon.m.jd.com/center/getCouponCenter.action")?n=O.couponType.getCouponCenter:m.default.locationHref.includes("vip.m.jd.com/index.html?appName=fuli&id=")&&(n=O.couponType.exchange),m.default.locationHref.includes("bunearth.m.jd.com")&&(m.default.locationHref.includes("4PWgqmrFHunn8C38mJA712fufguU")?n=D.activityType.monsterNian:m.default.locationHref.includes("w6y8PYbzhgHJc8Lu1weihPReR2T")?n=D.activityType.brandCitySpring:m.default.locationHref.includes("21tFbS6Xm4tpon3oJnwzbnCJBo1Z")&&(n=D.activityType.receiveBless)),m.default.locationHref.includes("palace")&&(n=D.activityType.palace),m.default.locationHref.includes("uc-fe-wxgrowing")&&(m.default.locationHref.includes("moneytree")||m.default.locationHref.includes("cloudpig")&&(n=R.gameType.cloudpig))),n)),function(){var t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?d86d4ff3f6d089df2b41eb0735194c0d";var e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(t,e)}(),Object.assign(window,{getLoginMsg:function(t){t.base.nickname&&(z.innerHTML="当前登录京东帐号："+t.base.nickname)},krapnik:function(){},Utils:g.default,Config:m.default})},{"./activitys/MonsterNian":1,"./activitys/brandCitySpring":2,"./activitys/palace":3,"./activitys/receiveBless":4,"./config/config":5,"./cookie/CookieHandler":6,"./cookie/CookieManager":7,"./coupons/coinPurchase":8,"./coupons/exchange":9,"./coupons/gcConvert":10,"./coupons/getCouponCenter":11,"./coupons/mfreecoupon":12,"./coupons/newBabelAwardCollection":13,"./coupons/purchase":14,"./coupons/receiveCoupon":15,"./coupons/receiveCoupons":16,"./coupons/receiveDayCoupon":17,"./coupons/secKillCoupon":18,"./coupons/whtieCoupon":19,"./enum/activityType":20,"./enum/couponType":21,"./enum/gameType":22,"./enum/goodsType":23,"./game/cloudpig":24,"./goods/goods":25,"./utils/utils":28}],27:[function(t,e,o){Object.defineProperty(o,"__esModule",{value:!0});var n=(p(c,null,[{key:"generateCallbackFunction",value:function(){return"jsonp_"+Date.now()+"_"+Math.ceil(1e5*Math.random())}},{key:"clearFunction",value:function(e){try{delete window[e]}catch(t){window[e]=void 0}}},{key:"removeScript",value:function(t){var e=document.getElementById(t);e&&document.getElementsByTagName("head")[0].removeChild(e)}},{key:"fetchJsonp",value:function(a,t){var r=1<arguments.length&&void 0!==t?t:{},u=a,s=r.timeout||c.defaultOptions.timeout,d=r.jsonpCallback||c.defaultOptions.jsonpCallback,l=void 0;return new Promise(function(e,t){var o=r.jsonpCallbackFunction||c.generateCallbackFunction(),n=d+"_"+o;window[o]=function(t){e({ok:!0,json:function(){return Promise.resolve(t)}}),l&&clearTimeout(l),c.removeScript(n),c.clearFunction(o)},u+=-1===u.indexOf("?")?"?":"&";var i=document.createElement("script");i.setAttribute("src",""+u+d+"="+o),r.charset&&i.setAttribute("charset",r.charset),i.id=n,document.getElementsByTagName("head")[0].appendChild(i),l=setTimeout(function(){t(new Error("JSONP request to "+a+" timed out")),c.clearFunction(o),c.removeScript(n),window[o]=function(){c.clearFunction(o)}},s),i.onerror=function(){t(new Error("JSONP request to "+a+" failed")),c.clearFunction(o),c.removeScript(n),l&&clearTimeout(l)}})}}]),c);function c(){f(this,c)}(o.default=n).defaultOptions={timeout:5e3,jsonpCallback:"callback",jsonpCallbackFunction:null}},{}],28:[function(t,e,o){Object.defineProperty(o,"__esModule",{value:!0}),window.jsonpBind=function(t){n.jsonpBind(JSON.stringify(t))};var n=(p(i,null,[{key:"formateDate",value:function(t){var e=new Date(+t),o=e.getHours(),n=e.getMinutes(),i=e.getSeconds(),a=e.getMilliseconds();return o<10&&(o="0"+o),n<10&&(n="0"+n),i<10&&(i="0"+i),a<10?a="00"+a:a<100&&10<=a&&(a="0"+a),o+""+n+i+a}},{key:"obtainLocal",value:function(t){return t.replace(/(?:(?:^|.*;\s*)3AB9D23F7A4B3C9B\s*=\s*([^;]*).*$)|^.*$/,"$1")}},{key:"getCookie",value:function(){return document.cookie}},{key:"formatDate",value:function(t){var e=new Date(+t),o=e.getFullYear(),n=e.getMonth()+1,i=e.getDate(),a=e.getHours(),r=e.getMinutes(),u=e.getSeconds(),s=e.getMilliseconds();return n<10&&(n="0"+n),i<10&&(i="0"+i),a<10&&(a="0"+a),r<10&&(r="0"+r),u<10&&(u="0"+u),s<10?s="00"+s:s<100&&10<=s&&(s="0"+s),o+""+n+i+a+r+u+s}},{key:"GetQueryString",value:function(t){var e=new RegExp("(^|&)"+t+"=([^&]*)(&|$)"),o=window.location.search.substr(1).match(e);if(!o){var n=window.location.hash;o=n.substr(n.indexOf("?")+1,n.length-n.indexOf("?")).match(e)}return null!=o?o[2]:""}},{key:"getSearchString",value:function(t,e){for(var o=(t=t.substring(1,t.length)).split("&"),n=new Object,i=0;i<o.length;i++){var a=o[i].split("=");n[decodeURIComponent(a[0])]=decodeURIComponent(a[1])}return n[e]}},{key:"getQueryStringByName",value:function(t){t=t.replace(/#.*/,"");var e=/\?[a-zA-Z0-9\=\&\%\$\-\_\.\+\!\*\'\(\)\,]+/.exec(t);return e?decodeURIComponent(e[0]):""}},{key:"formateTime",value:function(t){return Math.trunc(+t.replace(/\s+/gi,"").replace(/[:|：]+/gi,"").replace(/[-|——]+/gi,""))}},{key:"createJsonp",value:function(t,e){var o=1<arguments.length&&void 0!==e&&e,n=document.createElement("script");document.getElementsByTagName("head")[0].appendChild(n),o&&(t+="jsonpBind"),n.setAttribute("src",t),n.onload=function(){document.getElementsByTagName("head")[0].removeChild(n)}}},{key:"jsonpBind",value:function(t){postMessage(t,"*")}},{key:"outPutLog",value:function(t,e,o){var n=!(2<arguments.length&&void 0!==o)||o;"none"==t.style.display&&(t.style.display="block"),n?t.value?t.value=t.value+"\n"+(new Date).toLocaleString()+"\n"+e:t.value=(new Date).toLocaleString()+e:t.value=t.value+"\n"+e}},{key:"random",value:function(t,e){return Math.floor(Math.random()*(e-t+1)+t)}},{key:"getTimestamp",value:function(){return(new Date).getTime()}},{key:"copyText",value:function(t){if(""!==t){var e=document.querySelector(".oInput");e||((e=document.createElement("input")).className="oInput",document.body.appendChild(e)),e.value=t,e.select(),document.execCommand("Copy"),e.style.display="none",alert("内容已经复制到黏贴板啦")}else alert("好像没有需要复制的内容哦！")}},{key:"importFile",value:function(a){return new Promise(function(n,t){var i=document.createElement("input");i.className="fInput",i.type="file",document.body.appendChild(i),i.onchange=function(t){var e=t.target.files[0],o=new FileReader;e&&e.type.includes(a)?(o.readAsText(e),o.onabort=function(){document.body.removeChild(i)},o.onerror=function(){document.body.removeChild(i)},o.onload=function(){if(2==o.readyState){var t=o.result;n(t),document.body.removeChild(i)}}):alert("不支持的文件格式!")},i.click(),i.style.display="none"})}},{key:"loadiFrame",value:function(o){return new Promise(function(t){var e=document.createElement("iframe");document.body.appendChild(e),e.width="1",e.height="1",e.onload=function(){t(e)},e.src=o,e.style.display="none"})}},{key:"loadCss",value:function(t){var e=document.createElement("link");e.type="text/css",e.rel="stylesheet",e.href=t,document.getElementsByTagName("head")[0].appendChild(e)}},{key:"stringify",value:function(e){var o=this;return Object.keys(e).map(function(t){return console.log(),t+"="+(o.isObject(e[t])?JSON.stringify(e[t]):encodeURIComponent(e[t]))}).join("&")}},{key:"isObject",value:function(t){var e=void 0===t?"undefined":a(t);return null!=t&&("object"==e||"function"==e)}},{key:"isNumber",value:function(t){return"number"==typeof t&&!isNaN(t)}},{key:"querySelector",value:function(t){return document.querySelector(t)}}]),i);function i(){f(this,i)}o.default=n,o._$=n.querySelector},{}]},{},[26]);
+(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class Config {
+}
+exports.default = Config;
+Config.title = "京东领券助手";
+Config.version = "v0.4.2";
+Config.author = "krapnik";
+Config.timingFlag = false;
+Config.UAFlag = false;
+Config.locationHref = window.location.href;
+Config.postCount = 1;
+Config.localeTime = "";
+Config.serverTime = "";
+Config.startTime = 0;
+Config.intervalId = 0;
+Config.intervalSpan = 500;
+Config.postSpan = 500;
+Config.timeoutSpan = 1500;
+Config.JDAppUA = "jdapp;android;8.4.2;8.0.0;;network/wifi;model/Mi Note 2;osVer/26;appBuild/71043;psn/|7;psq/1;uid/;adk/;ads/;pap/JA2015_311210|8.4.2|ANDROID 8.0.0;osv/8.0.0;pv/2.23;jdv/;ref/com.jingdong.app.mall.WebActivity;partner/huawei;apprpd/Home_Main;Mozilla/5.0 (Linux; Android 8.0.0; Mi Note 2 Build/OPR1.170623.032; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/71.0.3578.99 Mobile Safari/537.36";
+Config.JDUserInfoURL = "https://wq.jd.com/user/info/QueryJDUserInfo?sceneid=11110&sceneval=2&g_login_type=1";
+Config.JDTimeInfoURL = "https://api.m.jd.com/client.action?functionId=babelActivityGetShareInfo&client=wh5";
+Config.JDIMGSourcesURL = "https://img13.360buyimg.com/n1/s450x450_";
+Config.multiFlag = false;
+Config.importFlag = false;
+
+},{}],2:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class CookieHandler {
+    static getCookie() {
+        return document.cookie;
+    }
+    static getCookieObj(str) {
+        if (!str) {
+            alert('ck内容格式有误！');
+            return;
+        }
+        var obj = {};
+        var ca = str.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i].trim();
+            var idx = c.indexOf("="), key = c.substring(0, idx), value = c.substring(idx + 1, c.length);
+            obj[key] = value;
+        }
+        return obj;
+    }
+    static setCookie(cname, cvalue, domain = ".jd.com", path = "/") {
+        var d = new Date();
+        d.setTime(d.getTime() + (1 * 24 * 60 * 60 * 1000));
+        var expires = "expires=" + d.toUTCString();
+        document.cookie = `${cname}=${cvalue};${expires};domain=${domain};path=${path}`;
+    }
+    static clearAllCookie(domain = ".jd.com", path = "/") {
+        var keys = document.cookie.match(/[^ =;]+(?=\=)/g);
+        if (keys) {
+            for (var i = keys.length; i--;)
+                document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString() + `;domain=${domain};path=${path}`;
+        }
+    }
+    static coverCookie(item) {
+        this.clearAllCookie();
+        let ckObj = this.getCookieObj(item.ck);
+        for (let key in ckObj) {
+            let cname = key, cvalue = ckObj[key];
+            this.setCookie(cname, cvalue);
+        }
+    }
+}
+exports.CookieHandler = CookieHandler;
+
+},{}],3:[function(require,module,exports){
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = require("../utils/utils");
+const config_1 = require("../config/config");
+const fetch_jsonp_1 = require("../utils/fetch-jsonp");
+const CookieHandler_1 = require("./CookieHandler");
+class CookieManager {
+    constructor(container) {
+    }
+    static parseCK(str) {
+        try {
+            this.cookieArr = this.splitCookies(str);
+            if (this.cookieArr.length == 0) {
+                alert("导入的文本文档格式内容有误或者读取识别！");
+            }
+            else {
+                config_1.default.importFlag = true;
+            }
+        }
+        catch (err) {
+            console.log(err);
+            alert("导入CK文本文档有误！");
+        }
+    }
+    static splitCookies(ck) {
+        const str = ck.split('\n');
+        let o = [];
+        str.map((item, index) => {
+            let result = item.split('----');
+            o.push({
+                mark: result[0],
+                ck: result[1],
+                index: index,
+                favoriteFood: "南瓜"
+            });
+        });
+        return o;
+    }
+    static outPutLog(output) {
+        if (this.cookieArr.length > 0) {
+            let str = "";
+            this.cookieArr.map((item) => {
+                str += `\n【${item["mark"]}】导入成功!`;
+            });
+            utils_1.default.outPutLog(output, str);
+        }
+    }
+    static checkLogin(output, ckObj) {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => __awaiter(this, void 0, void 0, function* () {
+                CookieHandler_1.CookieHandler.coverCookie(ckObj);
+                yield fetch_jsonp_1.default.fetchJsonp(config_1.default.JDUserInfoURL).then(function (response) {
+                    return response.json();
+                }).then((res) => {
+                    if (res.base.nickname) {
+                        utils_1.default.outPutLog(output, `【${ckObj.mark}】:京东账号->${res.base.nickname}`);
+                        resolve(true);
+                    }
+                    else {
+                        utils_1.default.outPutLog(output, `【${ckObj.mark}】:该ck校验失败，请检查有效性!`);
+                        resolve(false);
+                    }
+                });
+            }), 500 * ckObj.index);
+        });
+    }
+}
+exports.default = CookieManager;
+CookieManager.cookieArr = [];
+
+},{"../config/config":1,"../utils/fetch-jsonp":23,"../utils/utils":24,"./CookieHandler":2}],4:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = require("../utils/utils");
+class CoinPurchase {
+    constructor(couponParams, containerDiv, outputTextarea) {
+        this.url = "https://vip.jr.jd.com/goldcoin/purchase?id={pid}&callback=";
+        this.detailurl = "https://vip.jr.jd.com/goldcoin/goods/{pid}?callback=";
+        this.couponList = [];
+        this.couponParams = couponParams;
+        this.container = containerDiv;
+        this.outputTextarea = outputTextarea;
+        window.addEventListener("message", this.jsonp.bind(this), false);
+    }
+    get() {
+        let url = this.detailurl.replace("{pid}", this.couponParams.pid);
+        utils_1.default.createJsonp(url, true);
+    }
+    jsonp(response) {
+        console.log(response);
+        const json = JSON.parse(response.data), data = json["data"];
+        if (data) {
+            this.couponList = [];
+            if (json.success) {
+                this.couponList.push({
+                    pid: data.productId,
+                    title: data.name,
+                    detail: data.description,
+                    imgUrl: data.imgUrl
+                });
+                this.list();
+            }
+            else {
+                alert("请检查该页面优惠券的有效性！");
+            }
+        }
+        else {
+            utils_1.default.outPutLog(this.outputTextarea, `领券结果:${response.data}`);
+        }
+    }
+    list() {
+        const content = document.createElement("div");
+        content.innerHTML = "<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin-top: 5px;padding: 0 37.5vw 5px;'>优惠券</h3>";
+        content.setAttribute('style', 'display:flex;flex-direction:column;padding: 5px;margin-top: 5px;border: 1px solid #000;');
+        for (let i = 0; i < this.couponList.length; i++) {
+            const item = this.couponList[i], itemDiv = document.createElement("div");
+            itemDiv.setAttribute('style', 'display:flex;flex-direction:row;padding:10px 0;border-bottom:1px solid #999');
+            itemDiv.innerHTML = `<img style="width:120px;height:100%;margin-right:10vw;display: block;" src="${item.imgUrl}" />
+                <div>
+                    <h3 style="margin-bottom:10px">${item.title}</h3><p style="margin-bottom:10px">${item.detail}</p>
+                    <button class="receive" style="width: 80px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">
+                        <a style="color: #fff;text-decoration: none;">直接领取</a>
+                    </button>
+                </div>`;
+            content.appendChild(itemDiv);
+        }
+        this.container.appendChild(content);
+        utils_1._$('.receive').addEventListener('click', () => { this.send(); });
+    }
+    send() {
+        for (let i = 0; i < this.couponList.length; i++) {
+            let item = this.couponList[i], url = this.url.replace("{pid}", item.pid);
+            utils_1.default.createJsonp(url, true);
+        }
+    }
+}
+exports.default = CoinPurchase;
+
+},{"../utils/utils":24}],5:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = require("../utils/utils");
+class Exchange {
+    constructor(couponParams, containerDiv, outputTextarea) {
+        this.url = "https://vip.m.jd.com/fuli/exchange.html";
+        this.detailurl = "https://vip.m.jd.com/fuli/detail.html?itemId={itemId}";
+        this.couponList = [];
+        this.couponParams = couponParams;
+        this.container = containerDiv;
+        this.outputTextarea = outputTextarea;
+    }
+    get() {
+        this.couponList = [];
+        let url = this.detailurl.replace("{itemId}", this.couponParams.itemId);
+        fetch(url, { credentials: "include" })
+            .then((res) => { return res.json(); })
+            .then((json) => {
+            if (json.success) {
+                const data = json.result.fuliAct, actPriceScoreMap = data["actPriceScoreMap"], score = json.result.userInfo.userScore.score;
+                let priceRuleId;
+                for (let key in actPriceScoreMap) {
+                    let price = key, priceArr = JSON.parse(price);
+                    if (priceArr[0] < score && priceArr[1] > score) {
+                        priceRuleId = actPriceScoreMap[key][0]["id"];
+                        break;
+                    }
+                }
+                this.couponList.push({
+                    actId: this.couponParams["itemId"],
+                    priceRuleId: priceRuleId,
+                    groupId: data.actCodeGroups[0].id,
+                    title: data.name,
+                    detail: data.detail,
+                });
+                this.list();
+            }
+            else {
+                alert("请检查该页面优惠券的有效性！");
+            }
+        });
+    }
+    list() {
+        const content = document.createElement("div");
+        content.innerHTML = "<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin-top: 5px;padding: 0 37.5vw 5px;'>优惠券</h3>";
+        content.setAttribute('style', 'display:flex;flex-direction:column;padding: 5px;margin-top: 5px;border: 1px solid #000;');
+        for (let i = 0; i < this.couponList.length; i++) {
+            const item = this.couponList[i], itemDiv = document.createElement("div");
+            itemDiv.setAttribute('style', 'padding:10px 0;border:1px solid gray;border-radius: 10px;margin-top:5px;padding: 5px');
+            itemDiv.setAttribute('data-item', "coupon");
+            itemDiv.innerHTML = `<h4 style="user-select: none;pointer-events:none;">${item.title}</h4>
+                                <p style="user-select: none;pointer-events:none;margin-bottom:10px">详情：${item.detail}</p>
+                                <button data="coupon" style="width: 80px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;">直接领取</button>`;
+            content.appendChild(itemDiv);
+            itemDiv.addEventListener("click", (evt) => {
+                const target = evt.target;
+                if (target.getAttribute("data")) {
+                    this.send();
+                }
+            });
+        }
+        this.container.appendChild(content);
+    }
+    send() {
+        for (let i = 0; i < this.couponList.length; i++) {
+            let item = this.couponList[i];
+            fetch(this.url, {
+                method: "POST",
+                mode: "cors",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: `actId=${item.actId}&groupId=${item.groupId}&priceRuleId=${item.priceRuleId}&client=m`
+            })
+                .then((res) => { return res.json(); })
+                .then((json) => {
+                utils_1.default.outPutLog(this.outputTextarea, ` 领券结果：${JSON.stringify(json)}`);
+            });
+        }
+    }
+}
+exports.default = Exchange;
+
+},{"../utils/utils":24}],6:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = require("../utils/utils");
+class GcConvert {
+    constructor(couponParams, containerDiv, outputTextarea) {
+        this.url = "https://vip.jr.jd.com/goldcoin/purchase?id={pid}&callback=";
+        this.detailurl = "https://ms.jr.jd.com/gw/generic/hy/h5/m/gateFloorById?reqData={%22floorId%22:44,%22pageChannel%22:%22spike%22}";
+        this.couponList = [];
+        this.couponParams = couponParams;
+        this.container = containerDiv;
+        this.outputTextarea = outputTextarea;
+        window.addEventListener("message", this.jsonp.bind(this), false);
+    }
+    get() {
+        fetch(this.detailurl, { credentials: "include" })
+            .then((res) => { return res.json(); })
+            .then((json) => {
+            this.couponList = [];
+            if (json.resultCode == 0) {
+                const data = json["resultData"]["data"]["data"];
+                for (let i = 0; i < data.length; i++) {
+                    let coupon = data[i];
+                    if (coupon) {
+                        this.couponList.push({
+                            pid: coupon.productId,
+                            exchangeStatus: coupon.exchangeStatus == 3 ? "已抢光" : coupon.exchangeStatus == 2 ? "已领取" : "可领取",
+                            detail: coupon.description,
+                            startDate: new Date(coupon.startDate).toLocaleString(),
+                            discountAmount: coupon.discountAmount,
+                            imgUrl: coupon.imgUrl,
+                            flag: false
+                        });
+                    }
+                }
+                this.list();
+            }
+            else {
+                alert("请检查该页面优惠券的有效性！");
+            }
+        });
+    }
+    jsonp(response) {
+        const json = JSON.parse(response.data), data = json["data"];
+        utils_1.default.outPutLog(this.outputTextarea, `领券结果:${response.data}`);
+    }
+    list() {
+        const content = document.createElement("div");
+        content.innerHTML = "<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin-top: 5px;padding: 0 37.5vw 5px;'>优惠券</h3><p style='margin: 5px 0;color:red'>请先点击列表项选择领取的券</p>";
+        content.setAttribute('style', 'display:flex;flex-direction:column;padding: 5px;margin-top: 5px;border: 1px solid #000;');
+        for (let i = 0; i < this.couponList.length; i++) {
+            const item = this.couponList[i], itemDiv = document.createElement("div");
+            itemDiv.setAttribute('style', 'display:flex;flex-direction:row;text-align:left;border:1px solid gray;border-radius: 10px;margin-top:5px;padding: 5px');
+            itemDiv.setAttribute('data-item', "coupon");
+            itemDiv.innerHTML = `<img style="width:120px;height:100%;margin-right:10vw;display: block;" src="${item.imgUrl}" />
+                <div>
+                    <h3 style="margin-bottom:10px user-select: none;pointer-events:none;">${item.detail}</h3><p style="user-select: none;pointer-events:none;margin-bottom:10px">消耗金币：${item.discountAmount}<br>开始时间：${item.startDate}<br>状态：${item.exchangeStatus}</p>
+                    <button class="receive" data-id=${i} style="width: 80px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">
+                        <a style="color: #fff;text-decoration: none;user-select: none;pointer-events:none;">直接领取</a>
+                    </button>
+                </div>`;
+            content.appendChild(itemDiv);
+            itemDiv.addEventListener('click', (evt) => {
+                const target = evt.target;
+                if (target.getAttribute('data-item') || (target.parentNode == itemDiv && target.tagName != "BUTTON")) {
+                    if (!item.flag) {
+                        itemDiv.style.border = "3px solid red";
+                    }
+                    else {
+                        itemDiv.style.border = "1px solid gray";
+                    }
+                    item.flag = !item.flag;
+                }
+                else if (target.getAttribute("data-id")) {
+                    this.singleSend(+target.getAttribute("data-id"));
+                }
+            });
+        }
+        this.container.appendChild(content);
+    }
+    send() {
+        for (let i = 0; i < this.couponList.length; i++) {
+            let item = this.couponList[i], url = this.url.replace("{pid}", item.pid);
+            if (item.flag) {
+                utils_1.default.createJsonp(url, true);
+            }
+        }
+    }
+    singleSend(i) {
+        let item = this.couponList[i], url = this.url.replace("{pid}", item.pid);
+        utils_1.default.createJsonp(url, true);
+    }
+}
+exports.default = GcConvert;
+
+},{"../utils/utils":24}],7:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = require("../utils/utils");
+const fetch_jsonp_1 = require("../utils/fetch-jsonp");
+class getCouponCenter {
+    constructor(couponParams, containerDiv, outputTextarea) {
+        this.url = "https://s.m.jd.com/activemcenter/mcouponcenter/receivecoupon?coupon={actId},{ckey}&batchid={batchid}&sceneval=2&g_login_type=1";
+        this.detailurl = "https://api.m.jd.com/client.action?functionId=getCcFeedInfo&clientVersion=8.4.6&client=android&uuid=869782023101754-c40bcb2a081c&st=1580274952976&sign=5e8edb6a1063a25d2a8d98b537974329&sv=120";
+        this.couponList = [];
+        this.couponParams = couponParams;
+        this.container = containerDiv;
+        this.outputTextarea = outputTextarea;
+    }
+    get() {
+        this.couponList = [];
+        fetch(this.detailurl, {
+            method: "POST",
+            body: "body=" + encodeURIComponent(`{"categoryId":118,"childActivityUrl":"openapp.jdmobile://virtual?params={\\"category\\":\\"jump\\",\\"des\\":\\"couponCenter\\"}","eid":"eidA34d08122basezJhsrmQRRxmKprHoj2C/qsyYbh5TyzlV40H/a8UVc9Mwqf5fJ3ez02Ja/n0hNrG4CqlQNZ5J5VyfpzABj6gCzqhlaRbPfZI81+d1","monitorRefer":"appClient","monitorSource":"ccfeed_android_index_feed","pageClickKey":"Coupons_GetCenter","pageNum":1,"pageSize":20,"shshshfpb":"hJFvGjgPo+Yfm06tQPQBhVa8JMvNh0ofLojzHNpvuXWBm0H7FUSxeyfZMVsrL7YOK"}`),
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            }
+        }).then((res) => { return res.json(); })
+            .then((json) => {
+            if (json.success) {
+                const data = json["result"]["couponList"];
+                for (let i = 0; i < data.length; i++) {
+                    let coupon = data[i];
+                    this.couponList.push({
+                        ckey: coupon.ckey,
+                        title: coupon.title,
+                        quota: coupon.quota,
+                        discount: coupon.discount,
+                        actId: coupon.actId,
+                        batchId: coupon["batchId"],
+                        flag: false
+                    });
+                }
+                this.list();
+            }
+            else {
+                alert("请检查该页面优惠券的有效性！");
+            }
+        });
+    }
+    list() {
+        const content = document.createElement("div");
+        content.innerHTML = "<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin-top: 5px;padding: 0 37.5vw 5px;'>优惠券</h3><p style='margin: 5px 0;color:red'>请先点击列表项选择领取的券<br>【接口数据来自APP端-为你推荐】</p>";
+        content.setAttribute('style', 'display:flex;flex-direction:column;padding: 5px;margin-top: 5px;border: 1px solid #000;');
+        for (let i = 0; i < this.couponList.length; i++) {
+            const item = this.couponList[i], itemDiv = document.createElement("div");
+            itemDiv.setAttribute('style', ';margin-top:5px;padding:10px 0;border:1px solid #999');
+            itemDiv.setAttribute('data-item', "coupon");
+            itemDiv.innerHTML = `
+                    <p style="margin-bottom:10px">标题：${item.title}<br>详情：${item.quota}<br>折扣：${item.discount}<br></p>
+                    <button  data-id=${i} style="width: 80px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0; color:#fff">直接领取</button>`;
+            content.appendChild(itemDiv);
+            itemDiv.addEventListener("click", (evt) => {
+                const target = evt.target;
+                if (target.getAttribute('data-item') || (target.parentNode == itemDiv && target.tagName != "BUTTON")) {
+                    if (!item.flag) {
+                        itemDiv.style.border = "3px solid red";
+                    }
+                    else {
+                        itemDiv.style.border = "1px solid gray";
+                    }
+                    item.flag = !item.flag;
+                }
+                else if (target.getAttribute("data-id")) {
+                    this.singleSend(+target.getAttribute("data-id"));
+                }
+            });
+        }
+        this.container.appendChild(content);
+    }
+    send() {
+        for (let i = 0; i < this.couponList.length; i++) {
+            let item = this.couponList[i], url = this.url.replace("{actId}", item.actId).replace("{ckey}", item.ckey).replace("{batchid}", item.batchId);
+            if (item.flag) {
+                fetch_jsonp_1.default.fetchJsonp(url).then(function (response) {
+                    return response.json();
+                }).then((res) => {
+                    utils_1.default.outPutLog(this.outputTextarea, `领券结果:${JSON.stringify(res)}`);
+                });
+            }
+        }
+    }
+    singleSend(i) {
+        let item = this.couponList[i], url = this.url.replace("{actId}", item.actId).replace("{ckey}", item.ckey).replace("{batchid}", item.batchId);
+        fetch_jsonp_1.default.fetchJsonp(url).then(function (response) {
+            return response.json();
+        }).then((res) => {
+            utils_1.default.outPutLog(this.outputTextarea, `领券结果:${JSON.stringify(res)}`);
+        });
+    }
+}
+exports.default = getCouponCenter;
+
+},{"../utils/fetch-jsonp":23,"../utils/utils":24}],8:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = require("../utils/utils");
+class Mfreecoupon {
+    constructor(couponParams, containerDiv, outputTextarea) {
+        this.url = "https://s.m.jd.com/activemcenter/mfreecoupon/getcoupon?key={key}&roleId={roleId}";
+        this.couponList = [];
+        this.couponParams = couponParams;
+        this.container = containerDiv;
+        this.outputTextarea = outputTextarea;
+        window.getcoupon = this.jsonp.bind(this);
+    }
+    get() {
+        this.couponList = [];
+        let batchinfo = window._couponData.batchinfo, batchArr = [];
+        for (let item in batchinfo) {
+            if (batchArr && batchArr instanceof Array) {
+                batchArr = batchinfo[item];
+            }
+        }
+        for (let i = 0; i < batchArr.length; i++) {
+            const coupon = batchArr[i], limitStr = coupon["limitStr"], discount = coupon["discount"], quota = coupon["quota"], constraintBeginTime = coupon["constraintBeginTime"], constraintEndTime = coupon["constraintEndTime"];
+            this.couponList.push({
+                "limitStr": limitStr,
+                "discount": discount,
+                "constraintEndTime": constraintEndTime,
+                "constraintBeginTime": constraintBeginTime,
+                "quota": quota,
+                "flag": false
+            });
+        }
+        this.list();
+    }
+    list() {
+        const content = document.createElement("div");
+        content.innerHTML = "<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin-top: 5px;padding: 0 37.5vw 5px;'>优惠券</h3><p style='margin: 5px 0;color:red'>请先点击列表项选择领取的券</p>";
+        content.setAttribute('style', 'display:flex;flex-direction:column;padding: 5px;margin-top: 5px;border: 1px solid #000;');
+        for (let i = 0; i < this.couponList.length; i++) {
+            const item = this.couponList[i], itemDiv = document.createElement("div");
+            itemDiv.setAttribute('style', 'padding:10px 0;border:1px solid gray;border-radius: 10px;margin-top:5px;padding: 5px');
+            itemDiv.setAttribute('data-item', "coupon");
+            itemDiv.innerHTML = `<h4 style="user-select: none;pointer-events:none;">${item.quota}-${item.discount}</h4>
+                                <p style="user-select: none;pointer-events:none;margin-bottom:10px">范围：${item.limitStr}<br/>时间：${item.constraintBeginTime}-${item.constraintEndTime}</p>
+                                <button data="coupon" style="width: 80px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;">直接领取</button>`;
+            content.appendChild(itemDiv);
+            itemDiv.addEventListener("click", (evt) => {
+                const target = evt.target;
+                if (target.getAttribute('data-item') || (target.parentNode == itemDiv && target.tagName != "BUTTON")) {
+                    if (!item.flag) {
+                        itemDiv.style.border = "3px solid red";
+                    }
+                    else {
+                        itemDiv.style.border = "1px solid gray";
+                    }
+                    item.flag = !item.flag;
+                }
+                else if (target.getAttribute("data")) {
+                    this.send();
+                }
+            });
+        }
+        this.container.appendChild(content);
+    }
+    send() {
+        let url = this.url.replace("{key}", this.couponParams["key"]).replace("{roleId}", this.couponParams["roleId"]);
+        utils_1.default.createJsonp(url, false);
+    }
+    jsonp(response) {
+        utils_1.default.outPutLog(this.outputTextarea, `领券结果:${JSON.stringify(response)}`);
+    }
+}
+exports.default = Mfreecoupon;
+
+},{"../utils/utils":24}],9:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = require("../utils/utils");
+class NewBabelAwardCollection {
+    constructor(couponParams, containerDiv, outputTextarea) {
+        this.url = "https://api.m.jd.com/client.action?functionId=newBabelAwardCollection";
+        this.couponList = [];
+        this.couponParams = couponParams;
+        this.container = containerDiv;
+        this.outputTextarea = outputTextarea;
+    }
+    get() {
+        this.couponList = [];
+        const activityData = window.__react_data__.activityData.floorList;
+        for (let i = 0; i < activityData.length; i++) {
+            const item = activityData[i];
+            if (item.template == "free_coupon" || item.template == "finance_coupon" || item.template == "combine_coupon") {
+                for (let j = 0; j < item.couponList.length; j++) {
+                    const coupon = item.couponList[j], scene = coupon["scene"], args = coupon["args"] || coupon["cpId"], cid = coupon["jsonSrv"] ? JSON.parse(coupon["jsonSrv"])["cid"] : "", discount = coupon["discount"], picUrl = coupon["picUrl"] || coupon["picture"], status = coupon["status"], details = `${coupon["limit"]},${coupon["scope"]}`;
+                    this.couponList.push({
+                        "discount": discount,
+                        "details": details,
+                        "scene": scene,
+                        "args": args,
+                        "status": status,
+                        "couponbatch": cid,
+                        "picUrl": picUrl,
+                        "flag": false
+                    });
+                }
+            }
+        }
+        this.list();
+    }
+    list() {
+        const content = document.createElement("div");
+        content.innerHTML = "<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin-top: 5px;padding: 0 37.5vw 5px;'>优惠券</h3><p style='margin: 5px 0;color:red'>请先点击列表项选择领取的券</p>";
+        content.setAttribute('style', 'display:flex;flex-direction:column;padding: 5px;margin-top: 5px;border: 1px solid #000;');
+        for (let i = 0; i < this.couponList.length; i++) {
+            const item = this.couponList[i], itemDiv = document.createElement("div");
+            itemDiv.setAttribute('style', 'display:flex;flex-direction:row;border:1px solid gray;border-radius: 10px;margin-top:5px;padding: 5px');
+            itemDiv.setAttribute('data-item', "coupon");
+            if (item.scene == "1") {
+                itemDiv.innerHTML = `<img style="user-select: none;pointer-events:none;width:120px;height:100%;padding-right:10vw;display: block;" src="${item.picUrl}" />
+                <div">
+                    <p style="user-select: none;pointer-events:none;margin-bottom:10px">状态：${item.status == "0" ? "可领取" : item.status == "1" ? "已领取" : "已领光"}<br/>说明：${item.details}</p>
+                    <button style="width: 100px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">
+                        <a href='https://so.m.jd.com/list/couponSearch.action?couponbatch=${item.couponbatch}' target="_blank" style="color: #fff;text-decoration: none;">可用商品</a>
+                    </button>
+                    <button style="width: 100px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">
+                        <a href='https://api.m.jd.com/client.action?functionId=newBabelAwardCollection&body={"activityId":"${this.couponParams.activityId}","scene":${item.scene},"args":"${item.args}"}&client=wh5' target="_blank" style="color: #fff;text-decoration: none;">提取链接</a>
+                    </button>
+                </div>`;
+            }
+            else if (item.scene == "3") {
+                itemDiv.innerHTML = `<img style="user-select: none;pointer-events:none;width:120px;height:100%;padding-right:10vw;display: block;" src="${item.picUrl}" />
+                <div">
+                <p style="user-select: none;pointer-events:none;margin-bottom:10px">状态：${item.status == "0" ? "可领取" : item.status == "1" ? "已领取" : "已领光"}</p>
+                <button style="width: 100px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">
+                    <a href='https://api.m.jd.com/client.action?functionId=newBabelAwardCollection&body={"activityId":"${this.couponParams.activityId}","scene":${item.scene},"actKey":"${item.args}"}&client=wh5' target="_blank" style="color: #fff;text-decoration: none;">提取链接</a>
+                </button>
+                </div>`;
+            }
+            content.appendChild(itemDiv);
+            itemDiv.addEventListener("click", (evt) => {
+                const target = evt.target;
+                if (target.getAttribute('data-item') || (target.parentNode == itemDiv && target.tagName != "BUTTON")) {
+                    if (!item.flag) {
+                        itemDiv.style.border = "3px solid red";
+                    }
+                    else {
+                        itemDiv.style.border = "1px solid gray";
+                    }
+                    item.flag = !item.flag;
+                }
+            });
+        }
+        this.container.appendChild(content);
+    }
+    send() {
+        for (let i = 0; i < this.couponList.length; i++) {
+            let item = this.couponList[i], url = "";
+            if (item.scene == "1") {
+                url = `https://api.m.jd.com/client.action?functionId=newBabelAwardCollection&body={"activityId":"${this.couponParams.activityId}","scene":${item.scene},"args":"${item.args}"}&client=wh5`;
+            }
+            else if (item.scene == "3") {
+                url = `https://api.m.jd.com/client.action?functionId=newBabelAwardCollection&body={"activityId":"${this.couponParams.activityId}","scene":${item.scene},"actKey":"${item.args}"}&client=wh5`;
+            }
+            if (item.flag) {
+                fetch(url, { credentials: "include" })
+                    .then((res) => { return res.json(); })
+                    .then((json) => {
+                    if (json.errmsg) {
+                        utils_1.default.outPutLog(this.outputTextarea, `第${i + 1}张 领券结果:${json.errmsg}`);
+                    }
+                    else {
+                        utils_1.default.outPutLog(this.outputTextarea, `第${i + 1}张 领券结果:${json.subCodeMsg}`);
+                    }
+                });
+            }
+        }
+    }
+}
+exports.default = NewBabelAwardCollection;
+
+},{"../utils/utils":24}],10:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = require("../utils/utils");
+class Purchase {
+    constructor(couponParams, containerDiv, outputTextarea) {
+        this.url = "https://vip.jr.jd.com/goldcoin/purchase?id={pid}&callback=";
+        this.detailurl = "https://vip.jr.jd.com/goldcoin/product/{pid}?callback=";
+        this.couponList = [];
+        this.couponParams = couponParams;
+        this.container = containerDiv;
+        this.outputTextarea = outputTextarea;
+        window.addEventListener("message", this.jsonp.bind(this), false);
+    }
+    get() {
+        let url = this.detailurl.replace("{pid}", this.couponParams.pid);
+        utils_1.default.createJsonp(url, true);
+    }
+    jsonp(response) {
+        console.log(response);
+        const json = JSON.parse(response.data), data = json["data"];
+        if (data) {
+            this.couponList = [];
+            if (json.success) {
+                this.couponList.push({
+                    pid: data.productId,
+                    title: data.name,
+                    detail: data.description,
+                    imgUrl: data.imgUrl
+                });
+                this.list();
+            }
+            else {
+                alert("请检查该页面优惠券的有效性！");
+            }
+        }
+        else {
+            utils_1.default.outPutLog(this.outputTextarea, `领券结果:${response.data}`);
+        }
+    }
+    list() {
+        const content = document.createElement("div");
+        content.innerHTML = "<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin-top: 5px;padding: 0 37.5vw 5px;'>优惠券</h3>";
+        content.setAttribute('style', 'display:flex;flex-direction:column;padding: 5px;margin-top: 5px;border: 1px solid #000;');
+        for (let i = 0; i < this.couponList.length; i++) {
+            const item = this.couponList[i], itemDiv = document.createElement("div");
+            itemDiv.setAttribute('style', 'display:flex;flex-direction:row;padding:10px 0;border-bottom:1px solid #999');
+            itemDiv.innerHTML = `<img style="width:120px;height:100%;margin-right:10vw;display: block;" src="${item.imgUrl}" />
+                <div>
+                    <h3 style="margin-bottom:10px">${item.title}</h3><p style="margin-bottom:10px">${item.detail}</p>
+                    <button class="receive" style="width: 80px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">
+                        <a style="color: #fff;text-decoration: none;">直接领取</a>
+                    </button>
+                </div>`;
+            content.appendChild(itemDiv);
+        }
+        this.container.appendChild(content);
+        utils_1._$('.receive').addEventListener('click', () => { this.send(); });
+    }
+    send() {
+        for (let i = 0; i < this.couponList.length; i++) {
+            let item = this.couponList[i], url = this.url.replace("{pid}", item.pid);
+            utils_1.default.createJsonp(url, true);
+        }
+    }
+}
+exports.default = Purchase;
+
+},{"../utils/utils":24}],11:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = require("../utils/utils");
+class ReceiveCoupon {
+    constructor(couponParams, containerDiv, outputTextarea) {
+        this.url = `https://ms.jr.jd.com/gw/generic/bt/h5/m/receiveCoupons?reqData=%7B%22couponKey%22:%22{couponKey}%22,%22eid%22:%22170.0.0.1%22,%22appId%22:%22btm%22%7D`;
+        this.detailurl = "https://ms.jr.jd.com/gw/generic/bt/h5/m/queryBtmLimitedInfo";
+        this.couponList = [];
+        this.couponParams = couponParams;
+        this.container = containerDiv;
+        this.outputTextarea = outputTextarea;
+    }
+    get() {
+        this.couponList = [];
+        fetch(this.detailurl, { credentials: "include" })
+            .then((res) => { return res.json(); })
+            .then((json) => {
+            if (json.resultCode == 0) {
+                const data = json["resultData"]["jtLimitedResults"];
+                for (let i = 0; i < data.length; i++) {
+                    const item = data[i]["floorInfo"];
+                    for (let j = 0; j < item.length; j++) {
+                        let coupon = item[j];
+                        this.couponList.push({
+                            couponKey: coupon.activeId,
+                            title: coupon.text2,
+                            detail: coupon.number,
+                            couponStatus: coupon.couponStatus == 5 ? "已领光" : coupon.couponStatus == 1 ? "未开始" : "已领取",
+                            time: coupon["time"],
+                            flag: false
+                        });
+                    }
+                }
+                this.list();
+            }
+            else {
+                alert("请检查该页面优惠券的有效性！");
+            }
+        });
+    }
+    list() {
+        const content = document.createElement("div");
+        content.innerHTML = "<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin-top: 5px;padding: 0 37.5vw 5px;'>优惠券</h3><p style='margin: 5px 0;color:red'>请先点击列表项选择领取的券</p>";
+        content.setAttribute('style', 'display:flex;flex-direction:column;padding: 5px;margin-top: 5px;border: 1px solid #000;');
+        for (let i = 0; i < this.couponList.length; i++) {
+            const item = this.couponList[i], itemDiv = document.createElement("div");
+            itemDiv.setAttribute('style', ';margin-top:5px;padding:10px 0;border:1px solid #999');
+            itemDiv.setAttribute('data-item', "coupon");
+            itemDiv.innerHTML = `
+                    <p style="margin-bottom:10px">类型：${item.title}<br>详情：${item.detail}<br>状态：${item.couponStatus}<br>开始时间：${item.time}</p>
+                    <button  data-id=${i} style="width: 80px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0; color:#fff">直接领取</button>`;
+            content.appendChild(itemDiv);
+            itemDiv.addEventListener("click", (evt) => {
+                const target = evt.target;
+                if (target.getAttribute('data-item') || (target.parentNode == itemDiv && target.tagName != "BUTTON")) {
+                    if (!item.flag) {
+                        itemDiv.style.border = "3px solid red";
+                    }
+                    else {
+                        itemDiv.style.border = "1px solid gray";
+                    }
+                    item.flag = !item.flag;
+                }
+                else if (target.getAttribute("data-id")) {
+                    this.singleSend(+target.getAttribute("data-id"));
+                }
+            });
+        }
+        this.container.appendChild(content);
+    }
+    send() {
+        for (let i = 0; i < this.couponList.length; i++) {
+            let item = this.couponList[i], url = this.url.replace("{couponKey}", item["couponKey"]);
+            if (item.flag) {
+                fetch(url, { credentials: "include" })
+                    .then((res) => { return res.json(); })
+                    .then((json) => {
+                    utils_1.default.outPutLog(this.outputTextarea, `领券结果:${JSON.stringify(json.resultData)}`);
+                });
+            }
+        }
+    }
+    singleSend(index) {
+        let item = this.couponList[index], url = this.url.replace("{couponKey}", item["couponKey"]);
+        fetch(url, { credentials: "include" })
+            .then((res) => { return res.json(); })
+            .then((json) => {
+            utils_1.default.outPutLog(this.outputTextarea, `领券结果:${JSON.stringify(json.resultData)}`);
+        });
+    }
+}
+exports.default = ReceiveCoupon;
+
+},{"../utils/utils":24}],12:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = require("../utils/utils");
+class ReceiveCoupons {
+    constructor(couponParams, containerDiv, outputTextarea) {
+        this.url = `https://ms.jr.jd.com/gw/generic/bt/h5/m/receiveCoupons?reqData={"couponKey":"{couponKey}","eid":"1"}}`;
+        this.detailurl = "https://ms.jr.jd.com/gw/generic/bt/h5/m/queryLimitedInfo?callback=";
+        this.couponList = [];
+        this.couponParams = couponParams;
+        this.container = containerDiv;
+        this.outputTextarea = outputTextarea;
+        window.addEventListener("message", this.jsonp.bind(this), false);
+    }
+    get() {
+        utils_1.default.createJsonp(this.detailurl, true);
+    }
+    jsonp(response) {
+        // console.log(response.data);
+        const json = JSON.parse(response.data), data = json["resultData"]["limitedResult"];
+        if (data) {
+            this.couponList = [];
+            if (json.resultCode == 0) {
+                for (let i = 0; i < data.length; i++) {
+                    const item = data[i]["floorInfo"];
+                    for (let j = 0; j < 3; j++) {
+                        let coupon = item[j];
+                        this.couponList.push({
+                            couponKey: coupon.couponKey,
+                            title: coupon.text1,
+                            detail: coupon.number,
+                            couponStatus: coupon.couponStatus == 5 ? "已领光" : coupon.couponStatus == 1 ? "未开始" : "已领取",
+                            time: data[i]["time"],
+                            flag: false
+                        });
+                    }
+                }
+                this.list();
+            }
+            else {
+                alert("请检查该页面优惠券的有效性！");
+            }
+        }
+    }
+    list() {
+        const content = document.createElement("div");
+        content.innerHTML = "<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin-top: 5px;padding: 0 37.5vw 5px;'>优惠券</h3><p style='margin: 5px 0;color:red'>请先点击列表项选择领取的券</p>";
+        content.setAttribute('style', 'display:flex;flex-direction:column;padding: 5px;margin-top: 5px;border: 1px solid #000;');
+        for (let i = 0; i < this.couponList.length; i++) {
+            const item = this.couponList[i], itemDiv = document.createElement("div");
+            itemDiv.setAttribute('style', ';margin-top:5px;padding:10px 0;border:1px solid #999');
+            itemDiv.setAttribute('data-item', "coupon");
+            itemDiv.innerHTML = `
+                    <p style="margin-bottom:10px">类型：${item.title}<br>详情：${item.detail}<br>状态：${item.couponStatus}<br>开始时间：${item.time}</p>
+                    <button  data-id=${i} style="width: 80px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0; color:#fff">直接领取</button>`;
+            content.appendChild(itemDiv);
+            itemDiv.addEventListener("click", (evt) => {
+                const target = evt.target;
+                if (target.getAttribute('data-item') || (target.parentNode == itemDiv && target.tagName != "BUTTON")) {
+                    if (!item.flag) {
+                        itemDiv.style.border = "3px solid red";
+                    }
+                    else {
+                        itemDiv.style.border = "1px solid gray";
+                    }
+                    item.flag = !item.flag;
+                }
+                else if (target.getAttribute("data-id")) {
+                    this.singleSend(+target.getAttribute("data-id"));
+                }
+            });
+        }
+        this.container.appendChild(content);
+    }
+    send() {
+        for (let i = 0; i < this.couponList.length; i++) {
+            let item = this.couponList[i], url = this.url.replace("{couponKey}", item["couponKey"]);
+            if (item.flag) {
+                fetch(url, { credentials: "include" })
+                    .then((res) => { return res.json(); })
+                    .then((json) => {
+                    utils_1.default.outPutLog(this.outputTextarea, `领券结果:${JSON.stringify(json.resultData)}`);
+                });
+            }
+        }
+    }
+    singleSend(index) {
+        let item = this.couponList[index], url = this.url.replace("{couponKey}", item["couponKey"]);
+        fetch(url, { credentials: "include" })
+            .then((res) => { return res.json(); })
+            .then((json) => {
+            utils_1.default.outPutLog(this.outputTextarea, `领券结果:${JSON.stringify(json.resultData)}`);
+        });
+    }
+}
+exports.default = ReceiveCoupons;
+
+},{"../utils/utils":24}],13:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = require("../utils/utils");
+class ReceiveDayCoupon {
+    constructor(couponParams, containerDiv, outputTextarea) {
+        this.url = "https://rsp.jd.com/coupon/receiveDayCoupon/v1?locationCode=10002&lt=m&an=plus.mobile&getType=1&discount=10&couponKey=&platform=3&eventId=MPlusCoupon_Get&eid=&fp=&getType=1&activityId={activityId}";
+        this.detailurl = "https://rsp.jd.com/coupon/dayCouponList/v1/?lt=m&an=plus.mobile&couponType=0_1";
+        this.couponList = [];
+        this.couponParams = couponParams;
+        this.container = containerDiv;
+        this.outputTextarea = outputTextarea;
+    }
+    get() {
+        this.couponList = [];
+        fetch(this.detailurl, { credentials: "include" })
+            .then(res => { return res.json(); })
+            .then(json => {
+            const data = json["rs"]["wholeCategoryCoupon"];
+            for (let j = 0; j < data.length; j++) {
+                let coupon = data[j], giftAmount = coupon["giftAmount"], discount = coupon["discount"], quota = coupon["quota"], couponState = coupon["couponState"], activityId = coupon["activtyId"], limitStr = coupon["limitStr"], hour = coupon["hour"];
+                this.couponList.push({
+                    "giftAmount": giftAmount,
+                    "activityId": activityId,
+                    "discount": discount,
+                    "quota": quota,
+                    "hour": hour,
+                    "limitStr": limitStr,
+                    "couponState": couponState,
+                    "flag": false
+                });
+            }
+            this.list();
+        });
+    }
+    list() {
+        const content = document.createElement("div");
+        content.innerHTML = "<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin-top: 5px;padding: 0 37.5vw 5px;'>优惠券</h3><p style='margin: 5px 0;color:red'>点击列表项选择要领取的券</p>";
+        content.setAttribute('style', 'display:flex;flex-direction:column;padding: 5px;margin-top: 5px;border: 1px solid #000;');
+        for (let i = 0; i < this.couponList.length; i++) {
+            const item = this.couponList[i], itemDiv = document.createElement("div");
+            itemDiv.setAttribute('style', 'text-align:left;border:1px solid gray;border-radius: 10px;margin-top:5px;padding: 5px');
+            itemDiv.setAttribute('data-item', "coupon");
+            itemDiv.innerHTML = `<h3 style="user-select: none;pointer-events:none;">折扣：${item.quota}-${item.discount}</h3>
+                                    <p style="margin-bottom:10px;user-select: none;pointer-events:none;">状态：${item.couponState == 1 ? "可领取" : item.couponState == 6 ? "已领光" : "不可领取"}<br/>说明：${item.limitStr}<br/>兑换礼金：${item.giftAmount}<br/>领取时间：${item.hour || "现在可领"}</p>
+                                    <button class="receive" data-id=${i} style="width: 80px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;">直接领取</button>`;
+            content.appendChild(itemDiv);
+            itemDiv.addEventListener("click", (evt) => {
+                const target = evt.target;
+                if (target.getAttribute('data-item') || (target.parentNode == itemDiv && target.tagName != "BUTTON")) {
+                    if (!item.flag) {
+                        itemDiv.style.border = "3px solid red";
+                    }
+                    else {
+                        itemDiv.style.border = "1px solid gray";
+                    }
+                    item.flag = !item.flag;
+                }
+                else if (target.getAttribute("data-id")) {
+                    this.singleSend(+target.getAttribute("data-id"));
+                }
+            }, false);
+        }
+        this.container.appendChild(content);
+    }
+    send() {
+        for (let i = 0; i < this.couponList.length; i++) {
+            let item = this.couponList[i], url = this.url.replace("{activityId}", item["activityId"]);
+            if (item.flag) {
+                fetch(url, { credentials: "include" })
+                    .then((res) => { return res.json(); })
+                    .then((json) => {
+                    utils_1.default.outPutLog(this.outputTextarea, `${item.quota}-${item.discount} 领券结果:${json.msg}`);
+                });
+            }
+        }
+    }
+    singleSend(index) {
+        let item = this.couponList[index], url = this.url.replace("{activityId}", item["activityId"]);
+        fetch(url, { credentials: "include" })
+            .then((res) => { return res.json(); })
+            .then((json) => {
+            utils_1.default.outPutLog(this.outputTextarea, `${item.quota}-${item.discount} 领券结果:${json.msg}`);
+        });
+    }
+}
+exports.default = ReceiveDayCoupon;
+
+},{"../utils/utils":24}],14:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = require("../utils/utils");
+class SecKillCoupon {
+    constructor(couponParams, containerDiv, outputTextarea) {
+        this.url = "https://api.m.jd.com/client.action?functionId=newBabelAwardCollection";
+        this.detailurl = "https://api.m.jd.com/client.action?functionId=getBillionSubsidyInfo&body=%7B%22source%22:%22home_subsidy%22%7D&appid=XPMSGC2019";
+        this.couponList = [];
+        this.couponParams = couponParams;
+        this.container = containerDiv;
+        this.outputTextarea = outputTextarea;
+    }
+    get() {
+        this.couponList = [];
+        fetch(this.detailurl, { credentials: "include" })
+            .then(res => { return res.json(); })
+            .then(json => {
+            const data = json["data"]["hotFloor"]["resultList"];
+            for (let j = 0; j < data.length; j++) {
+                let coupon = data[j], name = coupon["name"], discount = coupon["disCount"], quota = coupon["quota"], skuImage = coupon["skuImage"], skuId = coupon["skuId"], time = coupon["time"], putKey = coupon["putKey"], batchId = coupon["batchId"];
+                this.couponList.push({
+                    "name": name,
+                    "putKey": putKey,
+                    "skuImage": skuImage,
+                    "discount": discount,
+                    "quota": quota,
+                    "skuId": skuId,
+                    "batchId": batchId,
+                    "time": time,
+                    "flag": false
+                });
+            }
+            this.list();
+        });
+    }
+    list() {
+        const content = document.createElement("div");
+        content.innerHTML = "<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin-top: 5px;padding: 0 37.5vw 5px;'>优惠券</h3><p style='margin: 5px 0;color:red'>请先点击列表项选择领取的券</p>";
+        content.setAttribute('style', 'display:flex;flex-direction:column;padding: 5px;margin-top: 5px;border: 1px solid #000;');
+        for (let i = 0; i < this.couponList.length; i++) {
+            const item = this.couponList[i], itemDiv = document.createElement("div");
+            itemDiv.setAttribute('style', 'display:flex;flex-direction:row;padding:10px 0;border:1px solid gray;border-radius: 10px;margin-top:5px;padding: 5px');
+            itemDiv.setAttribute('data-item', "coupon");
+            itemDiv.innerHTML = `<img style="user-select: none;pointer-events:none;width:120px;height:100%;padding-right:10vw;display: block;" src="${item.skuImage}" />
+                                <div style="text-align: left">
+                                <h4 style="user-select: none;pointer-events:none;">${item.name}</h4>
+                                <p style="user-select: none;pointer-events:none;margin-bottom:10px">折扣：${item.quota}-${item.discount}<br/>下场时间：${item.time}</p>
+                                <button  class="receive" data-id=${i} style="width: 80px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;">直接领取</button>
+                                </div>`;
+            content.appendChild(itemDiv);
+            itemDiv.addEventListener("click", (evt) => {
+                const target = evt.target;
+                if (target.getAttribute('data-item') || (target.parentNode == itemDiv && target.tagName != "BUTTON")) {
+                    if (!item.flag) {
+                        itemDiv.style.border = "3px solid red";
+                    }
+                    else {
+                        itemDiv.style.border = "1px solid gray";
+                    }
+                    item.flag = !item.flag;
+                }
+                else if (target.getAttribute("data-id")) {
+                    this.singleSend(+target.getAttribute("data-id"));
+                }
+            });
+        }
+        this.container.appendChild(content);
+    }
+    send() {
+        for (let i = 0; i < this.couponList.length; i++) {
+            let item = this.couponList[i];
+            if (item.flag) {
+                const url = `https://api.m.jd.com/client.action?functionId=receiveSeckillCoupon&body=%7B"roleId"%3A"${encodeURIComponent(item["putKey"])}"%2C"source"%3A"home_subsidy"%2C"floorType"%3A0%2C"skuId"%3A"${item.skuId}"%2C"quota"%3A"${item.quota}"%2C"disCount"%3A"${item.discount}"%2C"batchId"%3A"${item.batchId}"%7D&client=m&appid=XPMSGC2019`;
+                fetch(url, { method: "POST", mode: "cors", credentials: "include", headers: { "Content-Type": "application/x-www-form-urlencoded" } })
+                    .then((res) => { return res.json(); })
+                    .then((json) => {
+                    utils_1.default.outPutLog(this.outputTextarea, `${item.quota}-${item.discount} 领券结果:${json.resultMsg}`);
+                });
+            }
+        }
+    }
+    singleSend(index) {
+        let item = this.couponList[index], url = `https://api.m.jd.com/client.action?functionId=receiveSeckillCoupon&body=%7B"roleId"%3A"${encodeURIComponent(item["putKey"])}"%2C"source"%3A"home_subsidy"%2C"floorType"%3A0%2C"skuId"%3A"${item.skuId}"%2C"quota"%3A"${item.quota}"%2C"disCount"%3A"${item.discount}"%2C"batchId"%3A"${item.batchId}"%7D&client=m&appid=XPMSGC2019`;
+        fetch(url, { method: "POST", mode: "cors", credentials: "include", headers: { "Content-Type": "application/x-www-form-urlencoded" } })
+            .then((res) => { return res.json(); })
+            .then((json) => {
+            utils_1.default.outPutLog(this.outputTextarea, `${item.quota}-${item.discount} 领券结果:${json.resultMsg}`);
+        });
+    }
+}
+exports.default = SecKillCoupon;
+
+},{"../utils/utils":24}],15:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = require("../utils/utils");
+class WhiteCoupon {
+    constructor(couponParams, containerDiv, outputTextarea) {
+        this.url = "https://opencredit.jd.com/act/get/coupon?couponBusinessId={couponBusinessId}&actId=004";
+        this.detailurl = "https://opencredit.jd.com/act/get/couponInfo?couponBusinessId={couponBusinessId}";
+        this.couponList = [];
+        this.couponParams = couponParams;
+        this.container = containerDiv;
+        this.outputTextarea = outputTextarea;
+    }
+    get() {
+        this.couponList = [];
+        let url = this.detailurl.replace("{couponBusinessId}", this.couponParams.couponBusinessId);
+        fetch(url)
+            .then((res) => { return res.json(); })
+            .then((json) => {
+            const data = JSON.parse(json["data"])["baiCouponInfo"];
+            if (json.isSuccess) {
+                this.couponList.push({
+                    couponBusinessId: JSON.parse(json["data"])["baiCouponDetailsNext"].couponBusinessId,
+                    platform: data.platform,
+                    title: data.title,
+                    detail: data.detail,
+                });
+                this.list();
+            }
+            else {
+                alert("请检查该页面优惠券的有效性！");
+            }
+        });
+    }
+    list() {
+        const content = document.createElement("div");
+        content.innerHTML = "<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin-top: 5px;padding: 0 37.5vw 5px;'>优惠券</h3><p style='margin: 5px 0;color:red'>默认领取单张券，无须选定</p>";
+        content.setAttribute('style', 'display:flex;flex-direction:column;padding: 5px;margin-top: 5px;border: 1px solid #000;');
+        for (let i = 0; i < this.couponList.length; i++) {
+            const item = this.couponList[i], itemDiv = document.createElement("div");
+            itemDiv.setAttribute('style', 'padding:10px 0;border-bottom:1px solid #999');
+            itemDiv.innerHTML = `<h3>${item.title}</h3><p>${item.detail}</p><p>可用范围：${item.platform}</p>
+                                <button style="width: 80px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">
+                                    <a href='http://opencredit.jd.com/act/get/coupon?couponBusinessId=${item.couponBusinessId}&actId=004' target="_blank" style="color: #fff;text-decoration: none;">直接领取</a>
+                                </button>`;
+            content.appendChild(itemDiv);
+        }
+        this.container.appendChild(content);
+    }
+    send() {
+        for (let i = 0; i < this.couponList.length; i++) {
+            let item = this.couponList[i], url = this.url.replace("{couponBusinessId}", item.couponBusinessId);
+            fetch(url)
+                .then((res) => { return res.json(); })
+                .then((json) => {
+                if (json.isSuccess) {
+                    utils_1.default.outPutLog(this.outputTextarea, `第${i + 1}张 领券结果:领取成功！}`);
+                }
+                else {
+                    utils_1.default.outPutLog(this.outputTextarea, `第${i + 1}张 领券结果:领取失败！`);
+                }
+            });
+        }
+    }
+}
+exports.default = WhiteCoupon;
+
+},{"../utils/utils":24}],16:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var activityType;
+(function (activityType) {
+    activityType[activityType["none"] = 0] = "none";
+    activityType["monsterNian"] = "monsterNian";
+    activityType["brandCitySpring"] = "brandCitySpring";
+    activityType["palace"] = "palace";
+    activityType["receiveBless"] = "ReceiveBless";
+})(activityType = exports.activityType || (exports.activityType = {}));
+
+},{}],17:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var couponType;
+(function (couponType) {
+    couponType[couponType["none"] = 0] = "none";
+    couponType["receiveCoupons"] = "receiveCoupons";
+    couponType["newBabelAwardCollection"] = "newBabelAwardCollection";
+    couponType["whiteCoupon"] = "whiteCoupon";
+    couponType["purchase"] = "purchase";
+    couponType["receiveDayCoupon"] = "receiveDayCoupon";
+    couponType["secKillCoupon"] = "secKillCoupon";
+    couponType["mfreecoupon"] = "mfreecoupon";
+    couponType["coinPurchase"] = "coinPurchase";
+    couponType["GcConvert"] = "GcConvert";
+    couponType["ReceiveCoupons"] = "ReceiveCoupons";
+    couponType["ReceiveCoupon"] = "ReceiveCoupon";
+    couponType["getCouponCenter"] = "getCouponCenter";
+    couponType["exchange"] = "exchange";
+})(couponType = exports.couponType || (exports.couponType = {}));
+
+},{}],18:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var gameType;
+(function (gameType) {
+    gameType[gameType["none"] = 0] = "none";
+    gameType["cloudpig"] = "cloudpig";
+    gameType["moneytree"] = "moneytree";
+})(gameType = exports.gameType || (exports.gameType = {}));
+
+},{}],19:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var goodsType;
+(function (goodsType) {
+    goodsType["goods"] = "goods";
+})(goodsType = exports.goodsType || (exports.goodsType = {}));
+
+},{}],20:[function(require,module,exports){
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = require("../utils/utils");
+const config_1 = require("../config/config");
+const CookieHandler_1 = require("../cookie/CookieHandler");
+const CookieManager_1 = require("../cookie/CookieManager");
+class Cloudpig {
+    constructor(params, containerDiv, outputTextarea) {
+        this.rootURI = "https://ms.jr.jd.com/gw/generic/uc/h5/m/";
+        this.baseReqData = { "source": 0, "channelLV": "yqs", "riskDeviceParam": "{}" };
+        // baseReqData: Object = { "source": 0, "channelLV": "yqs", "riskDeviceParam": "{\"fp\":\"\",\"eid\":\"\",\"sdkToken\":\"\",\"sid\":\"\"}" };
+        // {"source":0,"skuId":"1001003004","channelLV":"yqs","riskDeviceParam":"{\"eid\":\"\",\"fp\":\"\",\"token\":\"\"}"}
+        this.detailurl = "https://api.m.jd.com/client.action?functionId=bombnian_getTaskDetail";
+        this.data = [];
+        this.timer = 1000;
+        this.taskToken = "";
+        this.favFoodMap = { "南瓜": "1001003004", "胡萝卜": "1001003002", "白菜": "1001003001", "普通猪粮": "1001003003" };
+        this.openBoxFlag = false;
+        this.foodskuId = "1001003004";
+        this.foodSpan = 1800000;
+        this.autoAddFoodTimer = 0;
+        this.signNo = 1;
+        this.favoriteFood = "";
+        this.params = params;
+        this.container = containerDiv;
+        this.outputTextarea = outputTextarea;
+    }
+    get() {
+        // this.login();
+        this.list();
+    }
+    list() {
+        const content = document.createElement("div");
+        let msg = `
+        <div>
+        <button class="Login" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">查看猪猪详情</button>
+        <button class="Achievements" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">可提现红包</button>
+        <button class="SignOne" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键每日签到</button>
+        <button class="OpenBox" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键开箱子</button>
+        <button class="UserBag" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">查看食物背包</button>
+        <p>喂养食物:<select class="food" name="food" style="border: 1px solid #333;padding: 2px;">
+            <option value ="1001003003">普通猪粮</option>
+            <option value ="1001003001">白菜</option>
+            <option value="1001003002">胡萝卜</option>
+            <option value="1001003004">南瓜</option>
+        </select>
+        </p>
+        <button class="AddFood" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">喂养食物</button>
+        <button class="AddFavoriteFood" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:none">喂养喜爱食物</button>
+        <p>自动喂养间隔：<select class="foodSpan" name="foodSpan" style="border: 1px solid #333;padding: 2px;">
+            <option value ="1800000">30分钟</option>
+            <option value ="3600000">60分钟</option>
+            <option value ="5400000">90分钟</option>
+        </select>
+        </p>
+        <button class="AutoAddFood" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">自动定时喂养</button>
+        <button class="cancelAutoAddFood" style="display:none;width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">取消定时喂养</button>
+        <button class="pigPetLotteryIndex" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">大转盘情况</button>
+        <button class="LotteryPlay" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键大转盘</button>
+        </div>`;
+        content.innerHTML = msg;
+        this.container.appendChild(content);
+        const o = utils_1._$('.OpenBox'), lotteryIndex = utils_1._$('.pigPetLotteryIndex'), achievements = utils_1._$('.Achievements'), foodSelect = utils_1._$('.food'), foodSpanSelect = utils_1._$('.foodSpan'), lotteryPlay = utils_1._$('.LotteryPlay'), autoAddFood = utils_1._$('.AutoAddFood'), cancelAutoAddFood = utils_1._$('.cancelAutoAddFood'), a = utils_1._$('.AddFood'), signOne = utils_1._$('.SignOne'), UserBag = utils_1._$('.UserBag'), l = utils_1._$('.Login');
+        this.AddFavoriteFood = utils_1._$('.AddFavoriteFood');
+        foodSelect.onchange = (event) => {
+            this.foodskuId = foodSelect.value;
+        };
+        foodSpanSelect.onchange = (event) => {
+            this.foodSpan = +foodSpanSelect.value;
+        };
+        UserBag.addEventListener("click", () => {
+            utils_1.default.outPutLog(this.outputTextarea, `查看我的背包`);
+            if (config_1.default.multiFlag) {
+                this.userBagMulti();
+            }
+            else {
+                this.userBag();
+            }
+        });
+        signOne.addEventListener("click", () => {
+            utils_1.default.outPutLog(this.outputTextarea, `开始每日签到`);
+            if (config_1.default.multiFlag) {
+                this.signIndexMulti();
+            }
+            else {
+                this.signIndex();
+            }
+        });
+        lotteryIndex.addEventListener("click", () => {
+            utils_1.default.outPutLog(this.outputTextarea, `开始查看当天大转盘记录`);
+            if (config_1.default.multiFlag) {
+                this.lotteryIndexMulti();
+            }
+            else {
+                this.lotteryIndex();
+            }
+        });
+        achievements.addEventListener("click", () => {
+            utils_1.default.outPutLog(this.outputTextarea, `开始查看待提现红包`);
+            if (config_1.default.multiFlag) {
+                this.achievementsMulti();
+            }
+            else {
+                this.achievements();
+            }
+        });
+        a.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            utils_1.default.outPutLog(this.outputTextarea, `开始喂养猪猪`);
+            if (config_1.default.multiFlag) {
+                this.addFoodMulti();
+            }
+            else {
+                this.addFood();
+            }
+        }));
+        this.AddFavoriteFood.addEventListener("click", () => {
+            utils_1.default.outPutLog(this.outputTextarea, `开始喂养喜爱食物给猪猪`);
+            if (config_1.default.multiFlag) {
+                this.addFoodMulti(true);
+            }
+            else {
+                this.addFood(true);
+            }
+        });
+        o.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            this.openBoxFlag = true;
+            utils_1.default.outPutLog(this.outputTextarea, `开始一键开箱子`);
+            if (config_1.default.multiFlag) {
+                CookieManager_1.default.cookieArr.map((item) => {
+                    item["flag"] = true;
+                });
+            }
+            do {
+                if (config_1.default.multiFlag) {
+                    yield this.openBoxMulti("pigPetOpenBox");
+                    if (CookieManager_1.default.cookieArr.every((i) => {
+                        return !i["flag"];
+                    })) {
+                        this.openBoxFlag = false;
+                        utils_1.default.outPutLog(this.outputTextarea, `所有账号今天已经木有开盒子机会了~`);
+                    }
+                }
+                else {
+                    yield this.openBox("pigPetOpenBox");
+                }
+            } while (this.openBoxFlag);
+        }));
+        l.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            utils_1.default.outPutLog(this.outputTextarea, `开始查看猪猪详情`);
+            if (config_1.default.multiFlag) {
+                this.loginMulti();
+            }
+            else {
+                this.login();
+            }
+        }));
+        autoAddFood.addEventListener("click", () => {
+            autoAddFood.style.display = "none";
+            cancelAutoAddFood.style.display = "block";
+            utils_1.default.outPutLog(this.outputTextarea, `自动定时喂养已开启！`);
+            this.autoAddFoodTimer = window.setInterval(() => {
+                utils_1.default.outPutLog(this.outputTextarea, `自动定时喂养任务开启！`);
+                a.click();
+            }, this.foodSpan);
+        });
+        cancelAutoAddFood.addEventListener('click', () => {
+            autoAddFood.style.display = "block";
+            cancelAutoAddFood.style.display = "none";
+            utils_1.default.outPutLog(this.outputTextarea, `自动定时喂养已关闭！`);
+            window.clearInterval(this.autoAddFoodTimer);
+        });
+        lotteryPlay.addEventListener('click', () => {
+            utils_1.default.outPutLog(this.outputTextarea, `开始大转盘抽奖`);
+            if (config_1.default.multiFlag) {
+                this.lotteryPlayMulti();
+            }
+            else {
+                this.lotteryPlay();
+            }
+        });
+    }
+    lotteryPlay(ckObj) {
+        fetch(this.rootURI + "pigPetLotteryPlay", {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "reqData=" + JSON.stringify(this.baseReqData)
+        }).then(function (response) {
+            return response.json();
+        }).then((res) => {
+            if (res.resultCode == 0) {
+                let data = res.resultData;
+                if (data.resultCode == 0) {
+                    let award = data.resultData.award;
+                    if (award) {
+                        let name = award.name, count = award.count;
+                        if (config_1.default.multiFlag && ckObj) {
+                            utils_1.default.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 获得【${name} * ${count}】！`);
+                        }
+                        else {
+                            utils_1.default.outPutLog(this.outputTextarea, `获得【${name} * ${count}】！`);
+                        }
+                    }
+                    else {
+                        if (config_1.default.multiFlag && ckObj) {
+                            utils_1.default.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 什么也木有抽到~`);
+                        }
+                        else {
+                            utils_1.default.outPutLog(this.outputTextarea, `${res.resultData.resultMsg}`);
+                        }
+                    }
+                }
+            }
+            else {
+                utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+            }
+        });
+    }
+    lotteryPlayMulti() {
+        CookieManager_1.default.cookieArr.map((item) => {
+            setTimeout(() => {
+                CookieHandler_1.CookieHandler.coverCookie(item);
+                this.lotteryPlay(item);
+            }, item.index * 750);
+        });
+    }
+    openBoxMulti(url) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield Promise.all(CookieManager_1.default.cookieArr.map((item) => __awaiter(this, void 0, void 0, function* () {
+                yield new Promise(resolve => {
+                    setTimeout(() => __awaiter(this, void 0, void 0, function* () {
+                        CookieHandler_1.CookieHandler.coverCookie(item);
+                        if (!item["flag"]) {
+                            resolve();
+                            return;
+                        }
+                        else {
+                            yield fetch(`${this.rootURI}${url}`, {
+                                method: "POST",
+                                mode: "cors",
+                                credentials: "include",
+                                headers: {
+                                    "Content-Type": "application/x-www-form-urlencoded"
+                                },
+                                body: "reqData=" + JSON.stringify(Object.assign(this.baseReqData, { "t": utils_1.default.getTimestamp() }))
+                            }).then(function (response) {
+                                return response.json();
+                            }).then((res) => {
+                                var _a, _b, _c, _d;
+                                if (res.resultCode == 0) {
+                                    let resultCode = res.resultData.resultCode;
+                                    if (resultCode == 0) {
+                                        let result = res.resultData.resultData;
+                                        utils_1.default.outPutLog(this.outputTextarea, `【${item["mark"]}】:获得【"${((_b = (_a = result) === null || _a === void 0 ? void 0 : _a.award) === null || _b === void 0 ? void 0 : _b.name) ? (_d = (_c = result) === null || _c === void 0 ? void 0 : _c.award) === null || _d === void 0 ? void 0 : _d.name : "空箱子"}】`);
+                                    }
+                                    else if (resultCode == 420) {
+                                        item["flag"] = false;
+                                        utils_1.default.outPutLog(this.outputTextarea, `【${item["mark"]}】:今天已经木有开盒子机会了~`);
+                                    }
+                                }
+                                else {
+                                    utils_1.default.outPutLog(this.outputTextarea, `【${item["mark"]}】:${res.resultMsg}`);
+                                }
+                                resolve();
+                            });
+                        }
+                    }), (config_1.default.timeoutSpan + utils_1.default.random(300, 500)));
+                });
+            })));
+        });
+    }
+    openBox(url) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield new Promise(resolve => {
+                setTimeout(() => __awaiter(this, void 0, void 0, function* () {
+                    yield fetch(`${this.rootURI}${url}`, {
+                        method: "POST",
+                        mode: "cors",
+                        credentials: "include",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: "reqData=" + JSON.stringify(Object.assign(this.baseReqData, { "t": utils_1.default.getTimestamp() }))
+                    }).then(function (response) {
+                        return response.json();
+                    }).then((res) => {
+                        var _a, _b, _c, _d;
+                        if (res.resultCode == 0) {
+                            if (res.resultData.resultCode == 0) {
+                                let result = res.resultData.resultData;
+                                utils_1.default.outPutLog(this.outputTextarea, `${((_b = (_a = result) === null || _a === void 0 ? void 0 : _a.award) === null || _b === void 0 ? void 0 : _b.name) ? "获得:" + ((_d = (_c = result) === null || _c === void 0 ? void 0 : _c.award) === null || _d === void 0 ? void 0 : _d.name) : "这是个空箱子"}`);
+                            }
+                            else {
+                                this.openBoxFlag = !this.openBoxFlag;
+                                utils_1.default.outPutLog(this.outputTextarea, `今天已经木有开盒子机会了~`);
+                            }
+                        }
+                        else {
+                            utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+                        }
+                        resolve();
+                    });
+                }), (config_1.default.timeoutSpan + utils_1.default.random(300, 500)));
+            });
+        });
+    }
+    addFood(favBool = false, ckObj) {
+        let skuId = ckObj ? favBool ? ckObj.favoriteFood : this.foodskuId : favBool ? this.favFoodMap[this.favoriteFood] : this.foodskuId;
+        fetch(this.rootURI + "pigPetAddFood", {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "reqData=" + JSON.stringify(Object.assign(this.baseReqData, { "skuId": skuId }))
+        }).then(function (response) {
+            return response.json();
+        }).then((res) => {
+            if (res.resultCode == 0) {
+                let data = res.resultData;
+                if (data.resultCode == 0) {
+                    if (config_1.default.multiFlag && ckObj) {
+                        utils_1.default.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 喂养成功！`);
+                    }
+                    else {
+                        utils_1.default.outPutLog(this.outputTextarea, `喂养成功！`);
+                    }
+                }
+                else if (data.resultCode == 406) {
+                    if (config_1.default.multiFlag && ckObj) {
+                        utils_1.default.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 猪猪现在还有粮食哦~`);
+                    }
+                    else {
+                        utils_1.default.outPutLog(this.outputTextarea, `${res.resultData.resultMsg}`);
+                    }
+                }
+            }
+            else {
+                utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+            }
+        });
+    }
+    addFoodMulti(favBool = false) {
+        CookieManager_1.default.cookieArr.map((item) => {
+            setTimeout(() => {
+                CookieHandler_1.CookieHandler.coverCookie(item);
+                this.addFood(favBool, item);
+            }, item.index * 750);
+        });
+    }
+    login(ckObj) {
+        fetch(this.rootURI + "pigPetLogin", {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "reqData=" + JSON.stringify(this.baseReqData)
+        }).then(function (response) {
+            return response.json();
+        }).then((res) => {
+            var _a, _b, _c;
+            if (res.resultCode == 0) {
+                let data = res.resultData.resultData;
+                if (data.hasPig) {
+                    this.AddFavoriteFood.style.display = "block";
+                    let pig = (_b = (_a = data) === null || _a === void 0 ? void 0 : _a.cote) === null || _b === void 0 ? void 0 : _b.pig, pigName = (_c = pig) === null || _c === void 0 ? void 0 : _c.pigName, percent = pig.percent, weight = pig.weight, favFood = pig.favFood;
+                    if (config_1.default.multiFlag && ckObj) {
+                        ckObj.favoriteFood = this.favFoodMap[favFood];
+                        utils_1.default.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 猪猪：${pigName} 价值：${percent}% 体重：${weight} 喜欢：${favFood}`);
+                    }
+                    else {
+                        this.favoriteFood = favFood;
+                        utils_1.default.outPutLog(this.outputTextarea, `猪猪：${pigName} 价值：${percent}% 体重：${weight} 喜欢：${favFood}`);
+                    }
+                }
+                else {
+                    utils_1.default.outPutLog(this.outputTextarea, `该账号尚未领养猪猪哦！`);
+                }
+            }
+            else {
+                utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+            }
+        });
+    }
+    loginMulti() {
+        CookieManager_1.default.cookieArr.map((item) => {
+            setTimeout(() => {
+                CookieHandler_1.CookieHandler.coverCookie(item);
+                this.login(item);
+            }, item.index * 500);
+        });
+    }
+    achievements(ckObj) {
+        fetch(this.rootURI + "pigPetAchievements", {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "reqData=" + JSON.stringify(this.baseReqData)
+        }).then(function (response) {
+            return response.json();
+        }).then((res) => {
+            var _a, _b;
+            if (res.resultCode == 0) {
+                let data = res.resultData.resultData;
+                if (res.resultData.resultCode == 0) {
+                    let currentCash = (_a = data) === null || _a === void 0 ? void 0 : _a.currentCash, limitCash = (_b = data) === null || _b === void 0 ? void 0 : _b.limitCash;
+                    if (config_1.default.multiFlag && ckObj) {
+                        utils_1.default.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 待提现红包：${currentCash / 100}元 满${limitCash / 100}元提现`);
+                    }
+                    else {
+                        utils_1.default.outPutLog(this.outputTextarea, `待提现红包：${currentCash / 100}元 满${limitCash}元提现`);
+                    }
+                }
+                else {
+                    utils_1.default.outPutLog(this.outputTextarea, `${res.resultData.resultMsg}`);
+                }
+            }
+            else {
+                if (config_1.default.multiFlag && ckObj) {
+                    utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+                }
+            }
+        });
+    }
+    achievementsMulti() {
+        CookieManager_1.default.cookieArr.map((item) => {
+            setTimeout(() => {
+                CookieHandler_1.CookieHandler.coverCookie(item);
+                this.achievements(item);
+            }, item.index * 500);
+        });
+    }
+    lotteryIndex(ckObj) {
+        fetch(this.rootURI + "pigPetLotteryIndex", {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "reqData=" + JSON.stringify(this.baseReqData)
+        }).then(function (response) {
+            return response.json();
+        }).then((res) => {
+            var _a, _b, _c, _d;
+            if (res.resultCode == 0) {
+                let data = res.resultData.resultData;
+                if (res.resultData.resultCode == 0) {
+                    let currentCount = (_a = data) === null || _a === void 0 ? void 0 : _a.currentCount, coinCount = (_b = data) === null || _b === void 0 ? void 0 : _b.coinCount, price = (_c = data) === null || _c === void 0 ? void 0 : _c.price, nextFreeTime = (_d = data) === null || _d === void 0 ? void 0 : _d.nextFreeTime;
+                    if (config_1.default.multiFlag && ckObj) {
+                        utils_1.default.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 当前可抽奖次数：${currentCount} 距下一次免费抽奖时间：${nextFreeTime}毫秒 金币抽奖次数：${coinCount} 需花费金币：${price}`);
+                    }
+                    else {
+                        utils_1.default.outPutLog(this.outputTextarea, `当前可抽奖次数：${currentCount} 距下一次免费抽奖时间：${nextFreeTime}毫秒 金币抽奖次数：${coinCount} 需花费金币：${price}`);
+                    }
+                }
+                else {
+                    utils_1.default.outPutLog(this.outputTextarea, `${res.resultData.resultMsg}`);
+                }
+            }
+            else {
+                if (config_1.default.multiFlag && ckObj) {
+                    utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+                }
+            }
+        });
+    }
+    lotteryIndexMulti() {
+        CookieManager_1.default.cookieArr.map((item) => {
+            setTimeout(() => {
+                CookieHandler_1.CookieHandler.coverCookie(item);
+                this.lotteryIndex(item);
+            }, item.index * 500);
+        });
+    }
+    signOne(ckObj) {
+        fetch(this.rootURI + "pigPetSignOne?_=" + utils_1.default.getTimestamp(), {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "reqData=" + JSON.stringify(Object.assign(this.baseReqData, { "no": ckObj ? ckObj.signNo : this.signNo }))
+        }).then(function (response) {
+            return response.json();
+        }).then((res) => {
+            var _a, _b, _c;
+            if (res.resultCode == 0) {
+                let data = res.resultData.resultData;
+                if (res.resultData.resultCode == 0) {
+                    let today = (_a = data) === null || _a === void 0 ? void 0 : _a.today, name = (_c = (_b = data) === null || _b === void 0 ? void 0 : _b.award) === null || _c === void 0 ? void 0 : _c.name;
+                    if (config_1.default.multiFlag && ckObj) {
+                        utils_1.default.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 已签到${today}天 获得奖励：${name}`);
+                    }
+                    else {
+                        utils_1.default.outPutLog(this.outputTextarea, `已签到${today}天 获得奖励：${name}`);
+                    }
+                }
+                else {
+                    utils_1.default.outPutLog(this.outputTextarea, `${res.resultData.resultMsg}`);
+                }
+            }
+            else {
+                if (config_1.default.multiFlag && ckObj) {
+                    utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+                }
+            }
+        });
+    }
+    // signOneMulti() {
+    //     CookieManager.cookieArr.map((item: CookieType) => {
+    //         setTimeout(() => {
+    //             CookieHandler.coverCookie(item);
+    //             this.signOne(item);
+    //         }, item.index * 500)
+    //     });
+    // }
+    signIndex(ckObj) {
+        fetch(this.rootURI + "pigPetSignIndex?_=" + utils_1.default.getTimestamp(), {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "reqData=" + JSON.stringify(this.baseReqData)
+        }).then(function (response) {
+            return response.json();
+        }).then((res) => {
+            var _a;
+            if (res.resultCode == 0) {
+                let data = res.resultData.resultData;
+                if (res.resultData.resultCode == 0) {
+                    let today = (_a = data) === null || _a === void 0 ? void 0 : _a.today;
+                    if (config_1.default.multiFlag && ckObj) {
+                        ckObj.signNo = today;
+                        utils_1.default.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 已签到${today}天 `);
+                        this.signOne(ckObj);
+                    }
+                    else {
+                        this.signNo = today;
+                        utils_1.default.outPutLog(this.outputTextarea, `已签到${today}天`);
+                        this.signOne();
+                    }
+                }
+                else {
+                    utils_1.default.outPutLog(this.outputTextarea, `${res.resultData.resultMsg}`);
+                }
+            }
+            else {
+                if (config_1.default.multiFlag && ckObj) {
+                    utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+                }
+            }
+        });
+    }
+    signIndexMulti() {
+        CookieManager_1.default.cookieArr.map((item) => {
+            setTimeout(() => {
+                CookieHandler_1.CookieHandler.coverCookie(item);
+                this.signIndex(item);
+            }, item.index * 500);
+        });
+    }
+    userBag(ckObj) {
+        fetch(this.rootURI + "pigPetUserBag?_=" + utils_1.default.getTimestamp(), {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "reqData=" + JSON.stringify(Object.assign(this.baseReqData, { "category": "1001" }))
+        }).then(function (response) {
+            return response.json();
+        }).then((res) => {
+            var _a;
+            if (res.resultCode == 0) {
+                let data = res.resultData.resultData;
+                if (res.resultData.resultCode == 0) {
+                    let goods = (_a = data) === null || _a === void 0 ? void 0 : _a.goods, goodStr = "";
+                    if (config_1.default.multiFlag && ckObj) {
+                        goodStr += goods.map((good) => {
+                            return `\n名称:${good.goodsName} 数量：${good.count}g`;
+                        });
+                        utils_1.default.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 ----食物背包一览----${goodStr}`);
+                    }
+                    else {
+                        goodStr += goods.map((good) => {
+                            return `\n名称:${good.goodsName} 数量：${good.count}g`;
+                        });
+                        utils_1.default.outPutLog(this.outputTextarea, `----食物背包一览----${goodStr}`);
+                    }
+                }
+                else {
+                    utils_1.default.outPutLog(this.outputTextarea, `${res.resultData.resultMsg}`);
+                }
+            }
+            else {
+                if (config_1.default.multiFlag && ckObj) {
+                    utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+                }
+            }
+        });
+    }
+    userBagMulti() {
+        CookieManager_1.default.cookieArr.map((item) => {
+            setTimeout(() => {
+                CookieHandler_1.CookieHandler.coverCookie(item);
+                this.userBag(item);
+            }, item.index * 500);
+        });
+    }
+}
+exports.default = Cloudpig;
+
+},{"../config/config":1,"../cookie/CookieHandler":2,"../cookie/CookieManager":3,"../utils/utils":24}],21:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = require("../utils/utils");
+const config_1 = require("../config/config");
+const fetch_jsonp_1 = require("../utils/fetch-jsonp");
+class Goods {
+    constructor(containerDiv, outputTextarea, goodsId) {
+        this.areaId = "1_72_0_0"; //北京 朝阳区
+        this.areaIdArr = [{ id: "1_72_0_0", dec: "北京 朝阳区" }];
+        this.goodsIdArr = [];
+        this.goodsMsgArr = [];
+        this.detailURL = "https://item.jd.com/{skuid}.html";
+        this.stockURL = "https://c0.3.cn/stock?skuId={skuId}&area={area}&venderId={venderId}&cat={cat}";
+        if (goodsId) {
+            this.goodsIdArr.push(goodsId);
+        }
+        this.container = containerDiv;
+        this.outputTextarea = outputTextarea;
+        //获取默认地址
+        fetch_jsonp_1.default.fetchJsonp('https://cd.jd.com/usual/address').then((res) => { return res.json(); }).then((json) => {
+            if (Object.keys(json).length !== 0) {
+                this.areaIdArr = [];
+                Object.keys(json).map((key, idx) => {
+                    let item = json[key];
+                    let id = `${item.provinceId}_${item.cityId}_${item.countyId ? item.countyId : 0}_${item.townId ? item.townId : 0}`, dec = item.areaName;
+                    if (idx == 0) {
+                        this.areaId = id;
+                    }
+                    this.areaIdArr.push({
+                        id: id,
+                        dec: dec
+                    });
+                });
+            }
+        });
+    }
+    get() {
+        this.goodsMsgArr = [];
+        Promise.all(this.goodsIdArr.map((item) => { return this.getMsg(item); })).then((data) => {
+            this.goodsMsgArr = data;
+            Promise.all(this.goodsMsgArr.map((item) => {
+                return this.getStock(item);
+            })).then((goods) => {
+                this.goodsMsgArr = goods;
+                this.list();
+            });
+        });
+    }
+    getMsg(skuid) {
+        let url = this.detailURL.replace("{skuid}", skuid);
+        return new Promise((resolve, reject) => {
+            utils_1.default.loadiFrame(url)
+                .then((iframe) => {
+                let window = iframe.contentWindow, product = window.pageConfig.product, goods = {
+                    skuid: skuid,
+                    name: product.name,
+                    src: product.src,
+                    cat: product.cat,
+                    venderId: product.venderId,
+                };
+                document.body.removeChild(iframe);
+                resolve(goods);
+            });
+        });
+    }
+    getStock(goods) {
+        let url = this.stockURL.replace("{skuId}", goods.skuid).replace("{venderId}", goods.venderId).replace("{cat}", goods.cat).replace("{area}", this.areaId);
+        return new Promise((resolve, reject) => {
+            fetch_jsonp_1.default.fetchJsonp(url).then(function (response) {
+                return response.json();
+            }).then((res) => {
+                let stock = res.stock, area = stock.area;
+                goods.stockState = stock.StockStateName;
+                goods.area = `${area.provinceName}-${area.cityName}-${area.countyName}`;
+                resolve(goods);
+            });
+        });
+    }
+    push() {
+        let id = "1";
+        this.goodsIdArr.push(id);
+    }
+    list() {
+        const content = document.createElement("div");
+        content.setAttribute('style', 'display:flex;flex-direction:column;padding: 5px;margin-top: 5px;border: 1px solid #000;');
+        for (let i = 0; i < this.goodsMsgArr.length; i++) {
+            const item = this.goodsMsgArr[i], itemDiv = document.createElement("div");
+            itemDiv.setAttribute('style', 'display:flex;flex-direction:row;border:1px solid gray;border-radius: 10px;margin-top:5px;padding: 5px');
+            itemDiv.innerHTML = `<img style="user-select: none;pointer-events:none;width:120px;height:120px;display: block;" src="${config_1.default.JDIMGSourcesURL}${item.src}" />
+            <div">
+                <h2 width="60vw">商品名称：${item.name}</h2>
+                <p style="font-weight:700;margin-bottom:10px">状态：<span style="color:red">${item.stockState}</span>
+                <br>地区：<span style="color:red">${item.area}</span></p>
+                <button style="width: 100px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">
+                    <a href='https://skunotify.jd.com/storenotify.html?skuId=${item.skuid}' target="_blank" style="color: #fff;text-decoration: none;">预约自动下单</a>
+                </button>
+                <button style="width: 100px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">
+                    <a href='//cart.jd.com/gate.action?pid=${item.skuid}&pcount=1&ptype=1' target="_blank" style="color: #fff;text-decoration: none;">加入购物车</a>
+                </button>
+                <br>
+                <button style="width: 100px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;">
+                    <a href='https://p.m.jd.com/norder/order.action?wareId=${item.skuid}&wareNum=1&enterOrder=true' target="_blank" style="color: #fff;text-decoration: none;">订单结算</a>
+                </button>
+            </div>`;
+            content.appendChild(itemDiv);
+        }
+        this.container.appendChild(content);
+    }
+    buildOperate() {
+    }
+}
+exports.default = Goods;
+
+},{"../config/config":1,"../utils/fetch-jsonp":23,"../utils/utils":24}],22:[function(require,module,exports){
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const goods_1 = require("./goods/goods");
+const utils_1 = require("./utils/utils");
+const config_1 = require("./config/config");
+const newBabelAwardCollection_1 = require("./coupons/newBabelAwardCollection");
+const whtieCoupon_1 = require("./coupons/whtieCoupon");
+const purchase_1 = require("./coupons/purchase");
+const receiveDayCoupon_1 = require("./coupons/receiveDayCoupon");
+const secKillCoupon_1 = require("./coupons/secKillCoupon");
+const mfreecoupon_1 = require("./coupons/mfreecoupon");
+const coinPurchase_1 = require("./coupons/coinPurchase");
+const gcConvert_1 = require("./coupons/gcConvert");
+const receiveCoupons_1 = require("./coupons/receiveCoupons");
+const receiveCoupon_1 = require("./coupons/receiveCoupon");
+const getCouponCenter_1 = require("./coupons/getCouponCenter");
+const exchange_1 = require("./coupons/exchange");
+// import MonsterNian from "./activitys/MonsterNian";
+// import BrandCitySpring from "./activitys/brandCitySpring";
+// import Palace from "./activitys/palace";
+// import ReceiveBless from "./activitys/receiveBless";
+const cloudpig_1 = require("./game/cloudpig");
+const activityType_1 = require("./enum/activityType");
+const couponType_1 = require("./enum/couponType");
+const goodsType_1 = require("./enum/goodsType");
+const gameType_1 = require("./enum/gameType");
+const CookieManager_1 = require("./cookie/CookieManager");
+const CookieHandler_1 = require("./cookie/CookieHandler");
+let coupon, goods, game, activity, isJDcontext = true;
+const container = document.createElement("div"), title = document.createElement("div"), timerTittleDiv = document.createElement("div"), receiveTextInput = document.createElement("input"), receiveCountInput = document.createElement("input"), receiveTimerBtn = document.createElement("button"), operateAreaDiv = document.createElement("div"), outputTextArea = document.createElement("textarea"), outputTextAreaDiv = document.createElement("div"), loginMsgDiv = document.createElement("div");
+let getLoginMsg = function (res) {
+    if (res.base.nickname) {
+        loginMsgDiv.innerHTML = "当前登录京东帐号：" + res.base.nickname;
+    }
+}, krapnik = function (res) {
+};
+function buildOperate() {
+    operateAreaDiv.setAttribute("style", "border: 1px solid #000;");
+    operateAreaDiv.innerHTML = "<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;padding: 0 37.5vw 5px;'>操作区</h3>";
+    if (coupon) {
+        buildTimerControl();
+    }
+    loginMsgDiv.innerHTML = "当前京东帐号：<a href='https://plogin.m.jd.com/login/login' target='_blank'>点击登录</a>";
+    operateAreaDiv.append(loginMsgDiv);
+    container.append(operateAreaDiv);
+    buildOutput();
+}
+function buildOutput() {
+    outputTextAreaDiv.style.display = "none";
+    outputTextArea.setAttribute("style", "width: 90vw;height: 40vw;border: 1px solid #868686;border-radius: 10px;overflow-y: scroll;margin:5px auto;");
+    outputTextArea.setAttribute("disabled", "disabled");
+    let clearOutLogBtn = document.createElement("button");
+    clearOutLogBtn.innerHTML = "清空日志";
+    clearOutLogBtn.setAttribute("style", "width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px;");
+    clearOutLogBtn.addEventListener("click", () => {
+        outputTextArea.value = "";
+    });
+    outputTextAreaDiv.append(outputTextArea);
+    outputTextAreaDiv.append(clearOutLogBtn);
+    operateAreaDiv.append(outputTextAreaDiv);
+}
+function buildTimerControl() {
+    const receiveDiv = document.createElement("div"), receiveAreaDiv = document.createElement("div"), receiveTipsDiv = document.createElement("div"), receiveAllBtn = document.createElement("button"), timerTextInput = document.createElement("input"), timerResetBtn = document.createElement("button"), spanTextInput = document.createElement("input"), spanResetBtn = document.createElement("button"), timerDiv = document.createElement("div");
+    timerTextInput.type = "text";
+    timerTextInput.placeholder = "请输入获取时间的刷新频率【毫秒】";
+    timerTextInput.setAttribute("style", "width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;");
+    timerResetBtn.innerHTML = "重置刷新频率";
+    timerResetBtn.setAttribute("style", "width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;");
+    timerResetBtn.addEventListener("click", () => {
+        const span = Math.trunc(+timerTextInput.value);
+        if (!span) {
+            alert("请检查输入的刷新频率是否有误！(只能为大于0的数字)");
+            return false;
+        }
+        config_1.default.intervalSpan = span;
+        window.clearInterval(config_1.default.intervalId);
+        config_1.default.intervalId = window.setInterval(getTime, config_1.default.intervalSpan);
+    });
+    receiveTipsDiv.innerHTML = `<h3>定时时间使用年月日+24小时制</h3><p style="color:red">零点领券设置参考<br>刷新频率:500 | 定时时间：2020-01-01 23:59:59:490<br>tips:部分券其实是提前发放的</p>`;
+    receiveTextInput.type = "text";
+    receiveTextInput.placeholder = "定时领券时间【格式:2020-01-01 09:59:59:950】";
+    receiveTextInput.setAttribute("style", "width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px;");
+    receiveCountInput.type = "text";
+    receiveCountInput.placeholder = "领券提交次数【默认：1次】";
+    receiveCountInput.setAttribute("style", "width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px;");
+    spanTextInput.type = "text";
+    spanTextInput.placeholder = "请输入重复领券的提交频率【默认：500毫秒】";
+    spanTextInput.setAttribute("style", "width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;");
+    receiveTimerBtn.innerHTML = "定时指定领取";
+    receiveTimerBtn.addEventListener("click", () => {
+        config_1.default.postSpan = parseInt(spanTextInput.value) > 0 ? parseInt(spanTextInput.value) : 500;
+        config_1.default.postCount = parseInt(receiveCountInput.value) > 0 ? parseInt(receiveCountInput.value) : 1;
+        const time = utils_1.default.formateTime(receiveTextInput.value);
+        if (!time || time < 0) {
+            alert("请检查定时领券时间的格式是否有误！");
+            return false;
+        }
+        else {
+            config_1.default.timingFlag = !config_1.default.timingFlag;
+            config_1.default.startTime = time;
+            receiveTextInput.disabled = config_1.default.timingFlag;
+            receiveCountInput.disabled = config_1.default.timingFlag;
+            if (config_1.default.timingFlag) {
+                receiveTimerBtn.innerHTML = "取消定时领取";
+                utils_1.default.outPutLog(outputTextArea, `已开启定时领取！定时领取时间：${receiveTextInput.value}`);
+            }
+            else {
+                receiveTimerBtn.innerHTML = "定时指定领取";
+                utils_1.default.outPutLog(outputTextArea, `已关闭定时领取`);
+            }
+        }
+    });
+    receiveAllBtn.addEventListener("click", () => {
+        if (coupon) {
+            coupon.send(outputTextArea);
+        }
+    });
+    receiveTimerBtn.setAttribute("style", "width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px;");
+    receiveAllBtn.innerHTML = "一键指定领取";
+    receiveAllBtn.setAttribute("style", "width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px;");
+    operateAreaDiv.append(timerDiv);
+    timerDiv.append(timerTittleDiv);
+    timerDiv.append(timerTextInput);
+    timerDiv.append(timerResetBtn);
+    timerDiv.append(spanTextInput);
+    timerDiv.append(spanResetBtn);
+    operateAreaDiv.append(receiveDiv);
+    receiveDiv.append(receiveTipsDiv);
+    receiveDiv.append(receiveTextInput);
+    receiveDiv.append(receiveCountInput);
+    receiveDiv.append(spanTextInput);
+    receiveDiv.append(receiveAreaDiv);
+    receiveAreaDiv.append(receiveAllBtn);
+    receiveAreaDiv.append(receiveTimerBtn);
+}
+function buildTips() {
+    const tips = document.createElement('h4');
+    tips.innerHTML = '<h4>页面地址暂未被扩展或者有误！</h4><p>本插件只能在指定活动地址或领券地址使用！</p><p>如果这是个活动地址或领券地址，<a href="tencent://message/?uin=708873725Menu=yes" target="_blank" title="发起QQ聊天">联系作者</a>扩展~</p><a style="color:red" href="https://gitee.com/krapnik/res/raw/master/tutorial.mp4" target="_blank">点击下载教程视频</a>';
+    title.append(tips);
+}
+function buildTitle() {
+    const html = utils_1._$('html');
+    html.style.fontSize = "18px";
+    document.body.innerHTML = "";
+    document.body.style.overflow = "scroll";
+    document.body.style.backgroundColor = "#ffffff";
+    document.body.style.textAlign = "center";
+    document.body.style.maxWidth = "100vw";
+    container.setAttribute("style", "border: 1px solid #000;padding: 5px;margin: 5px;");
+    title.innerHTML = `<h1 style="font-weight:700">${config_1.default.title} ${config_1.default.version}</h1>
+                        <h3>author:${config_1.default.author}</h3>
+                        <div style="display: flex;flex-direction: row;justify-content: center;">
+                        <iframe src="https://ghbtns.com/github-btn.html?user=krapnikkk&repo=JDCouponAssistant&type=star&count=true" frameborder="0" scrolling="0" width="90px" height="21px"></iframe>
+                        <a href="tencent://message/?uin=708873725Menu=yes" target="_blank" title="发起QQ聊天"><img src="http://bizapp.qq.com/webimg/01_online.gif" alt="QQ" style="margin:0px;"></a>
+                        </div>
+                        <button style="font-size:18px;font-weight:bold;color:#000;position:relative;width: 200px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">
+                            把按钮拖动到书签栏
+                            <a style="font-size:0px;width:200px;height:30px;display:inline-block;position:absolute;left:0;top:0;" href="javascript: (function(a, b, c, d) { if(!a[c]){ d = b.createElement('script'), d.id = 'krapnik', d.setAttribute('charset', 'utf-8'), d.src = 'https://gitee.com/krapnik/codes/o9nwsxjuy6crftdi824aq79/raw?blob_name=JDCouponAssistant.js', b.body.appendChild(d) } } )(window, document, 'krapnik');">
+                                京东领券助手
+                            </a>
+                        </button>`;
+    container.append(title);
+    document.body.append(container);
+}
+function buildActivity() {
+    // const activityArea: HTMLDivElement = document.createElement("div");
+    // activityArea.setAttribute("style", "border: 1px solid #000;margin:10px");
+    // activityArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>活动推荐</h3>`;
+    // container.append(activityArea);
+}
+function buildRecommend() {
+    const recommandArea = document.createElement("div");
+    recommandArea.setAttribute("style", "border: 1px solid #000;margin:10px");
+    recommandArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>好券推荐</h3>
+    <p style="color:red;font-weight:bold;">
+    <a style="color:red" href="https://m.jr.jd.com/member/9GcConvert/?channel=01-shouye-191214" target="_blank">9金币抢兑</a>
+    <br><a style="color:red" href="https://m.jr.jd.com/member/rightsCenter/#/white" target="_blank">12期免息券</a>
+    </p>`;
+    container.append(recommandArea);
+}
+function buildPromotion() {
+    const promotionArea = document.createElement("div");
+    promotionArea.setAttribute("style", "border: 1px solid #000;margin:10px");
+    promotionArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>推广区</h3>
+    <p style="color:red;font-weight:bold;"><a style="color:red" href="http://krapnik.cn/project/jd/dayTask.html" target="_blank">每日京东红包汇总</a></p>`;
+    container.append(promotionArea);
+}
+function buildUAarea() {
+    let UATipsDiv = document.createElement("div");
+    UATipsDiv.innerHTML = `<div style="border: 1px solid #000;margin:10px;font-weight:bold"><h2>该活动需要设置user-Agent为京东APP</h2><p><a style="color:red" href="https://gitee.com/krapnik/res/raw/master/tutorial.mp4" target="_blank">点击下载教程视频</a></p><p>部分浏览器插件会覆盖UA设置，请自行排查并关闭</p><p>【比如：京价保】</p><button style="width: 200px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block" onclick=Utils.copyText(Config.JDAppUA)>点击一键复制User-Agent</button></div>`;
+    container.append(UATipsDiv);
+}
+function buildSensorArea() {
+    let sensorArea = document.createElement("div");
+    sensorArea.innerHTML = `<div style="border: 1px solid #000;margin:10px;font-weight:bold"><h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>高级操作区</h3><p>导入ck格式：备注----ck</p><p>暂时只对扩展功能区有效</p>
+    <button style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block" onclick="Utils.copyText(document.cookie)">复制Cookie</button>
+    <button id="import" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">导入多帐号</button></div>`;
+    container.append(sensorArea);
+    utils_1._$("#import").addEventListener('click', () => {
+        utils_1.default.importFile("text/plain").then((ck) => __awaiter(this, void 0, void 0, function* () {
+            config_1.default.multiFlag = false;
+            config_1.default.importFlag = false;
+            CookieManager_1.default.parseCK(ck);
+            if (config_1.default.importFlag) {
+                CookieManager_1.default.outPutLog(outputTextArea);
+                Promise.all(CookieManager_1.default.cookieArr.map((item) => {
+                    return CookieManager_1.default.checkLogin(outputTextArea, item);
+                })).then((data) => {
+                    if (data.every((res) => {
+                        return res;
+                    })) {
+                        utils_1.default.outPutLog(outputTextArea, "所有ck校验成功，开启多账号模式成功!");
+                        config_1.default.multiFlag = true;
+                    }
+                    else {
+                        CookieHandler_1.CookieHandler.clearAllCookie();
+                        utils_1.default.outPutLog(outputTextArea, "部分ck校验失败,开启多账号模式失败!请检查ck有效性!");
+                    }
+                });
+            }
+        }));
+    });
+}
+function buildTimeoutArea() {
+    let timeoutDiv = document.createElement("div"), timeoutInput = document.createElement("input");
+    timeoutInput.setAttribute("style", "width:80vw;height: 25px;font-size:14px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;");
+    timeoutInput.placeholder = `请输入任务的提交间隔时间【默认:${config_1.default.timeoutSpan}毫秒】`;
+    timeoutDiv.innerHTML = `<p style="font-size:14px;">任务提交时间将会在设置提交间隔时间的基础上随机增加300~500毫秒</p>`;
+    timeoutDiv.append(timeoutInput);
+    timeoutInput.onchange = () => {
+        if (utils_1.default.isNumber(+timeoutInput.value)) {
+            config_1.default.timeoutSpan = +timeoutInput.value || 1500;
+        }
+    };
+    operateAreaDiv.append(timeoutDiv);
+}
+function buildExtensionTab() {
+    let extensionTab = document.createElement("div");
+    extensionTab.innerHTML = `<div style="border: 1px solid #000;margin:10px;font-weight:bold"><h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>扩展功能区</h3>
+        <button style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block"><a href="http://m.baidu.com">下载插件</a></button>
+        <ul class="list"><li class="pig">养猪猪</li><li class="moneyTree">金果树</li></ul>
+        <div class="extensionDiv"></div>
+    </div>`;
+    container.append(extensionTab);
+    utils_1._$(".list").addEventListener("click", (e) => {
+        let target = e.target, extensionDiv = utils_1._$(".extensionDiv");
+        let nodes = extensionDiv.childNodes;
+        if (nodes.length > 0) {
+            extensionDiv.removeChild(nodes[0]);
+        }
+        if (target.getAttribute("class") == "pig") {
+            game = new cloudpig_1.default(null, extensionDiv, outputTextArea);
+            game.get();
+        }
+        else {
+            alert("该功能正在开发中，晚点再来吧~");
+        }
+    });
+}
+function getEntryType() {
+    let type = couponType_1.couponType.none;
+    if (!window.location.host.includes("jd.com")) {
+        isJDcontext = false;
+        return type;
+    }
+    if (config_1.default.locationHref.includes("item.jd.com/") || config_1.default.locationHref.includes("item.m.jd.com/product/")) {
+        type = goodsType_1.goodsType.goods;
+    }
+    if (window.__react_data__) {
+        type = couponType_1.couponType.newBabelAwardCollection;
+    }
+    else if (window.Queries) {
+        type = couponType_1.couponType.whiteCoupon;
+    }
+    else if (config_1.default.locationHref.includes('gcmall/index.html#/details?pid=')) {
+        type = couponType_1.couponType.purchase;
+    }
+    else if (config_1.default.locationHref.includes('member/gcmall/index.html#/details?gid')) {
+        type = couponType_1.couponType.coinPurchase;
+    }
+    else if (config_1.default.locationHref.includes("plus.m.jd.com/coupon/")) {
+        type = couponType_1.couponType.receiveDayCoupon;
+    }
+    else if (config_1.default.locationHref.includes("9GcConvert")) {
+        type = couponType_1.couponType.GcConvert;
+    }
+    else if ((/babelDiy\/(\S*)\/index/).test(config_1.default.locationHref)) {
+        type = couponType_1.couponType.secKillCoupon;
+    }
+    else if (/coupons\/show.action\?key=(\S*)&roleId=(\S*)/.test(config_1.default.locationHref)) {
+        type = couponType_1.couponType.mfreecoupon;
+    }
+    else if (config_1.default.locationHref.includes("4PN6NLSX1vyp8xibC5sk7WZEFF5U")) {
+        type = couponType_1.couponType.secKillCoupon;
+    }
+    else if (config_1.default.locationHref.includes("m.jr.jd.com/member/rightsCenter/#/white")) {
+        type = couponType_1.couponType.ReceiveCoupons;
+    }
+    else if (config_1.default.locationHref.includes("m.jr.jd.com/consumer/baitiaom/index.html")) {
+        type = couponType_1.couponType.ReceiveCoupon;
+    }
+    else if (config_1.default.locationHref.includes("coupon.m.jd.com/center/getCouponCenter.action")) {
+        type = couponType_1.couponType.getCouponCenter;
+    }
+    else if (config_1.default.locationHref.includes("vip.m.jd.com/index.html?appName=fuli&id=")) {
+        type = couponType_1.couponType.exchange;
+    }
+    if (config_1.default.locationHref.includes("bunearth.m.jd.com")) {
+        if (config_1.default.locationHref.includes("4PWgqmrFHunn8C38mJA712fufguU")) {
+            type = activityType_1.activityType.monsterNian;
+        }
+        else if (config_1.default.locationHref.includes("w6y8PYbzhgHJc8Lu1weihPReR2T")) {
+            type = activityType_1.activityType.brandCitySpring;
+        }
+        else if (config_1.default.locationHref.includes("21tFbS6Xm4tpon3oJnwzbnCJBo1Z")) {
+            type = activityType_1.activityType.receiveBless;
+        }
+    }
+    if (config_1.default.locationHref.includes("palace")) {
+        type = activityType_1.activityType.palace;
+    }
+    if (config_1.default.locationHref.includes("uc-fe-wxgrowing")) {
+        if (config_1.default.locationHref.includes("moneytree")) {
+            // type = gameType.moneytree;
+        }
+        else if (config_1.default.locationHref.includes("cloudpig")) {
+            type = gameType_1.gameType.cloudpig;
+        }
+    }
+    return type;
+}
+function getEntryDesc(type) {
+    buildTitle();
+    buildPromotion();
+    switch (type) {
+        case goodsType_1.goodsType.goods:
+            const goodsId = config_1.default.locationHref.match(/jd.com\/(\S*).html/)[1];
+            goods = new goods_1.default(container, outputTextArea, goodsId);
+            break;
+        case couponType_1.couponType.newBabelAwardCollection:
+            const activityId = config_1.default.locationHref.match(/active\/(\S*)\/index/)[1];
+            coupon = new newBabelAwardCollection_1.default({ "activityId": activityId }, container, outputTextArea);
+            break;
+        case couponType_1.couponType.whiteCoupon:
+            const couponBusinessId = utils_1.default.GetQueryString("couponBusinessId");
+            coupon = new whtieCoupon_1.default({ "couponBusinessId": couponBusinessId }, container, outputTextArea);
+            break;
+        case couponType_1.couponType.purchase:
+            const pid = utils_1.default.GetQueryString("pid");
+            coupon = new purchase_1.default({ "pid": pid }, container, outputTextArea);
+            break;
+        case couponType_1.couponType.coinPurchase:
+            const gid = utils_1.default.GetQueryString("gid");
+            coupon = new coinPurchase_1.default({ "pid": gid }, container, outputTextArea);
+            break;
+        case couponType_1.couponType.receiveDayCoupon:
+            coupon = new receiveDayCoupon_1.default(null, container, outputTextArea);
+            break;
+        case couponType_1.couponType.secKillCoupon:
+            coupon = new secKillCoupon_1.default(null, container, outputTextArea);
+            break;
+        case couponType_1.couponType.GcConvert:
+            coupon = new gcConvert_1.default(null, container, outputTextArea);
+            break;
+        case couponType_1.couponType.mfreecoupon:
+            const roleId = utils_1.default.GetQueryString("roleId"), key = utils_1.default.GetQueryString("key");
+            coupon = new mfreecoupon_1.default({ "roleId": roleId, "key": key }, container, outputTextArea);
+            break;
+        case couponType_1.couponType.ReceiveCoupons:
+            coupon = new receiveCoupons_1.default(null, container, outputTextArea);
+            break;
+        case couponType_1.couponType.ReceiveCoupon:
+            coupon = new receiveCoupon_1.default(null, container, outputTextArea);
+            break;
+        case couponType_1.couponType.getCouponCenter:
+            coupon = new getCouponCenter_1.default(null, container, outputTextArea);
+            break;
+        case couponType_1.couponType.exchange:
+            const itemId = utils_1.default.GetQueryString("id");
+            coupon = new exchange_1.default({ "itemId": itemId }, container, outputTextArea);
+            break;
+        // case activityType.monsterNian:
+        //     activity = new MonsterNian(null, container, outputTextArea);
+        //     Config.UAFlag = true;
+        //     break;
+        // case activityType.brandCitySpring:
+        //     activity = new BrandCitySpring(null, container, outputTextArea);
+        //     break;
+        // case activityType.palace:
+        //     activity = new Palace(null, container, outputTextArea);
+        //     break;
+        // case activityType.receiveBless:
+        //     activity = new ReceiveBless(null, container, outputTextArea);
+        //     Config.UAFlag = true;
+        //     break;
+        case gameType_1.gameType.cloudpig:
+            game = new cloudpig_1.default(null, container, outputTextArea);
+            break;
+        default:
+            break;
+    }
+    if (config_1.default.UAFlag) {
+        buildUAarea();
+    }
+    buildRecommend();
+    buildActivity();
+    if (isJDcontext) {
+        buildOperate();
+        buildSensorArea();
+        buildExtensionTab();
+    }
+    if (coupon) {
+        config_1.default.intervalId = window.setInterval(getTime, config_1.default.intervalSpan);
+        coupon.get();
+    }
+    else if (activity) {
+        // buildActivity();
+        buildTimeoutArea();
+        activity.get();
+        utils_1.default.createJsonp(`${config_1.default.JDUserInfoURL}&callback=getLoginMsg`);
+    }
+    else if (goods) {
+        goods.get();
+        utils_1.default.createJsonp(`${config_1.default.JDUserInfoURL}&callback=getLoginMsg`);
+    }
+    else if (game) {
+        game.get();
+        utils_1.default.createJsonp(`${config_1.default.JDUserInfoURL}&callback=getLoginMsg`);
+    }
+    else {
+        utils_1.default.loadCss("https://meyerweb.com/eric/tools/css/reset/reset200802.css");
+        buildTips();
+    }
+}
+function getTime() {
+    fetch(config_1.default.JDTimeInfoURL)
+        .then(function (response) { return response.json(); })
+        .then(function (res) {
+        config_1.default.serverTime = utils_1.default.formatDate(res.time);
+        config_1.default.localeTime = new Date(+res.time).toLocaleString() + ":" + config_1.default.serverTime.substr(-3, 3);
+        timerTittleDiv.innerHTML = `京东时间：${config_1.default.localeTime}<br/>当前获取时间的间隔频率：${config_1.default.intervalSpan}毫秒`;
+        if (config_1.default.timingFlag) {
+            if (config_1.default.startTime <= +config_1.default.serverTime) {
+                utils_1.default.outPutLog(outputTextArea, `定时领取开始！`);
+                utils_1.default.outPutLog(outputTextArea, `当前京东服务器时间：${config_1.default.localeTime}`);
+                config_1.default.timingFlag = !config_1.default.timingFlag;
+                if (coupon) {
+                    for (let i = 0; i < config_1.default.postCount; i++) {
+                        (function (index) {
+                            setTimeout(() => {
+                                utils_1.default.outPutLog(outputTextArea, `第${index + 1}次提交！`);
+                                coupon.send(outputTextArea);
+                            }, index * config_1.default.postSpan);
+                        })(i);
+                    }
+                }
+                receiveTextInput.disabled = config_1.default.timingFlag;
+                receiveCountInput.disabled = config_1.default.timingFlag;
+                receiveTimerBtn.innerHTML = "定时指定领取";
+                utils_1.default.outPutLog(outputTextArea, `定时领取已结束！`);
+            }
+        }
+    });
+}
+function copyRights() {
+    console.clear();
+    if (window.console) {
+        console.group('%c京东领券助手', 'color:#009a61; font-size: 36px; font-weight: 400');
+        console.log('%c本插件仅供学习交流使用\n作者:krapnik \ngithub:https://github.com/krapnikkk/JDCouponAssistant', 'color:#009a61');
+        console.groupEnd();
+    }
+}
+var _hmt = _hmt || [];
+function statistical() {
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?d86d4ff3f6d089df2b41eb0735194c0d";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+}
+copyRights();
+getEntryDesc(getEntryType());
+statistical();
+Object.assign(window, { "getLoginMsg": getLoginMsg, "krapnik": krapnik, "Utils": utils_1.default, "Config": config_1.default });
+
+},{"./config/config":1,"./cookie/CookieHandler":2,"./cookie/CookieManager":3,"./coupons/coinPurchase":4,"./coupons/exchange":5,"./coupons/gcConvert":6,"./coupons/getCouponCenter":7,"./coupons/mfreecoupon":8,"./coupons/newBabelAwardCollection":9,"./coupons/purchase":10,"./coupons/receiveCoupon":11,"./coupons/receiveCoupons":12,"./coupons/receiveDayCoupon":13,"./coupons/secKillCoupon":14,"./coupons/whtieCoupon":15,"./enum/activityType":16,"./enum/couponType":17,"./enum/gameType":18,"./enum/goodsType":19,"./game/cloudpig":20,"./goods/goods":21,"./utils/utils":24}],23:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+class FetchJsonp {
+    static generateCallbackFunction() {
+        return `jsonp_${Date.now()}_${Math.ceil(Math.random() * 100000)}`;
+    }
+    static clearFunction(functionName) {
+        try {
+            delete window[functionName];
+        }
+        catch (e) {
+            window[functionName] = undefined;
+        }
+    }
+    static removeScript(scriptId) {
+        const script = document.getElementById(scriptId);
+        if (script) {
+            document.getElementsByTagName('head')[0].removeChild(script);
+        }
+    }
+    static fetchJsonp(_url, options = {}) {
+        // to avoid param reassign
+        let url = _url;
+        const timeout = options.timeout || FetchJsonp.defaultOptions.timeout;
+        const jsonpCallback = options.jsonpCallback || FetchJsonp.defaultOptions.jsonpCallback;
+        let timeoutId;
+        return new Promise((resolve, reject) => {
+            const callbackFunction = options.jsonpCallbackFunction || FetchJsonp.generateCallbackFunction();
+            const scriptId = `${jsonpCallback}_${callbackFunction}`;
+            window[callbackFunction] = (response) => {
+                resolve({
+                    ok: true,
+                    // keep consistent with fetch API
+                    json: () => Promise.resolve(response),
+                });
+                if (timeoutId)
+                    clearTimeout(timeoutId);
+                FetchJsonp.removeScript(scriptId);
+                FetchJsonp.clearFunction(callbackFunction);
+            };
+            // Check if the user set their own params, and if not add a ? to start a list of params
+            url += (url.indexOf('?') === -1) ? '?' : '&';
+            const jsonpScript = document.createElement('script');
+            jsonpScript.setAttribute('src', `${url}${jsonpCallback}=${callbackFunction}`);
+            if (options.charset) {
+                jsonpScript.setAttribute('charset', options.charset);
+            }
+            jsonpScript.id = scriptId;
+            document.getElementsByTagName('head')[0].appendChild(jsonpScript);
+            timeoutId = setTimeout(() => {
+                reject(new Error(`JSONP request to ${_url} timed out`));
+                FetchJsonp.clearFunction(callbackFunction);
+                FetchJsonp.removeScript(scriptId);
+                window[callbackFunction] = () => {
+                    FetchJsonp.clearFunction(callbackFunction);
+                };
+            }, timeout);
+            // Caught if got 404/500
+            jsonpScript.onerror = () => {
+                reject(new Error(`JSONP request to ${_url} failed`));
+                FetchJsonp.clearFunction(callbackFunction);
+                FetchJsonp.removeScript(scriptId);
+                if (timeoutId)
+                    clearTimeout(timeoutId);
+            };
+        });
+    }
+}
+exports.default = FetchJsonp;
+FetchJsonp.defaultOptions = {
+    timeout: 5000,
+    jsonpCallback: 'callback',
+    jsonpCallbackFunction: null,
+};
+
+},{}],24:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+window.jsonpBind = function (res) {
+    Utils.jsonpBind(JSON.stringify(res));
+};
+class Utils {
+    static formateDate(date) {
+        let dateObj = new Date(+date), hours = dateObj.getHours(), mins = dateObj.getMinutes(), secs = dateObj.getSeconds(), msecs = dateObj.getMilliseconds();
+        if (hours < 10) {
+            hours = "0" + hours;
+        }
+        if (mins < 10) {
+            mins = "0" + mins;
+        }
+        if (secs < 10) {
+            secs = "0" + secs;
+        }
+        if (msecs < 10) {
+            msecs = "00" + msecs;
+        }
+        else if (msecs < 100 && msecs >= 10) {
+            msecs = "0" + msecs;
+        }
+        return hours + "" + mins + "" + secs + "" + msecs;
+    }
+    static obtainLocal(ck) {
+        return ck.replace(/(?:(?:^|.*;\s*)3AB9D23F7A4B3C9B\s*=\s*([^;]*).*$)|^.*$/, "$1");
+    }
+    ;
+    static getCookie() {
+        return document.cookie;
+    }
+    static formatDate(date) {
+        let dateObj = new Date(+date), year = dateObj.getFullYear(), month = dateObj.getMonth() + 1, day = dateObj.getDate(), hours = dateObj.getHours(), mins = dateObj.getMinutes(), secs = dateObj.getSeconds(), msecs = dateObj.getMilliseconds();
+        if (month < 10) {
+            month = "0" + month;
+        }
+        if (day < 10) {
+            day = "0" + day;
+        }
+        if (hours < 10) {
+            hours = "0" + hours;
+        }
+        if (mins < 10) {
+            mins = "0" + mins;
+        }
+        if (secs < 10) {
+            secs = "0" + secs;
+        }
+        if (msecs < 10) {
+            msecs = "00" + msecs;
+        }
+        else if (msecs < 100 && msecs >= 10) {
+            msecs = "0" + msecs;
+        }
+        return year + "" + month + "" + day + "" + hours + "" + mins + "" + secs + "" + msecs;
+    }
+    static GetQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (!r) {
+            let url = window.location.hash;
+            r = url.substr(url.indexOf("?") + 1, url.length - url.indexOf("?")).match(reg);
+        }
+        if (r != null)
+            return r[2];
+        return "";
+    }
+    static getSearchString(str, key) {
+        str = str.substring(1, str.length);
+        var arr = str.split("&");
+        var obj = new Object();
+        for (var i = 0; i < arr.length; i++) {
+            var tmp_arr = arr[i].split("=");
+            obj[decodeURIComponent(tmp_arr[0])] = decodeURIComponent(tmp_arr[1]);
+        }
+        return obj[key];
+    }
+    static getQueryStringByName(url) {
+        url = url.replace(/#.*/, ''); //removes hash (to avoid getting hash query)
+        var queryString = /\?[a-zA-Z0-9\=\&\%\$\-\_\.\+\!\*\'\(\)\,]+/.exec(url); //valid chars according to: http://www.ietf.org/rfc/rfc1738.txt
+        return (queryString) ? decodeURIComponent(queryString[0]) : '';
+    }
+    static formateTime(time) {
+        return Math.trunc(+(time.replace(/\s+/ig, "").replace(/[:|：]+/ig, "").replace(/[-|——]+/ig, "")));
+    }
+    static createJsonp(url, bind = false) {
+        var jsonpScript = document.createElement('script');
+        document.getElementsByTagName('head')[0].appendChild(jsonpScript);
+        if (bind) {
+            url += "jsonpBind";
+        }
+        jsonpScript.setAttribute('src', url);
+        jsonpScript.onload = () => {
+            document.getElementsByTagName('head')[0].removeChild(jsonpScript);
+        };
+    }
+    static jsonpBind(res) {
+        postMessage(res, '*');
+    }
+    static outPutLog(output, log, timeFlag = true) {
+        if (output.parentElement.style.display == 'none') {
+            output.parentElement.style.display = 'block';
+        }
+        if (timeFlag) {
+            if (output.value) {
+                output.value = `${output.value}\n${new Date().toLocaleString()}\n${log}`;
+            }
+            else {
+                output.value = new Date().toLocaleString() + log;
+            }
+        }
+        else {
+            output.value = `${output.value}\n${log}`;
+        }
+    }
+    static random(n, m) {
+        return Math.floor(Math.random() * (m - n + 1) + n);
+    }
+    static getTimestamp() {
+        return new Date().getTime();
+    }
+    static copyText(text) {
+        if (text === "") {
+            alert("好像没有需要复制的内容哦！");
+            return;
+        }
+        var oInput = document.querySelector('.oInput');
+        if (!oInput) {
+            oInput = document.createElement('input');
+            oInput.className = 'oInput';
+            document.body.appendChild(oInput);
+        }
+        oInput.value = text;
+        oInput.select();
+        document.execCommand("Copy");
+        oInput.style.display = 'none';
+        alert('内容已经复制到黏贴板啦');
+    }
+    static importFile(ext) {
+        return new Promise((resolve, reject) => {
+            let fInput = document.createElement('input');
+            fInput.className = 'fInput';
+            fInput.type = "file";
+            document.body.appendChild(fInput);
+            fInput.onchange = function (e) {
+                const file = e.target.files[0], reader = new FileReader();
+                if (file && file.type.includes(ext)) {
+                    reader.readAsText(file);
+                }
+                else {
+                    alert("不支持的文件格式!");
+                    return;
+                }
+                reader.onabort = function () {
+                    //读取中断
+                    document.body.removeChild(fInput);
+                };
+                reader.onerror = function () {
+                    //读取发生错误
+                    document.body.removeChild(fInput);
+                };
+                reader.onload = function () {
+                    if (reader.readyState == 2) {
+                        const result = reader.result;
+                        resolve(result);
+                        document.body.removeChild(fInput);
+                    }
+                };
+            };
+            fInput.click();
+            fInput.style.display = "none";
+        });
+    }
+    static loadiFrame(url) {
+        return new Promise(resolve => {
+            var iframe = document.createElement('iframe');
+            document.body.appendChild(iframe);
+            iframe.width = "1";
+            iframe.height = "1";
+            iframe.onload = () => {
+                resolve(iframe);
+            };
+            iframe.src = url;
+            iframe.style.display = 'none';
+        });
+    }
+    static loadCss(url) {
+        var link = document.createElement("link");
+        link.type = "text/css";
+        link.rel = "stylesheet";
+        link.href = url;
+        document.getElementsByTagName("head")[0].appendChild(link);
+    }
+    ;
+    static stringify(params) {
+        return Object.keys(params).map((key) => {
+            console.log();
+            return `${key}=${this.isObject(params[key]) ? JSON.stringify(params[key]) : encodeURIComponent(params[key])}`;
+        }).join("&");
+    }
+    static isObject(value) {
+        let type = typeof value;
+        return value != null && (type == 'object' || type == 'function');
+    }
+    static isNumber(obj) {
+        return typeof obj === 'number' && !isNaN(obj);
+    }
+    // static HTMLfactory(type: string, attributes: any, parent: HTMLElement): HTMLElement {
+    //     let ele: any = document.createElement(type);
+    //     for (let k in attributes) {
+    //         ele[k] = attributes[k];
+    //     }
+    //     parent.append(ele);
+    //     return ele;
+    // }
+    static querySelector(dom) {
+        return document.querySelector(dom);
+    }
+}
+exports.default = Utils;
+exports._$ = Utils.querySelector;
+
+},{}]},{},[22]);

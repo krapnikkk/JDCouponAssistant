@@ -18,9 +18,9 @@ gulp.task("default", () => {
         .bundle()
         .pipe(source('bundle.js'))
         .pipe(buffer())
-        .pipe(babel({//编译ES6
-            presets: ['es2015']
-        }))
-        .pipe(uglify({ mangle: { toplevel: true } }))
+        // .pipe(babel({//编译ES6
+        //     presets: ['es2015']
+        // }))
+        // .pipe(uglify({ mangle: { toplevel: true } }))
         .pipe(gulp.dest('dist'))
 });

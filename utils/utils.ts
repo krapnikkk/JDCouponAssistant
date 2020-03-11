@@ -164,7 +164,6 @@ export default class Utils {
             fInput.type = "file";
             document.body.appendChild(fInput);
             fInput.onchange = function (e: any) {
-
                 const file = e.target.files[0], reader = new FileReader();
                 if (file && file.type.includes(ext)) {
                     reader.readAsText(file)

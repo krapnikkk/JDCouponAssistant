@@ -38,7 +38,7 @@ export default class Cloudpig implements Game {
     list(): void {
         const content = document.createElement("div");
         let msg = `
-        <div style="padding: 5px;margin-top: 5px;border: 1px solid #000;">
+        <div>
         <button class="Login" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">查看猪猪详情</button>
         <button class="Achievements" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">可提现红包</button>
         <button class="SignOne" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键每日签到</button>
