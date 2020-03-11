@@ -19,6 +19,7 @@ export default class Config {
     static JDUserInfoURL: string = "https://wq.jd.com/user/info/QueryJDUserInfo?sceneid=11110&sceneval=2&g_login_type=1";
     static JDTimeInfoURL: string = "https://api.m.jd.com/client.action?functionId=babelActivityGetShareInfo&client=wh5";
     static JDIMGSourcesURL: string = "https://img13.360buyimg.com/n1/s450x450_";
+    static NetdiskURL:string = "链接：https://pan.baidu.com/s/17eyRRSrFUQVSKdYwIcDsHg 提取码：jddk ";
 
     static multiFlag: boolean = false;
     static importFlag: boolean = false;

@@ -36,7 +36,7 @@ import { CookieHandler } from "./cookie/CookieHandler";
 let coupon: Coupon,
     goods: Goods,
     game: Game,
-    activity: Activity,isJDcontext = true;
+    activity: Activity, isJDcontext = true;
 
 const container: HTMLDivElement = document.createElement("div"),
     title: HTMLDivElement = document.createElement("div"),
@@ -58,7 +58,7 @@ let getLoginMsg = function (res: any) {
 
 
 function buildOperate() {
-    operateAreaDiv.setAttribute("style", "border: 1px solid #000;");
+    operateAreaDiv.setAttribute("style", "border: 1px solid #000;margin: 10px 0;");
     operateAreaDiv.innerHTML = "<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;padding: 0 37.5vw 5px;'>操作区</h3>";
     if (coupon) {
         buildTimerControl();
@@ -180,7 +180,7 @@ function buildTitle() {
     document.body.style.backgroundColor = "#ffffff";
     document.body.style.textAlign = "center";
     document.body.style.maxWidth = "100vw";
-    container.setAttribute("style", "border: 1px solid #000;padding: 5px;margin: 5px;");
+    container.setAttribute("style", "border: 1px solid #000;margin: 10px 0;padding: 5px;margin: 5px;");
     title.innerHTML = `<h1 style="font-weight:700">${Config.title} ${Config.version}</h1>
                         <h3>author:${Config.author}</h3>
                         <div style="display: flex;flex-direction: row;justify-content: center;">
@@ -189,7 +189,7 @@ function buildTitle() {
                         </div>
                         <button style="font-size:18px;font-weight:bold;color:#000;position:relative;width: 200px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">
                             把按钮拖动到书签栏
-                            <a style="font-size:0px;width:200px;height:30px;display:inline-block;position:absolute;left:0;top:0;" href="javascript: (function(a, b, c, d) { if(!a[c]){ d = b.createElement('script'), d.id = 'krapnik', d.setAttribute('charset', 'utf-8'), d.src = 'https://gitee.com/krapnik/codes/o9nwsxjuy6crftdi824aq79/raw?blob_name=JDCouponAssistant.js', b.body.appendChild(d) } } )(window, document, 'krapnik');">
+                            <a style="font-size:0px;width:200px;height:30px;display:inline-block;position:absolute;left:0;top:0;" href="javascript:!function(){function c(){var d=document.getElementById("loadJs"),e=document.createElement("script");d&&document.getElementsByTagName("head")[0].removeChild(d),e.id="loadJs",e.type="text/javascript",e.onerror=function(){return b==a.length-1?(alert("%E6%89%80%E6%9C%89%E6%95%B0%E6%8D%AE%E6%BA%90%E4%BB%A3%E7%A0%81%E5%8A%A0%E8%BD%BD%E5%BC%82%E5%B8%B8%EF%BC%81%E8%AF%B7%E6%A3%80%E6%9F%A5%E7%BD%91%E7%BB%9C%E6%83%85%E5%86%B5%EF%BC%81"),void 0):(b++,c(),void 0)},e.src=a[b],document.getElementsByTagName("head")[0].appendChild(e)}var a=["https://krapnik.coding.net/p/JD/d/JDCouponAssistant/git/raw/master/bundle.js","https://gitee.com/krapnik/codes/o9nwsxjuy6crftdi824aq79/raw?blob_name=JDCouponAssistant.js","https://raw.githubusercontent.com/krapnikkk/JDCouponAssistant/master/dist/bundle.js"],b=0;c()}();">
                                 京东领券助手
                             </a>
                         </button>`;
@@ -199,14 +199,14 @@ function buildTitle() {
 
 function buildActivity() {
     // const activityArea: HTMLDivElement = document.createElement("div");
-    // activityArea.setAttribute("style", "border: 1px solid #000;margin:10px");
+    // activityArea.setAttribute("style", "border: 1px solid #000");
     // activityArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>活动推荐</h3>`;
     // container.append(activityArea);
 }
 
 function buildRecommend() {
     const recommandArea: HTMLDivElement = document.createElement("div");
-    recommandArea.setAttribute("style", "border: 1px solid #000;margin:10px");
+    recommandArea.setAttribute("style", "border: 1px solid #000;margin: 10px 0;");
     recommandArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>好券推荐</h3>
     <p style="color:red;font-weight:bold;">
     <a style="color:red" href="https://m.jr.jd.com/member/9GcConvert/?channel=01-shouye-191214" target="_blank">9金币抢兑</a>
@@ -217,7 +217,7 @@ function buildRecommend() {
 
 function buildPromotion() {
     const promotionArea: HTMLDivElement = document.createElement("div");
-    promotionArea.setAttribute("style", "border: 1px solid #000;margin:10px");
+    promotionArea.setAttribute("style", "border: 1px solid #000;margin: 10px 0;");
     promotionArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>推广区</h3>
     <p style="color:red;font-weight:bold;"><a style="color:red" href="http://krapnik.cn/project/jd/dayTask.html" target="_blank">每日京东红包汇总</a></p>`;
     container.append(promotionArea);
@@ -225,13 +225,13 @@ function buildPromotion() {
 
 function buildUAarea() {
     let UATipsDiv: HTMLDivElement = document.createElement("div");
-    UATipsDiv.innerHTML = `<div style="border: 1px solid #000;margin:10px;font-weight:bold"><h2>该活动需要设置user-Agent为京东APP</h2><p><a style="color:red" href="https://gitee.com/krapnik/res/raw/master/tutorial.mp4" target="_blank">点击下载教程视频</a></p><p>部分浏览器插件会覆盖UA设置，请自行排查并关闭</p><p>【比如：京价保】</p><button style="width: 200px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block" onclick=Utils.copyText(Config.JDAppUA)>点击一键复制User-Agent</button></div>`;
+    UATipsDiv.innerHTML = `<div style="border: 1px solid #000;margin: 10px 0;font-weight:bold"><h2>该活动需要设置user-Agent为京东APP</h2><p><a style="color:red" href="https://gitee.com/krapnik/res/raw/master/tutorial.mp4" target="_blank">点击下载教程视频</a></p><p>部分浏览器插件会覆盖UA设置，请自行排查并关闭</p><p>【比如：京价保】</p><button style="width: 200px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block" onclick=Utils.copyText(Config.JDAppUA)>点击一键复制User-Agent</button></div>`;
     container.append(UATipsDiv);
 }
 
 function buildSensorArea() {
     let sensorArea: HTMLDivElement = document.createElement("div");
-    sensorArea.innerHTML = `<div style="border: 1px solid #000;margin:10px;font-weight:bold"><h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>高级操作区</h3><p>导入ck格式：备注----ck</p><p>暂时只对扩展功能区有效</p>
+    sensorArea.innerHTML = `<div style="border: 1px solid #000;margin: 10px 0;font-weight:bold"><h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>高级操作区</h3><p>导入ck格式：备注----ck</p><p style="color:red;">暂时只对扩展功能区有效</p>
     <button style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block" onclick="Utils.copyText(document.cookie)">复制Cookie</button>
     <button id="import" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">导入多帐号</button></div>`;
     container.append(sensorArea);
@@ -281,14 +281,18 @@ function buildTimeoutArea() {
 
 function buildExtensionTab() {
     let extensionTab: HTMLDivElement = document.createElement("div");
-    extensionTab.innerHTML = `<div style="border: 1px solid #000;margin:10px;font-weight:bold"><h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>扩展功能区</h3>
-        <button style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block"><a href="http://m.baidu.com">下载插件</a></button>
-        <ul class="list"><li class="pig">养猪猪</li><li class="moneyTree">金果树</li></ul>
+    extensionTab.innerHTML = `<div style="border: 1px solid #000;margin: 10px 0;font-weight:bold"><h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;padding: 0 37.5vw 5px;'>扩展功能区</h3>
+        <p style="color:red;font-weight:bold;">使用本栏目功能前请查看教程</p>    
+        <div><button style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;" onclick="Utils.copyText(Config.NetdiskURL)">下载教程</button>
+        <button class="toggle" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">收起栏目</button></div>
+        <ul class="list" style="display:flex;justify-content: space-around;list-style:none;margin-bottom: 10px;"><li class="pig">养猪猪</li><li class="moneyTree">金果树</li><li class="moneyTree">签到中心</li></ul>
+        <hr style="margin: 10px;">
         <div class="extensionDiv"></div>
     </div>`;
     container.append(extensionTab);
+    let extensionDiv = _$(".extensionDiv") as HTMLDivElement
     _$(".list").addEventListener("click", (e: MouseEvent) => {
-        let target = <HTMLElement>e.target!, extensionDiv = _$(".extensionDiv") as HTMLDivElement;
+        let target = <HTMLElement>e.target!;
         let nodes = extensionDiv.childNodes;
         if (nodes.length > 0) {
             extensionDiv.removeChild(nodes[0]);
@@ -296,11 +300,20 @@ function buildExtensionTab() {
         if (target.getAttribute("class") == "pig") {
             game = new Cloudpig(null, extensionDiv, outputTextArea);
             game.get();
-        }else{
+        } else {
             alert("该功能正在开发中，晚点再来吧~");
         }
     });
-
+    _$(".toggle").addEventListener("click", (e: MouseEvent) => {
+        let target = <HTMLElement>e.target!;
+        if (extensionDiv.style.display == "block") {
+            extensionDiv.style.display = "none";
+            target.innerHTML="展开栏目";
+        } else {
+            extensionDiv.style.display = "block";
+            target.innerHTML="收起栏目";
+        }
+    })
 }
 
 function getEntryType(): couponType | activityType | goodsType | gameType {
@@ -431,9 +444,9 @@ function getEntryDesc(type: couponType | activityType | goodsType | gameType) {
         //     activity = new ReceiveBless(null, container, outputTextArea);
         //     Config.UAFlag = true;
         //     break;
-        case gameType.cloudpig:
-            game = new Cloudpig(null, container, outputTextArea);
-            break;
+        // case gameType.cloudpig:
+        //     game = new Cloudpig(null, container, outputTextArea);
+        //     break;
         default:
             break;
     }
@@ -442,25 +455,22 @@ function getEntryDesc(type: couponType | activityType | goodsType | gameType) {
     }
     buildRecommend();
     buildActivity();
-    if(isJDcontext){
+    if (isJDcontext) {
         buildOperate();
         buildSensorArea();
         buildExtensionTab();
+        Utils.createJsonp(`${Config.JDUserInfoURL}&callback=getLoginMsg`);
     }
     if (coupon) {
-        Config.intervalId = window.setInterval(getTime, Config.intervalSpan);
         coupon.get();
     } else if (activity) {
         // buildActivity();
         buildTimeoutArea();
         activity.get();
-        Utils.createJsonp(`${Config.JDUserInfoURL}&callback=getLoginMsg`);
     } else if (goods) {
         goods.get();
-        Utils.createJsonp(`${Config.JDUserInfoURL}&callback=getLoginMsg`);
     } else if (game) {
         game.get();
-        Utils.createJsonp(`${Config.JDUserInfoURL}&callback=getLoginMsg`);
     } else {
         Utils.loadCss("https://meyerweb.com/eric/tools/css/reset/reset200802.css");
         buildTips();
@@ -504,7 +514,7 @@ function copyRights() {
     console.clear();
     if (window.console) {
         console.group('%c京东领券助手', 'color:#009a61; font-size: 36px; font-weight: 400');
-        console.log('%c本插件仅供学习交流使用\n作者:krapnik \ngithub:https://github.com/krapnikkk/JDCouponAssistant', 'color:#009a61');
+        console.log('%c本插件仅供学习交流使用\n作者:krapnik \n既然按了F12，为何不去GitHub顺便给个star\ngithub:https://github.com/krapnikkk/JDCouponAssistant', 'color:#009a61');
         console.groupEnd();
     }
 }
