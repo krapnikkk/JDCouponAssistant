@@ -39,10 +39,13 @@ export default class Cloudpig implements Game {
         const content = document.createElement("div");
         let msg = `
         <div>
-        <button class="Login" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">查看猪猪详情</button>
-        <button class="Achievements" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">可提现红包</button>
-        <button class="SignOne" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键每日签到</button>
-        <button class="OpenBox" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键开箱子</button>
+        <div><button class="Login" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">查看猪猪详情</button>
+        <button class="Achievements" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">可提现红包</button>
+        </div>
+        <div>
+        <button class="SignOne" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">一键每日签到</button>
+        <button class="OpenBox" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">一键开箱子</button>
+        </div>
         <button class="UserBag" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">查看食物背包</button>
         <p>喂养食物:<select class="food" name="food" style="border: 1px solid #333;padding: 2px;">
             <option value ="1001003003">普通猪粮</option>
@@ -51,7 +54,7 @@ export default class Cloudpig implements Game {
             <option value="1001003004">南瓜</option>
         </select>
         </p>
-        <button class="AddFood" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">喂养食物</button>
+        <button class="AddFood" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">喂养食物</button>
         <button class="AddFavoriteFood" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:none">喂养喜爱食物</button>
         <p>自动喂养间隔：<select class="foodSpan" name="foodSpan" style="border: 1px solid #333;padding: 2px;">
             <option value ="1800000">30分钟</option>
@@ -61,8 +64,10 @@ export default class Cloudpig implements Game {
         </p>
         <button class="AutoAddFood" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">自动定时喂养</button>
         <button class="cancelAutoAddFood" style="display:none;width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">取消定时喂养</button>
-        <button class="pigPetLotteryIndex" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">大转盘情况</button>
-        <button class="LotteryPlay" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键大转盘</button>
+        <div>
+        <button class="pigPetLotteryIndex" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto">大转盘情况</button>
+        <button class="LotteryPlay" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto">一键大转盘</button>
+        </div>
         </div>`;
         content.innerHTML = msg;
         this.container.appendChild(content);

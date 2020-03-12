@@ -1280,10 +1280,13 @@ class Cloudpig {
         const content = document.createElement("div");
         let msg = `
         <div>
-        <button class="Login" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">查看猪猪详情</button>
-        <button class="Achievements" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">可提现红包</button>
-        <button class="SignOne" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键每日签到</button>
-        <button class="OpenBox" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键开箱子</button>
+        <div><button class="Login" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">查看猪猪详情</button>
+        <button class="Achievements" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">可提现红包</button>
+        </div>
+        <div>
+        <button class="SignOne" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">一键每日签到</button>
+        <button class="OpenBox" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">一键开箱子</button>
+        </div>
         <button class="UserBag" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">查看食物背包</button>
         <p>喂养食物:<select class="food" name="food" style="border: 1px solid #333;padding: 2px;">
             <option value ="1001003003">普通猪粮</option>
@@ -1292,7 +1295,7 @@ class Cloudpig {
             <option value="1001003004">南瓜</option>
         </select>
         </p>
-        <button class="AddFood" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">喂养食物</button>
+        <button class="AddFood" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">喂养食物</button>
         <button class="AddFavoriteFood" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:none">喂养喜爱食物</button>
         <p>自动喂养间隔：<select class="foodSpan" name="foodSpan" style="border: 1px solid #333;padding: 2px;">
             <option value ="1800000">30分钟</option>
@@ -1302,8 +1305,10 @@ class Cloudpig {
         </p>
         <button class="AutoAddFood" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">自动定时喂养</button>
         <button class="cancelAutoAddFood" style="display:none;width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">取消定时喂养</button>
-        <button class="pigPetLotteryIndex" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">大转盘情况</button>
-        <button class="LotteryPlay" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键大转盘</button>
+        <div>
+        <button class="pigPetLotteryIndex" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto">大转盘情况</button>
+        <button class="LotteryPlay" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto">一键大转盘</button>
+        </div>
         </div>`;
         content.innerHTML = msg;
         this.container.appendChild(content);
@@ -2189,10 +2194,47 @@ function buildUAarea() {
 }
 function buildSensorArea() {
     let sensorArea = document.createElement("div");
-    sensorArea.innerHTML = `<div style="border: 1px solid #000;margin: 10px 0;font-weight:bold"><h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>高级操作区</h3><p>导入ck格式：备注----ck</p><p style="color:red;">暂时只对扩展功能区有效</p>
+    sensorArea.innerHTML = `<div style="border: 1px solid #000;margin: 10px 0;font-weight:bold"><h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;padding: 0 37.5vw 5px;'>扩展功能区</h3>
+    <p style="color:red;font-weight:bold;">使用本栏目功能前请查看教程</p>
+    <div><button style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;" onclick="Utils.copyText(Config.NetdiskURL)">下载教程</button>
+    <button class="toggle" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">展开栏目</button></div>
+    <div class="sensorAreaTabDiv" style="display:none"><ul class="list" style="display:flex;justify-content: space-around;list-style:none;margin-bottom: 10px;"><li class="account">帐号管理</li><li class="activity">日常辅助</li></ul>
+    <hr style="margin: 10px;">
+    <div class="extensionDiv"></div></div>`;
+    container.append(sensorArea);
+    let account = document.createElement("div");
+    account.innerHTML = `<p>导入ck格式：备注----ck</p><p style="color:red;">暂时只对扩展功能区有效</p>
     <button style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block" onclick="Utils.copyText(document.cookie)">复制Cookie</button>
     <button id="import" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">导入多帐号</button></div>`;
-    container.append(sensorArea);
+    let activity = document.createElement("div");
+    activity.innerHTML = `<ul class="activity-list" style="display:flex;justify-content: space-around;list-style:none;margin-bottom: 10px;"><li class="pig">养猪猪</li><li class="moneyTree">金果树</li><li class="moneyTree">签到中心</li></ul>
+    <hr style="margin: 10px;"><div class="activityExtensionDiv"></div>`;
+    let extensionDiv = utils_1._$(".extensionDiv"), sensorAreaTabDiv = utils_1._$(".sensorAreaTabDiv");
+    extensionDiv.append(account);
+    extensionDiv.append(activity);
+    activity.style.display = "none";
+    utils_1._$(".list").addEventListener("click", (e) => {
+        let target = e.target;
+        if (target.getAttribute("class") == "account") {
+            account.style.display = "block";
+            activity.style.display = "none";
+        }
+        else {
+            account.style.display = "none";
+            activity.style.display = "block";
+        }
+    });
+    utils_1._$(".toggle").addEventListener("click", (e) => {
+        let target = e.target;
+        if (sensorAreaTabDiv.style.display == "block") {
+            sensorAreaTabDiv.style.display = "none";
+            target.innerHTML = "展开栏目";
+        }
+        else {
+            sensorAreaTabDiv.style.display = "block";
+            target.innerHTML = "收起栏目";
+        }
+    });
     utils_1._$("#import").addEventListener('click', () => {
         utils_1.default.importFile("text/plain").then((ck) => __awaiter(this, void 0, void 0, function* () {
             config_1.default.multiFlag = false;
@@ -2217,6 +2259,21 @@ function buildSensorArea() {
             }
         }));
     });
+    let activityExtensionDiv = utils_1._$(".activityExtensionDiv");
+    utils_1._$(".activity-list").addEventListener("click", (e) => {
+        let target = e.target;
+        let nodes = activityExtensionDiv.childNodes;
+        if (nodes.length > 0) {
+            activityExtensionDiv.removeChild(nodes[0]);
+        }
+        if (target.getAttribute("class") == "pig") {
+            game = new cloudpig_1.default(null, activityExtensionDiv, outputTextArea);
+            game.get();
+        }
+        else {
+            alert("该功能正在开发中，晚点再来吧~");
+        }
+    });
 }
 function buildTimeoutArea() {
     let timeoutDiv = document.createElement("div"), timeoutInput = document.createElement("input");
@@ -2230,44 +2287,6 @@ function buildTimeoutArea() {
         }
     };
     operateAreaDiv.append(timeoutDiv);
-}
-function buildExtensionTab() {
-    let extensionTab = document.createElement("div");
-    extensionTab.innerHTML = `<div style="border: 1px solid #000;margin: 10px 0;font-weight:bold"><h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;padding: 0 37.5vw 5px;'>扩展功能区</h3>
-        <p style="color:red;font-weight:bold;">使用本栏目功能前请查看教程</p>    
-        <div><button style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;" onclick="Utils.copyText(Config.NetdiskURL)">下载教程</button>
-        <button class="toggle" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">收起栏目</button></div>
-        <ul class="list" style="display:flex;justify-content: space-around;list-style:none;margin-bottom: 10px;"><li class="pig">养猪猪</li><li class="moneyTree">金果树</li><li class="moneyTree">签到中心</li></ul>
-        <hr style="margin: 10px;">
-        <div class="extensionDiv"></div>
-    </div>`;
-    container.append(extensionTab);
-    let extensionDiv = utils_1._$(".extensionDiv");
-    utils_1._$(".list").addEventListener("click", (e) => {
-        let target = e.target;
-        let nodes = extensionDiv.childNodes;
-        if (nodes.length > 0) {
-            extensionDiv.removeChild(nodes[0]);
-        }
-        if (target.getAttribute("class") == "pig") {
-            game = new cloudpig_1.default(null, extensionDiv, outputTextArea);
-            game.get();
-        }
-        else {
-            alert("该功能正在开发中，晚点再来吧~");
-        }
-    });
-    utils_1._$(".toggle").addEventListener("click", (e) => {
-        let target = e.target;
-        if (extensionDiv.style.display == "block") {
-            extensionDiv.style.display = "none";
-            target.innerHTML = "展开栏目";
-        }
-        else {
-            extensionDiv.style.display = "block";
-            target.innerHTML = "收起栏目";
-        }
-    });
 }
 function getEntryType() {
     let type = couponType_1.couponType.none;
@@ -2417,12 +2436,13 @@ function getEntryDesc(type) {
     buildRecommend();
     buildActivity();
     if (isJDcontext) {
-        buildOperate();
         buildSensorArea();
-        buildExtensionTab();
+        buildOperate();
+        // buildExtensionTab();
         utils_1.default.createJsonp(`${config_1.default.JDUserInfoURL}&callback=getLoginMsg`);
     }
     if (coupon) {
+        config_1.default.intervalId = window.setInterval(getTime, config_1.default.intervalSpan);
         coupon.get();
     }
     else if (activity) {
