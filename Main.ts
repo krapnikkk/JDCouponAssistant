@@ -32,6 +32,7 @@ import { goodsType } from "./enum/goodsType";
 import { gameType } from "./enum/gameType";
 import CookieManager from "./cookie/CookieManager";
 import { CookieHandler } from "./cookie/CookieHandler";
+import BTGoose from "./game/btgoose";
 
 let coupon: Coupon,
     goods: Goods,
@@ -245,9 +246,14 @@ function buildSensorArea() {
     <button id="import" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">导入多帐号</button></div>`;
 
     let activity: HTMLDivElement = document.createElement("div");
-    activity.innerHTML = `<ul class="activity-list" style="display:flex;justify-content: space-around;list-style:none;margin-bottom: 10px;"><li class="pig">养猪猪</li><li class="moneyTree">金果树</li><li class="moneyTree">签到中心</li></ul>
+    activity.innerHTML = `<ul class="activity-list" style="display:flex;justify-content: space-around;list-style:none;margin-bottom: 10px;">
+    <li class="pig">养猪猪</li>
+    <li class="goose">提鹅</li>
+    <li class="moneyTree">金果树</li>
+    <li class="moneyTree">签到中心</li>
+    </ul>
     <hr style="margin: 10px;"><div class="activityExtensionDiv"></div>`;
-    let extensionDiv = _$(".extensionDiv") as HTMLDivElement,sensorAreaTabDiv = _$(".sensorAreaTabDiv") as HTMLDivElement;
+    let extensionDiv = _$(".extensionDiv") as HTMLDivElement, sensorAreaTabDiv = _$(".sensorAreaTabDiv") as HTMLDivElement;
     extensionDiv.append(account);
     extensionDiv.append(activity);
     activity.style.display = "none";
@@ -311,7 +317,11 @@ function buildSensorArea() {
         if (target.getAttribute("class") == "pig") {
             game = new Cloudpig(null, activityExtensionDiv, outputTextArea);
             game.get();
-        } else {
+        } else if (target.getAttribute("class") == "goose") {
+            game = new BTGoose(null, activityExtensionDiv, outputTextArea);
+            game.get();
+        }
+        else {
             alert("该功能正在开发中，晚点再来吧~");
         }
     });

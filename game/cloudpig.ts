@@ -202,7 +202,6 @@ export default class Cloudpig implements Game {
             } else {
                 this.lotteryPlay();
             }
-
         })
     }
 
@@ -327,7 +326,7 @@ export default class Cloudpig implements Game {
     }
 
     addFood(favBool: boolean = false, ckObj?: CookieType) {
-        let skuId = ckObj ? favBool ? ckObj.favoriteFood : this.foodskuId: favBool ? this.favFoodMap[this.favoriteFood] : this.foodskuId;
+        let skuId = ckObj ? favBool ? ckObj.favoriteFood : this.foodskuId : favBool ? this.favFoodMap[this.favoriteFood] : this.foodskuId;
         fetch(this.rootURI + "pigPetAddFood", {
             method: "POST",
             mode: "cors",
