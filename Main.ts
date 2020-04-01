@@ -33,12 +33,13 @@ import { gameType } from "./enum/gameType";
 import CookieManager from "./cookie/CookieManager";
 import { CookieHandler } from "./cookie/CookieHandler";
 import BTGoose from "./game/btgoose";
+import MoneyTree from "./game/moneyTree";
 
 let coupon: Coupon,
     goods: Goods,
     game: Game,
     activity: Activity,
-    gameMap: { [type: string]: Game },
+    gameMap: { [type: string]: Game } = {},
     isJDcontext = true;
 
 const container: HTMLDivElement = document.createElement("div"),
@@ -252,7 +253,7 @@ function buildSensorArea() {
     <li class="pig">养猪猪</li>
     <li class="goose">提鹅</li>
     <li class="moneyTree">金果树</li>
-    <li class="moneyTree">签到中心</li>
+    <li class="signInCenter">签到中心</li>
     </ul>
     <hr style="margin: 10px;"><div class="activityExtensionDiv"></div>`;
     let extensionDiv = _$(".extensionDiv") as HTMLDivElement, sensorAreaTabDiv = _$(".sensorAreaTabDiv") as HTMLDivElement;
@@ -313,20 +314,35 @@ function buildSensorArea() {
     _$(".activity-list").addEventListener("click", (e: MouseEvent) => {
         let target = <HTMLElement>e.target!;
         let nodes = activityExtensionDiv.childNodes;
-        if (nodes.length > 0) {
-            activityExtensionDiv.removeChild(nodes[0]);
-        }
+        // if (nodes.length > 0) {
+        //     activityExtensionDiv.removeChild(nodes[0]);
+        // }
+        nodes.forEach((node)=>{
+            (<HTMLDivElement>node).style.display = "none";
+        })
         if (target.getAttribute("class") == "pig") {
             if (!gameMap.Cloudpig) {
                 gameMap.Cloudpig = new Cloudpig(null, activityExtensionDiv, outputTextArea);
                 gameMap.Cloudpig.get();
+            }else{
+                gameMap.Cloudpig.content.style.display = "block";
             }
 
         } else if (target.getAttribute("class") == "goose") {
             if (!gameMap.BTGoose) {
                 gameMap.BTGoose = new BTGoose(null, activityExtensionDiv, outputTextArea);
                 gameMap.BTGoose.get();
+            }else{
+                gameMap.BTGoose.content.style.display = "block";
             }
+        } else if (target.getAttribute("class") == "moneyTree") {
+            alert("该功能正在开发中，晚点再来吧~");
+            // if (!gameMap.MoneyTree) {
+            //     gameMap.MoneyTree = new MoneyTree(null, activityExtensionDiv, outputTextArea);
+            //     gameMap.MoneyTree.get();
+            // }else{
+            //     gameMap.MoneyTree.content.style.display = "block";
+            // }
         }
         else {
             alert("该功能正在开发中，晚点再来吧~");
