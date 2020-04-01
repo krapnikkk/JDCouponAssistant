@@ -8,36 +8,28 @@ import CookieManager from "../cookie/CookieManager";
 export default class BTGoose implements Game {
     rootURI: string = "https://ms.jr.jd.com/gw/generic/uc/h5/m/";
     baseReqData: Object = { "timeSign": 0, "environment": "jrApp", "riskDeviceInfo": "{}" };
-    // baseReqData: Object = { "source": 0, "channelLV": "yqs", "riskDeviceParam": "{\"fp\":\"\",\"eid\":\"\",\"sdkToken\":\"\",\"sid\":\"\"}" };
-    // {"source":0,"skuId":"1001003004","channelLV":"yqs","riskDeviceParam":"{\"eid\":\"\",\"fp\":\"\",\"token\":\"\"}"}
-    detailurl: string = "https://api.m.jd.com/client.action?functionId=bombnian_getTaskDetail";
     data: any = [];
     timer: number = 1000;
     container: HTMLDivElement;
     params: any;
     taskToken: string = "";
     outputTextarea: HTMLTextAreaElement;
-    favFoodMap: { [key: string]: string } = { "南瓜": "1001003004", "胡萝卜": "1001003002", "白菜": "1001003001", "普通猪粮": "1001003003" };
+    content:HTMLDivElement;
     constructor(params: any, containerDiv: HTMLDivElement, outputTextarea: HTMLTextAreaElement) {
         this.params = params;
         this.container = containerDiv;
         this.outputTextarea = outputTextarea;
+        this.content = document.createElement("div");
     }
     get(): void {
         // this.login();
         this.list();
     }
 
-    openBoxFlag: boolean = false;
-    foodskuId: string = "1001003004";
     toWithdrawSpan: number = 1800000;
     autoToWithdrawTimer: number = 0;
-    signNo: number = 1;
-    favoriteFood: string = "";
     list(): void {
-        const content = document.createElement("div");
         let msg = `
-        <div>
             <div>
                 <button class="toDailyHome" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">查看详情</button>
                 <button class="toWithdraw" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">提鹅收蛋</button>
@@ -51,10 +43,9 @@ export default class BTGoose implements Game {
         <button class="autoToWithdraw" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">自动定时收蛋</button>
         <button class="cancelautoToWithdraw" style="display:none;width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">取消定时收蛋</button>
         <button class="toGoldExchange" style="display:display;width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">兑换金币</button>
-        <div>
-        </div>`;
-        content.innerHTML = msg;
-        this.container.appendChild(content);
+        <div>`;
+        this.content.innerHTML = msg;
+        this.container.appendChild(this.content);
         const d = _$(".toDailyHome"),
             g = _$(".toGoldExchange"),
             autoToWithdraw = _$(".autoToWithdraw"),
@@ -219,185 +210,6 @@ export default class BTGoose implements Game {
             setTimeout(() => {
                 CookieHandler.coverCookie(item);
                 this.toGoldExchange(item);
-            }, item.index * 500)
-        });
-    }
-
-    lotteryIndex(ckObj?: CookieType) {
-        fetch(this.rootURI + "pigPetLotteryIndex", {
-            method: "POST",
-            mode: "cors",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: "reqData=" + JSON.stringify(this.baseReqData)
-        }).then(function (response) {
-            return response.json()
-        }).then((res) => {
-            if (res.resultCode == 0) {
-                let data = res.resultData.resultData;
-                if (res.resultData.resultCode == 0) {
-                    let currentCount = data?.currentCount,
-                        coinCount = data?.coinCount,
-                        price = data?.price,
-                        nextFreeTime = data?.nextFreeTime;
-                    if (Config.multiFlag && ckObj) {
-                        Utils.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 当前可抽奖次数：${currentCount} 距下一次免费抽奖时间：${nextFreeTime}毫秒 金币抽奖次数：${coinCount} 需花费金币：${price}`);
-                    } else {
-                        Utils.outPutLog(this.outputTextarea, `当前可抽奖次数：${currentCount} 距下一次免费抽奖时间：${nextFreeTime}毫秒 金币抽奖次数：${coinCount} 需花费金币：${price}`);
-                    }
-                } else {
-                    Utils.outPutLog(this.outputTextarea, `${res.resultData.resultMsg}`);
-                }
-            } else {
-                if (Config.multiFlag && ckObj) {
-                    Utils.outPutLog(this.outputTextarea, `${res.resultMsg}`);
-                }
-            }
-        })
-    }
-
-    lotteryIndexMulti() {
-        CookieManager.cookieArr.map((item: CookieType) => {
-            setTimeout(() => {
-                CookieHandler.coverCookie(item);
-                this.lotteryIndex(item);
-            }, item.index * 500)
-        });
-    }
-
-    signOne(ckObj?: CookieType) {
-        fetch(this.rootURI + "pigPetSignOne?_=" + Utils.getTimestamp(), {
-            method: "POST",
-            mode: "cors",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: "reqData=" + JSON.stringify(Object.assign(this.baseReqData, { "no": ckObj ? ckObj.signNo : this.signNo }))
-        }).then(function (response) {
-            return response.json()
-        }).then((res) => {
-            if (res.resultCode == 0) {
-                let data = res.resultData.resultData;
-                if (res.resultData.resultCode == 0) {
-                    let today = data?.today,
-                        name = data?.award?.name;
-                    if (Config.multiFlag && ckObj) {
-                        Utils.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 已签到${today}天 获得奖励：${name}`);
-                    } else {
-                        Utils.outPutLog(this.outputTextarea, `已签到${today}天 获得奖励：${name}`);
-                    }
-                } else {
-                    Utils.outPutLog(this.outputTextarea, `${res.resultData.resultMsg}`);
-                }
-            } else {
-                if (Config.multiFlag && ckObj) {
-                    Utils.outPutLog(this.outputTextarea, `${res.resultMsg}`);
-                }
-            }
-        })
-    }
-
-    // signOneMulti() {
-    //     CookieManager.cookieArr.map((item: CookieType) => {
-    //         setTimeout(() => {
-    //             CookieHandler.coverCookie(item);
-    //             this.signOne(item);
-    //         }, item.index * 500)
-    //     });
-    // }
-
-    signIndex(ckObj?: CookieType) {
-        fetch(this.rootURI + "pigPetSignIndex?_=" + Utils.getTimestamp(), {
-            method: "POST",
-            mode: "cors",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: "reqData=" + JSON.stringify(this.baseReqData)
-        }).then(function (response) {
-            return response.json()
-        }).then((res) => {
-            if (res.resultCode == 0) {
-                let data = res.resultData.resultData;
-                if (res.resultData.resultCode == 0) {
-                    let today = data?.today;
-                    if (Config.multiFlag && ckObj) {
-                        ckObj.signNo = today;
-                        Utils.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 已签到${today}天 `);
-                        this.signOne(ckObj);
-                    } else {
-                        this.signNo = today;
-                        Utils.outPutLog(this.outputTextarea, `已签到${today}天`);
-                        this.signOne()
-                    }
-                } else {
-                    Utils.outPutLog(this.outputTextarea, `${res.resultData.resultMsg}`);
-                }
-            } else {
-                if (Config.multiFlag && ckObj) {
-                    Utils.outPutLog(this.outputTextarea, `${res.resultMsg}`);
-                }
-            }
-        })
-    }
-
-    signIndexMulti() {
-        CookieManager.cookieArr.map((item: CookieType) => {
-            setTimeout(() => {
-                CookieHandler.coverCookie(item);
-                this.signIndex(item);
-            }, item.index * 500)
-        });
-
-    }
-
-    userBag(ckObj?: CookieType) {
-        fetch(this.rootURI + "pigPetUserBag?_=" + Utils.getTimestamp(), {
-            method: "POST",
-            mode: "cors",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: "reqData=" + JSON.stringify(Object.assign(this.baseReqData, { "category": "1001" }))
-        }).then(function (response) {
-            return response.json()
-        }).then((res) => {
-            if (res.resultCode == 0) {
-                let data = res.resultData.resultData;
-                if (res.resultData.resultCode == 0) {
-                    let goods = data?.goods, goodStr = "";
-                    if (Config.multiFlag && ckObj) {
-                        goodStr += goods.map((good: any) => {
-                            return `\n名称:${good.goodsName} 数量：${good.count}g`;
-                        })
-                        Utils.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 ----食物背包一览----${goodStr}`);
-                    } else {
-                        goodStr += goods.map((good: any) => {
-                            return `\n名称:${good.goodsName} 数量：${good.count}g`;
-                        })
-                        Utils.outPutLog(this.outputTextarea, `----食物背包一览----${goodStr}`);
-                    }
-                } else {
-                    Utils.outPutLog(this.outputTextarea, `${res.resultData.resultMsg}`);
-                }
-            } else {
-                if (Config.multiFlag && ckObj) {
-                    Utils.outPutLog(this.outputTextarea, `${res.resultMsg}`);
-                }
-            }
-        })
-    }
-
-    userBagMulti() {
-        CookieManager.cookieArr.map((item: CookieType) => {
-            setTimeout(() => {
-                CookieHandler.coverCookie(item);
-                this.userBag(item);
             }, item.index * 500)
         });
     }

@@ -151,7 +151,7 @@ class CookieManager {
 exports.default = CookieManager;
 CookieManager.cookieArr = [];
 
-},{"../config/config":1,"../utils/fetch-jsonp":23,"../utils/utils":24,"./CookieHandler":2}],4:[function(require,module,exports){
+},{"../config/config":1,"../utils/fetch-jsonp":24,"../utils/utils":25,"./CookieHandler":2}],4:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -219,7 +219,7 @@ class CoinPurchase {
 }
 exports.default = CoinPurchase;
 
-},{"../utils/utils":24}],5:[function(require,module,exports){
+},{"../utils/utils":25}],5:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -304,7 +304,7 @@ class Exchange {
 }
 exports.default = Exchange;
 
-},{"../utils/utils":24}],6:[function(require,module,exports){
+},{"../utils/utils":25}],6:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -399,7 +399,7 @@ class GcConvert {
 }
 exports.default = GcConvert;
 
-},{"../utils/utils":24}],7:[function(require,module,exports){
+},{"../utils/utils":25}],7:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -497,7 +497,7 @@ class getCouponCenter {
 }
 exports.default = getCouponCenter;
 
-},{"../utils/fetch-jsonp":23,"../utils/utils":24}],8:[function(require,module,exports){
+},{"../utils/fetch-jsonp":24,"../utils/utils":25}],8:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -571,7 +571,7 @@ class Mfreecoupon {
 }
 exports.default = Mfreecoupon;
 
-},{"../utils/utils":24}],9:[function(require,module,exports){
+},{"../utils/utils":25}],9:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -677,7 +677,7 @@ class NewBabelAwardCollection {
 }
 exports.default = NewBabelAwardCollection;
 
-},{"../utils/utils":24}],10:[function(require,module,exports){
+},{"../utils/utils":25}],10:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -745,7 +745,7 @@ class Purchase {
 }
 exports.default = Purchase;
 
-},{"../utils/utils":24}],11:[function(require,module,exports){
+},{"../utils/utils":25}],11:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -839,7 +839,7 @@ class ReceiveCoupon {
 }
 exports.default = ReceiveCoupon;
 
-},{"../utils/utils":24}],12:[function(require,module,exports){
+},{"../utils/utils":25}],12:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -936,7 +936,7 @@ class ReceiveCoupons {
 }
 exports.default = ReceiveCoupons;
 
-},{"../utils/utils":24}],13:[function(require,module,exports){
+},{"../utils/utils":25}],13:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -1024,7 +1024,7 @@ class ReceiveDayCoupon {
 }
 exports.default = ReceiveDayCoupon;
 
-},{"../utils/utils":24}],14:[function(require,module,exports){
+},{"../utils/utils":25}],14:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -1117,7 +1117,7 @@ class SecKillCoupon {
 }
 exports.default = SecKillCoupon;
 
-},{"../utils/utils":24}],15:[function(require,module,exports){
+},{"../utils/utils":25}],15:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -1184,7 +1184,7 @@ class WhiteCoupon {
 }
 exports.default = WhiteCoupon;
 
-},{"../utils/utils":24}],16:[function(require,module,exports){
+},{"../utils/utils":25}],16:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var activityType;
@@ -1251,6 +1251,222 @@ const utils_1 = require("../utils/utils");
 const config_1 = require("../config/config");
 const CookieHandler_1 = require("../cookie/CookieHandler");
 const CookieManager_1 = require("../cookie/CookieManager");
+class BTGoose {
+    constructor(params, containerDiv, outputTextarea) {
+        this.rootURI = "https://ms.jr.jd.com/gw/generic/uc/h5/m/";
+        this.baseReqData = { "timeSign": 0, "environment": "jrApp", "riskDeviceInfo": "{}" };
+        this.data = [];
+        this.timer = 1000;
+        this.taskToken = "";
+        this.toWithdrawSpan = 1800000;
+        this.autoToWithdrawTimer = 0;
+        this.params = params;
+        this.container = containerDiv;
+        this.outputTextarea = outputTextarea;
+        this.content = document.createElement("div");
+    }
+    get() {
+        // this.login();
+        this.list();
+    }
+    list() {
+        let msg = `
+            <div>
+                <button class="toDailyHome" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">查看详情</button>
+                <button class="toWithdraw" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">提鹅收蛋</button>
+            </div>
+        <p>自动收蛋间隔：<select class="toWithdrawSpan" name="toWithdrawSpan" style="border: 1px solid #333;padding: 2px;">
+            <option value ="1800000">30分钟</option>
+            <option value ="3600000">60分钟</option>
+            <option value ="5400000">90分钟</option>
+        </select>
+        </p>
+        <button class="autoToWithdraw" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">自动定时收蛋</button>
+        <button class="cancelautoToWithdraw" style="display:none;width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">取消定时收蛋</button>
+        <button class="toGoldExchange" style="display:display;width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">兑换金币</button>
+        <div>`;
+        this.content.innerHTML = msg;
+        this.container.appendChild(this.content);
+        const d = utils_1._$(".toDailyHome"), g = utils_1._$(".toGoldExchange"), autoToWithdraw = utils_1._$(".autoToWithdraw"), cancelautoToWithdraw = utils_1._$(".cancelautoToWithdraw"), t = utils_1._$(".toWithdraw");
+        t.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            utils_1.default.outPutLog(this.outputTextarea, `开始提鹅收蛋`);
+            if (config_1.default.multiFlag) {
+                this.toWithdrawMulti();
+            }
+            else {
+                this.toWithdraw();
+            }
+        }));
+        d.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            utils_1.default.outPutLog(this.outputTextarea, `开始查看鹅鹅详情`);
+            if (config_1.default.multiFlag) {
+                this.homeMulti();
+            }
+            else {
+                this.home();
+            }
+        }));
+        g.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            utils_1.default.outPutLog(this.outputTextarea, `开始兑换金币`);
+            if (config_1.default.multiFlag) {
+                this.toGoldExchangeMulti();
+            }
+            else {
+                this.toGoldExchange();
+            }
+        }));
+        autoToWithdraw.addEventListener("click", () => {
+            autoToWithdraw.style.display = "none";
+            cancelautoToWithdraw.style.display = "block";
+            utils_1.default.outPutLog(this.outputTextarea, `自动定时收蛋已开启！`);
+            this.autoToWithdrawTimer = window.setInterval(() => {
+                utils_1.default.outPutLog(this.outputTextarea, `自动定时收蛋任务开启！`);
+                t.click();
+            }, this.toWithdrawSpan);
+        });
+        cancelautoToWithdraw.addEventListener('click', () => {
+            autoToWithdraw.style.display = "block";
+            cancelautoToWithdraw.style.display = "none";
+            utils_1.default.outPutLog(this.outputTextarea, `自动定时收蛋已关闭！`);
+            window.clearInterval(this.autoToWithdrawTimer);
+        });
+    }
+    toWithdraw(ckObj) {
+        fetch(this.rootURI + "toWithdraw", {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "reqData=" + JSON.stringify(this.baseReqData)
+        }).then(function (response) {
+            return response.json();
+        }).then((res) => {
+            if (res.resultCode == 0) {
+                let data = res.resultData;
+                if (data.code == "0000") {
+                    let eggTotal = data.data.eggTotal;
+                    if (config_1.default.multiFlag && ckObj) {
+                        utils_1.default.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 收蛋成功！当前鹅蛋数量：${eggTotal}`);
+                    }
+                    else {
+                        utils_1.default.outPutLog(this.outputTextarea, `收蛋成功！当前鹅蛋数量：${eggTotal}`);
+                    }
+                }
+                else {
+                    utils_1.default.outPutLog(this.outputTextarea, `${data.msg}`);
+                }
+            }
+            else {
+                utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+            }
+        });
+    }
+    toWithdrawMulti() {
+        CookieManager_1.default.cookieArr.map((item) => {
+            setTimeout(() => {
+                CookieHandler_1.CookieHandler.coverCookie(item);
+                this.toWithdraw(item);
+            }, item.index * 750);
+        });
+    }
+    home(ckObj) {
+        fetch(this.rootURI + "toDailyHome", {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "reqData=" + JSON.stringify(this.baseReqData)
+        }).then(function (response) {
+            return response.json();
+        }).then((res) => {
+            if (res.resultCode == 0) {
+                let data = res.resultData.data;
+                let { shareUuid, grassEggTotal, basketSize, availableTotal } = data;
+                if (config_1.default.multiFlag && ckObj) {
+                    utils_1.default.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 可兑换：${availableTotal} 未收取：${grassEggTotal} 可容纳：${basketSize} `);
+                }
+                else {
+                    utils_1.default.outPutLog(this.outputTextarea, ` 可兑换：${availableTotal} 未收取：${grassEggTotal} 可容纳：${basketSize} `);
+                }
+            }
+            else {
+                utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+            }
+        });
+    }
+    homeMulti() {
+        CookieManager_1.default.cookieArr.map((item) => {
+            setTimeout(() => {
+                CookieHandler_1.CookieHandler.coverCookie(item);
+                this.home(item);
+            }, item.index * 500);
+        });
+    }
+    toGoldExchange(ckObj) {
+        fetch(this.rootURI + "toGoldExchange", {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "reqData=" + JSON.stringify(this.baseReqData)
+        }).then(function (response) {
+            return response.json();
+        }).then((res) => {
+            if (res.resultCode == 0) {
+                if (res.resultData.code == "0000") {
+                    let data = res.resultData.data;
+                    let { cnumber, rate, goldTotal } = data;
+                    if (config_1.default.multiFlag && ckObj) {
+                        utils_1.default.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 已兑换:${cnumber} 比例：${rate} 总金币：${goldTotal}`);
+                    }
+                    else {
+                        utils_1.default.outPutLog(this.outputTextarea, `已兑换:${cnumber} 比例：${rate} 总金币：${goldTotal}`);
+                    }
+                }
+                else {
+                    utils_1.default.outPutLog(this.outputTextarea, `${res.resultData.msg}`);
+                }
+            }
+            else {
+                if (config_1.default.multiFlag && ckObj) {
+                    utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+                }
+            }
+        });
+    }
+    toGoldExchangeMulti() {
+        CookieManager_1.default.cookieArr.map((item) => {
+            setTimeout(() => {
+                CookieHandler_1.CookieHandler.coverCookie(item);
+                this.toGoldExchange(item);
+            }, item.index * 500);
+        });
+    }
+}
+exports.default = BTGoose;
+
+},{"../config/config":1,"../cookie/CookieHandler":2,"../cookie/CookieManager":3,"../utils/utils":25}],21:[function(require,module,exports){
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = require("../utils/utils");
+const config_1 = require("../config/config");
+const CookieHandler_1 = require("../cookie/CookieHandler");
+const CookieManager_1 = require("../cookie/CookieManager");
 class Cloudpig {
     constructor(params, containerDiv, outputTextarea) {
         this.rootURI = "https://ms.jr.jd.com/gw/generic/uc/h5/m/";
@@ -1271,15 +1487,14 @@ class Cloudpig {
         this.params = params;
         this.container = containerDiv;
         this.outputTextarea = outputTextarea;
+        this.content = document.createElement("div");
     }
     get() {
         // this.login();
         this.list();
     }
     list() {
-        const content = document.createElement("div");
         let msg = `
-        <div>
         <div><button class="Login" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">查看猪猪详情</button>
         <button class="Achievements" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">可提现红包</button>
         </div>
@@ -1308,10 +1523,9 @@ class Cloudpig {
         <div>
         <button class="pigPetLotteryIndex" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto">大转盘情况</button>
         <button class="LotteryPlay" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto">一键大转盘</button>
-        </div>
         </div>`;
-        content.innerHTML = msg;
-        this.container.appendChild(content);
+        this.content.innerHTML = msg;
+        this.container.appendChild(this.content);
         const o = utils_1._$('.OpenBox'), lotteryIndex = utils_1._$('.pigPetLotteryIndex'), achievements = utils_1._$('.Achievements'), foodSelect = utils_1._$('.food'), foodSpanSelect = utils_1._$('.foodSpan'), lotteryPlay = utils_1._$('.LotteryPlay'), autoAddFood = utils_1._$('.AutoAddFood'), cancelAutoAddFood = utils_1._$('.cancelAutoAddFood'), a = utils_1._$('.AddFood'), signOne = utils_1._$('.SignOne'), UserBag = utils_1._$('.UserBag'), l = utils_1._$('.Login');
         this.AddFavoriteFood = utils_1._$('.AddFavoriteFood');
         foodSelect.onchange = (event) => {
@@ -1876,7 +2090,7 @@ class Cloudpig {
 }
 exports.default = Cloudpig;
 
-},{"../config/config":1,"../cookie/CookieHandler":2,"../cookie/CookieManager":3,"../utils/utils":24}],21:[function(require,module,exports){
+},{"../config/config":1,"../cookie/CookieHandler":2,"../cookie/CookieManager":3,"../utils/utils":25}],22:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -1990,7 +2204,7 @@ class Goods {
 }
 exports.default = Goods;
 
-},{"../config/config":1,"../utils/fetch-jsonp":23,"../utils/utils":24}],22:[function(require,module,exports){
+},{"../config/config":1,"../utils/fetch-jsonp":24,"../utils/utils":25}],23:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -2028,7 +2242,8 @@ const goodsType_1 = require("./enum/goodsType");
 const gameType_1 = require("./enum/gameType");
 const CookieManager_1 = require("./cookie/CookieManager");
 const CookieHandler_1 = require("./cookie/CookieHandler");
-let coupon, goods, game, activity, isJDcontext = true;
+const btgoose_1 = require("./game/btgoose");
+let coupon, goods, game, activity, gameMap = {}, isJDcontext = true;
 const container = document.createElement("div"), title = document.createElement("div"), timerTittleDiv = document.createElement("div"), receiveTextInput = document.createElement("input"), receiveCountInput = document.createElement("input"), receiveTimerBtn = document.createElement("button"), operateAreaDiv = document.createElement("div"), outputTextArea = document.createElement("textarea"), outputTextAreaDiv = document.createElement("div"), loginMsgDiv = document.createElement("div");
 let getLoginMsg = function (res) {
     if (res.base.nickname) {
@@ -2207,7 +2422,12 @@ function buildSensorArea() {
     <button style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block" onclick="Utils.copyText(document.cookie)">复制Cookie</button>
     <button id="import" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">导入多帐号</button></div>`;
     let activity = document.createElement("div");
-    activity.innerHTML = `<ul class="activity-list" style="display:flex;justify-content: space-around;list-style:none;margin-bottom: 10px;"><li class="pig">养猪猪</li><li class="moneyTree">金果树</li><li class="moneyTree">签到中心</li></ul>
+    activity.innerHTML = `<ul class="activity-list" style="display:flex;justify-content: space-around;list-style:none;margin-bottom: 10px;">
+    <li class="pig">养猪猪</li>
+    <li class="goose">提鹅</li>
+    <li class="moneyTree">金果树</li>
+    <li class="signInCenter">签到中心</li>
+    </ul>
     <hr style="margin: 10px;"><div class="activityExtensionDiv"></div>`;
     let extensionDiv = utils_1._$(".extensionDiv"), sensorAreaTabDiv = utils_1._$(".sensorAreaTabDiv");
     extensionDiv.append(account);
@@ -2263,12 +2483,38 @@ function buildSensorArea() {
     utils_1._$(".activity-list").addEventListener("click", (e) => {
         let target = e.target;
         let nodes = activityExtensionDiv.childNodes;
-        if (nodes.length > 0) {
-            activityExtensionDiv.removeChild(nodes[0]);
-        }
+        // if (nodes.length > 0) {
+        //     activityExtensionDiv.removeChild(nodes[0]);
+        // }
+        nodes.forEach((node) => {
+            node.style.display = "none";
+        });
         if (target.getAttribute("class") == "pig") {
-            game = new cloudpig_1.default(null, activityExtensionDiv, outputTextArea);
-            game.get();
+            if (!gameMap.Cloudpig) {
+                gameMap.Cloudpig = new cloudpig_1.default(null, activityExtensionDiv, outputTextArea);
+                gameMap.Cloudpig.get();
+            }
+            else {
+                gameMap.Cloudpig.content.style.display = "block";
+            }
+        }
+        else if (target.getAttribute("class") == "goose") {
+            if (!gameMap.BTGoose) {
+                gameMap.BTGoose = new btgoose_1.default(null, activityExtensionDiv, outputTextArea);
+                gameMap.BTGoose.get();
+            }
+            else {
+                gameMap.BTGoose.content.style.display = "block";
+            }
+        }
+        else if (target.getAttribute("class") == "moneyTree") {
+            alert("该功能正在开发中，晚点再来吧~");
+            // if (!gameMap.MoneyTree) {
+            //     gameMap.MoneyTree = new MoneyTree(null, activityExtensionDiv, outputTextArea);
+            //     gameMap.MoneyTree.get();
+            // }else{
+            //     gameMap.MoneyTree.content.style.display = "block";
+            // }
         }
         else {
             alert("该功能正在开发中，晚点再来吧~");
@@ -2513,7 +2759,7 @@ getEntryDesc(getEntryType());
 statistical();
 Object.assign(window, { "getLoginMsg": getLoginMsg, "krapnik": krapnik, "Utils": utils_1.default, "Config": config_1.default });
 
-},{"./config/config":1,"./cookie/CookieHandler":2,"./cookie/CookieManager":3,"./coupons/coinPurchase":4,"./coupons/exchange":5,"./coupons/gcConvert":6,"./coupons/getCouponCenter":7,"./coupons/mfreecoupon":8,"./coupons/newBabelAwardCollection":9,"./coupons/purchase":10,"./coupons/receiveCoupon":11,"./coupons/receiveCoupons":12,"./coupons/receiveDayCoupon":13,"./coupons/secKillCoupon":14,"./coupons/whtieCoupon":15,"./enum/activityType":16,"./enum/couponType":17,"./enum/gameType":18,"./enum/goodsType":19,"./game/cloudpig":20,"./goods/goods":21,"./utils/utils":24}],23:[function(require,module,exports){
+},{"./config/config":1,"./cookie/CookieHandler":2,"./cookie/CookieManager":3,"./coupons/coinPurchase":4,"./coupons/exchange":5,"./coupons/gcConvert":6,"./coupons/getCouponCenter":7,"./coupons/mfreecoupon":8,"./coupons/newBabelAwardCollection":9,"./coupons/purchase":10,"./coupons/receiveCoupon":11,"./coupons/receiveCoupons":12,"./coupons/receiveDayCoupon":13,"./coupons/secKillCoupon":14,"./coupons/whtieCoupon":15,"./enum/activityType":16,"./enum/couponType":17,"./enum/gameType":18,"./enum/goodsType":19,"./game/btgoose":20,"./game/cloudpig":21,"./goods/goods":22,"./utils/utils":25}],24:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class FetchJsonp {
@@ -2589,7 +2835,7 @@ FetchJsonp.defaultOptions = {
     jsonpCallbackFunction: null,
 };
 
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 window.jsonpBind = function (res) {
@@ -2813,4 +3059,4 @@ class Utils {
 exports.default = Utils;
 exports._$ = Utils.querySelector;
 
-},{}]},{},[22]);
+},{}]},{},[23]);

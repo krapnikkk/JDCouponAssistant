@@ -14,6 +14,7 @@ export default class Cloudpig implements Game {
     data: any = [];
     timer: number = 1000;
     container: HTMLDivElement;
+    content:HTMLDivElement;
     params: any;
     taskToken: string = "";
     outputTextarea: HTMLTextAreaElement;
@@ -22,6 +23,7 @@ export default class Cloudpig implements Game {
         this.params = params;
         this.container = containerDiv;
         this.outputTextarea = outputTextarea;
+        this.content = document.createElement("div");
     }
     get(): void {
         // this.login();
@@ -36,9 +38,7 @@ export default class Cloudpig implements Game {
     favoriteFood: string = "";
     AddFavoriteFood!: HTMLInputElement;
     list(): void {
-        const content = document.createElement("div");
         let msg = `
-        <div>
         <div><button class="Login" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">查看猪猪详情</button>
         <button class="Achievements" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">可提现红包</button>
         </div>
@@ -67,10 +67,9 @@ export default class Cloudpig implements Game {
         <div>
         <button class="pigPetLotteryIndex" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto">大转盘情况</button>
         <button class="LotteryPlay" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto">一键大转盘</button>
-        </div>
         </div>`;
-        content.innerHTML = msg;
-        this.container.appendChild(content);
+        this.content.innerHTML = msg;
+        this.container.appendChild(this.content);
         const o = _$('.OpenBox'),
             lotteryIndex = _$('.pigPetLotteryIndex'),
             achievements = _$('.Achievements'),
