@@ -37,7 +37,9 @@ import BTGoose from "./game/btgoose";
 let coupon: Coupon,
     goods: Goods,
     game: Game,
-    activity: Activity, isJDcontext = true;
+    activity: Activity,
+    gameMap: { [type: string]: Game },
+    isJDcontext = true;
 
 const container: HTMLDivElement = document.createElement("div"),
     title: HTMLDivElement = document.createElement("div"),
@@ -315,11 +317,16 @@ function buildSensorArea() {
             activityExtensionDiv.removeChild(nodes[0]);
         }
         if (target.getAttribute("class") == "pig") {
-            game = new Cloudpig(null, activityExtensionDiv, outputTextArea);
-            game.get();
+            if (!gameMap.Cloudpig) {
+                gameMap.Cloudpig = new Cloudpig(null, activityExtensionDiv, outputTextArea);
+                gameMap.Cloudpig.get();
+            }
+
         } else if (target.getAttribute("class") == "goose") {
-            game = new BTGoose(null, activityExtensionDiv, outputTextArea);
-            game.get();
+            if (!gameMap.BTGoose) {
+                gameMap.BTGoose = new BTGoose(null, activityExtensionDiv, outputTextArea);
+                gameMap.BTGoose.get();
+            }
         }
         else {
             alert("该功能正在开发中，晚点再来吧~");
