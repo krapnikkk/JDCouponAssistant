@@ -314,9 +314,6 @@ function buildSensorArea() {
     _$(".activity-list").addEventListener("click", (e: MouseEvent) => {
         let target = <HTMLElement>e.target!;
         let nodes = activityExtensionDiv.childNodes;
-        // if (nodes.length > 0) {
-        //     activityExtensionDiv.removeChild(nodes[0]);
-        // }
         nodes.forEach((node)=>{
             (<HTMLDivElement>node).style.display = "none";
         })
@@ -336,13 +333,12 @@ function buildSensorArea() {
                 gameMap.BTGoose.content.style.display = "block";
             }
         } else if (target.getAttribute("class") == "moneyTree") {
-            alert("该功能正在开发中，晚点再来吧~");
-            // if (!gameMap.MoneyTree) {
-            //     gameMap.MoneyTree = new MoneyTree(null, activityExtensionDiv, outputTextArea);
-            //     gameMap.MoneyTree.get();
-            // }else{
-            //     gameMap.MoneyTree.content.style.display = "block";
-            // }
+            if (!gameMap.MoneyTree) {
+                gameMap.MoneyTree = new MoneyTree(null, activityExtensionDiv, outputTextArea);
+                gameMap.MoneyTree.get();
+            }else{
+                gameMap.MoneyTree.content.style.display = "block";
+            }
         }
         else {
             alert("该功能正在开发中，晚点再来吧~");
