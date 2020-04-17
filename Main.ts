@@ -5,6 +5,8 @@ import Goods from "./goods/goods";
 
 import Utils, { _$ } from "./utils/utils";
 import Config from "./config/config";
+import CookieManager from "./cookie/CookieManager";
+import { CookieHandler } from "./cookie/CookieHandler";
 
 import BabelAwardCollection from "./coupons/newBabelAwardCollection";
 import WhiteCoupon from "./coupons/whtieCoupon";
@@ -23,17 +25,17 @@ import Exchange from "./coupons/exchange";
 // import BrandCitySpring from "./activitys/brandCitySpring";
 // import Palace from "./activitys/palace";
 // import ReceiveBless from "./activitys/receiveBless";
+import FeedBag from "./activitys/feedBag";
 
-import Cloudpig from "./game/cloudpig";
 
 import { activityType } from "./enum/activityType";
 import { couponType } from "./enum/couponType";
 import { goodsType } from "./enum/goodsType";
 import { gameType } from "./enum/gameType";
-import CookieManager from "./cookie/CookieManager";
-import { CookieHandler } from "./cookie/CookieHandler";
+
 import BTGoose from "./game/btgoose";
 import MoneyTree from "./game/moneyTree";
+import Cloudpig from "./game/cloudpig";
 
 let coupon: Coupon,
     goods: Goods,
@@ -202,10 +204,11 @@ function buildTitle() {
 }
 
 function buildActivity() {
-    // const activityArea: HTMLDivElement = document.createElement("div");
-    // activityArea.setAttribute("style", "border: 1px solid #000");
-    // activityArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>活动推荐</h3>`;
-    // container.append(activityArea);
+    const activityArea: HTMLDivElement = document.createElement("div");
+    activityArea.setAttribute("style", "border: 1px solid #000");
+    activityArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>活动推荐</h3>
+    <p style="color:red;font-weight:bold;"><a style="color:red" href="https://u.jr.jd.com/uc-fe-wxgrowing/feedbag/cover/channelLv=syfc/" target="_blank">全民养京贴</a></p>`;
+    container.append(activityArea);
 }
 
 function buildRecommend() {
@@ -314,14 +317,14 @@ function buildSensorArea() {
     _$(".activity-list").addEventListener("click", (e: MouseEvent) => {
         let target = <HTMLElement>e.target!;
         let nodes = activityExtensionDiv.childNodes;
-        nodes.forEach((node)=>{
+        nodes.forEach((node) => {
             (<HTMLDivElement>node).style.display = "none";
         })
         if (target.getAttribute("class") == "pig") {
             if (!gameMap.Cloudpig) {
                 gameMap.Cloudpig = new Cloudpig(null, activityExtensionDiv, outputTextArea);
                 gameMap.Cloudpig.get();
-            }else{
+            } else {
                 gameMap.Cloudpig.content.style.display = "block";
             }
 
@@ -329,14 +332,14 @@ function buildSensorArea() {
             if (!gameMap.BTGoose) {
                 gameMap.BTGoose = new BTGoose(null, activityExtensionDiv, outputTextArea);
                 gameMap.BTGoose.get();
-            }else{
+            } else {
                 gameMap.BTGoose.content.style.display = "block";
             }
         } else if (target.getAttribute("class") == "moneyTree") {
             if (!gameMap.MoneyTree) {
                 gameMap.MoneyTree = new MoneyTree(null, activityExtensionDiv, outputTextArea);
                 gameMap.MoneyTree.get();
-            }else{
+            } else {
                 gameMap.MoneyTree.content.style.display = "block";
             }
         }
@@ -402,6 +405,7 @@ function getEntryType(): couponType | activityType | goodsType | gameType {
         type = couponType.exchange
     }
 
+    //京东APP节假日营销活动
     if (Config.locationHref.includes("bunearth.m.jd.com")) {
         if (Config.locationHref.includes("4PWgqmrFHunn8C38mJA712fufguU")) {
             type = activityType.monsterNian;
@@ -415,20 +419,30 @@ function getEntryType(): couponType | activityType | goodsType | gameType {
         type = activityType.palace;
     }
 
-    if (Config.locationHref.includes("uc-fe-wxgrowing")) {
-        if (Config.locationHref.includes("moneytree")) {
-            // type = gameType.moneytree;
-        } else if (Config.locationHref.includes("cloudpig")) {
-            type = gameType.cloudpig;
+    //京东金融APP节假日营销活动
+
+    if (Config.locationHref.includes("u.jr.jd.com")) {
+        //https://u.jr.jd.com/uc-fe-wxgrowing/feedbag/cover/channelLv=syfc/
+        if (Config.locationHref.includes("feedbag")) {
+            type = activityType.feedBag;
         }
     }
+
+    //调整为全局主动切换
+    // if (Config.locationHref.includes("uc-fe-wxgrowing")) {
+    //     if (Config.locationHref.includes("moneytree")) {
+    //         // type = gameType.moneytree;
+    //     } else if (Config.locationHref.includes("cloudpig")) {
+    //         type = gameType.cloudpig;
+    //     }
+    // }
 
     return type;
 }
 
 function getEntryDesc(type: couponType | activityType | goodsType | gameType) {
     buildTitle();
-    buildPromotion();
+    // buildPromotion();
     switch (type) {
         case goodsType.goods:
             const goodsId = Config.locationHref.match(/jd.com\/(\S*).html/)![1];
@@ -491,9 +505,9 @@ function getEntryDesc(type: couponType | activityType | goodsType | gameType) {
         //     activity = new ReceiveBless(null, container, outputTextArea);
         //     Config.UAFlag = true;
         //     break;
-        // case gameType.cloudpig:
-        //     game = new Cloudpig(null, container, outputTextArea);
-        //     break;
+        case activityType.feedBag:
+            activity = new FeedBag(null, container, outputTextArea);
+            break;
         default:
             break;
     }
@@ -512,7 +526,7 @@ function getEntryDesc(type: couponType | activityType | goodsType | gameType) {
         Config.intervalId = window.setInterval(getTime, Config.intervalSpan);
         coupon.get();
     } else if (activity) {
-        // buildActivity();
+        buildActivity();
         buildTimeoutArea();
         activity.get();
     } else if (goods) {
