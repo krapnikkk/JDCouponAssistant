@@ -4,4 +4,5 @@ export enum activityType {
     brandCitySpring = "brandCitySpring",
     palace = "palace",
     receiveBless = "ReceiveBless",
+    feedBag = "feedBag",
 }
