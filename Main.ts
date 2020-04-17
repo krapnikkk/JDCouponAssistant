@@ -65,7 +65,7 @@ let getLoginMsg = function (res: any) {
 
 function buildOperate() {
     operateAreaDiv.setAttribute("style", "border: 1px solid #000;margin: 10px 0;");
-    operateAreaDiv.innerHTML = "<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;padding: 0 37.5vw 5px;'>操作区</h3>";
+    operateAreaDiv.innerHTML = "<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;padding: 0 25vw 5px;'>操作区</h3>";
     if (coupon) {
         buildTimerControl();
     }
@@ -238,7 +238,7 @@ function buildUAarea() {
 
 function buildSensorArea() {
     let sensorArea: HTMLDivElement = document.createElement("div");
-    sensorArea.innerHTML = `<div style="border: 1px solid #000;margin: 10px 0;font-weight:bold"><h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;padding: 0 37.5vw 5px;'>扩展功能区</h3>
+    sensorArea.innerHTML = `<div style="border: 1px solid #000;margin: 10px 0;font-weight:bold"><h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;padding: 0 25vw 5px;'>扩展功能区</h3>
     <p style="color:red;font-weight:bold;">使用本栏目功能前请查看教程</p>
     <div><button style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;" onclick="Utils.copyText(Config.NetdiskURL)">下载教程</button>
     <button class="toggle" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">展开栏目</button></div>
@@ -526,8 +526,8 @@ function getEntryDesc(type: couponType | activityType | goodsType | gameType) {
         Config.intervalId = window.setInterval(getTime, Config.intervalSpan);
         coupon.get();
     } else if (activity) {
-        buildActivity();
-        buildTimeoutArea();
+        // buildActivity();
+        // buildTimeoutArea();
         activity.get();
     } else if (goods) {
         goods.get();

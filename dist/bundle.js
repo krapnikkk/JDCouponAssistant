@@ -1,5 +1,234 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = require("../utils/utils");
+class feedBag {
+    // shareLink: object = { "shareRandom": "1587146063292JtfbSwE6ct05RxB_AvGf5g", "shareId": "JtfbSwE6ct05RxB_AvGf5g" };
+    constructor(params, containerDiv, outputTextarea) {
+        this.rootURI = "https://ms.jr.jd.com/gw/generic/uc/h5/m/";
+        this.baseReqData = { "channelLv": null, "source": "0", "riskDeviceParam": "{\"eid\":\"\",\"fp\":\"\",\"sdkToken\":\"\",\"token\":\"\",\"jstub\":\"\"}" };
+        this.userTotalScore = 0;
+        this.shareId = "";
+        this.shareRandom = "";
+        this.shareLink = { "shareRandom": "1587139212990lQpOJD2ANodhfTtc592rN8AdoUJQ3Dik", "shareId": "lQpOJD2ANodhfTtc592rN8AdoUJQ3Dik" };
+        this.params = params;
+        this.container = containerDiv;
+        this.outputTextarea = outputTextarea;
+        this.content = document.createElement("div");
+    }
+    get() {
+        this.list();
+    }
+    list() {
+        let msg = `
+            <div>
+                <button class="login1" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">查看金贴详情</button>
+                <button class="getMainMission" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">每天主线任务</button>
+                <button class="getMainMission1" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">每天支线任务</button>
+                <button class="userFeedAction" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">投喂金贴</button>
+                <button class="share" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">获取我的助力链接</button>
+                <button class="help" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">给作者助力</button>
+            </div>
+        <div>`;
+        this.content.innerHTML = msg;
+        this.container.appendChild(this.content);
+        const l = utils_1._$(".login1"), u = utils_1._$(".userFeedAction"), s = utils_1._$(".share"), h = utils_1._$(".help"), g = utils_1._$(".getMainMission");
+        g.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            utils_1.default.outPutLog(this.outputTextarea, `每天主线任务`);
+            this.getMainMission();
+        }));
+        u.addEventListener('click', () => {
+            utils_1.default.outPutLog(this.outputTextarea, `投喂金贴`);
+            this.userFeedAction();
+        });
+        l.addEventListener('click', () => {
+            utils_1.default.outPutLog(this.outputTextarea, `查看金贴详情`);
+            this.login1();
+        });
+        s.addEventListener('click', () => {
+            alert("邀请链接每天都会变动！！");
+            utils_1.default.copyText(`https://u.jr.jd.com/uc-fe-wxgrowing/feedbag/cover/channelLv=syfc/?channelLv=&sourceID=326&actflag=FE0AD3214D&isPay=N&shareId=${this.shareId}&shareRandom=${this.shareRandom}&jrcontainer=h5&jrlogin=true#/pages/home/index?id=2&type=test`);
+        });
+        h.addEventListener('click', () => {
+            this.login1(this.shareLink);
+        });
+        this.login1();
+    }
+    login1(options = {}) {
+        fetch(this.rootURI + "login1", {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: options == {} ? "reqData=" + JSON.stringify(this.baseReqData) : "reqData=" + JSON.stringify(Object.assign(options, this.baseReqData))
+        }).then(function (response) {
+            return response.json();
+        }).then((res) => {
+            if (res.resultCode == 0) {
+                let data = res.resultData;
+                if (data.code == "0") {
+                    let { userGrade, currentLevelRewardName, upGradeFeedNum, userTotalScore, nowGradeFeedingNum, shareId, shareRandom, popupType, assistanceReward } = data.data;
+                    this.userTotalScore = (userTotalScore > nowGradeFeedingNum) && nowGradeFeedingNum > 0 ? nowGradeFeedingNum : userTotalScore;
+                    this.shareId = shareId;
+                    this.shareRandom = shareRandom;
+                    if (popupType.length > 0 && popupType[0] == 1) {
+                        utils_1.default.outPutLog(this.outputTextarea, `谢谢你, 助力成功啦~ 获得金币:${assistanceReward}`);
+                    }
+                    else {
+                        utils_1.default.outPutLog(this.outputTextarea, `等级:${userGrade} ${currentLevelRewardName} 可用金币:${userTotalScore} 当前进度:${nowGradeFeedingNum}/${upGradeFeedNum}`);
+                    }
+                }
+                else {
+                    utils_1.default.outPutLog(this.outputTextarea, `${data.msg}`);
+                }
+            }
+            else {
+                utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+            }
+        });
+    }
+    getMainMission() {
+        fetch(this.rootURI + "getMainMission", {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "reqData=" + JSON.stringify(this.baseReqData)
+        }).then(function (response) {
+            return response.json();
+        }).then((res) => {
+            if (res.resultCode == 0) {
+                let data = res.resultData;
+                if (data.code == "0") {
+                    let allMissionDone = data.data.allMissionDone;
+                    if (allMissionDone) {
+                        utils_1.default.outPutLog(this.outputTextarea, `当天的主线任务已经完成啦~`);
+                    }
+                    else {
+                        let awrad = data.data.bigAwardList;
+                        let { workName, prizeAmount, mid } = awrad;
+                        utils_1.default.outPutLog(this.outputTextarea, `任务名称：${workName} 任务奖励：${prizeAmount}`);
+                        this.setBrowserAward(mid, prizeAmount, workName);
+                    }
+                }
+                else {
+                    utils_1.default.outPutLog(this.outputTextarea, `${data.msg}`);
+                }
+            }
+            else {
+                utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+            }
+        });
+    }
+    setBrowserAward(missionId, prizeAmount, workName) {
+        fetch(this.rootURI + "setBrowserAward", {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "reqData=" + JSON.stringify(Object.assign({ "missionId": missionId, "prizeAmount": prizeAmount, "channelType": 2 }, this.baseReqData))
+        }).then(function (response) {
+            return response.json();
+        }).then((res) => {
+            if (res.resultCode == 0) {
+                let data = res.resultData;
+                if (data.code == "0") {
+                    let opMsg = data.data.opMsg;
+                    utils_1.default.outPutLog(this.outputTextarea, `任务名称：${workName} ${opMsg}`);
+                    this.browserAwardInit();
+                }
+                else {
+                    utils_1.default.outPutLog(this.outputTextarea, `${data.msg}`);
+                }
+            }
+            else {
+                utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+            }
+        });
+    }
+    browserAwardInit() {
+        fetch(this.rootURI + "browserAwardInit", {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "reqData=" + JSON.stringify(this.baseReqData)
+        }).then(function (response) {
+            return response.json();
+        }).then((res) => {
+            if (res.resultCode == 0) {
+                let data = res.resultData;
+                if (data.code == "0") {
+                    let { awardNum, userScore, opMsg } = data.data;
+                    utils_1.default.outPutLog(this.outputTextarea, `任务:${opMsg} 已获得金币:${awardNum} 可用金币:${userScore}`);
+                    this.userTotalScore = userScore;
+                    setTimeout(() => {
+                        this.getMainMission();
+                    }, 1000);
+                }
+                else {
+                    utils_1.default.outPutLog(this.outputTextarea, `${data.msg}`);
+                }
+            }
+            else {
+                utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+            }
+        });
+    }
+    userFeedAction() {
+        if (this.userTotalScore <= 0) {
+            utils_1.default.outPutLog(this.outputTextarea, `可用金币不足！！`);
+            return;
+        }
+        fetch(this.rootURI + "userFeedAction", {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "reqData=" + JSON.stringify(Object.assign({ "userTotalScore": this.userTotalScore }, this.baseReqData))
+        }).then(function (response) {
+            return response.json();
+        }).then((res) => {
+            if (res.resultCode == 0) {
+                let data = res.resultData;
+                if (data.code == "0") {
+                    let { userGrade, currentLevelRewardName, upGradeFeedingNum, upGradeExtraReward, nowGradeFeedingNum } = data.data;
+                    this.userTotalScore = upGradeExtraReward;
+                    utils_1.default.outPutLog(this.outputTextarea, `等级:${userGrade} ${currentLevelRewardName} 可用金币:${upGradeExtraReward} 当前进度:${nowGradeFeedingNum}/${upGradeFeedingNum}`);
+                }
+                else {
+                    utils_1.default.outPutLog(this.outputTextarea, `${data.msg}`);
+                }
+            }
+            else {
+                utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+            }
+        });
+    }
+}
+exports.default = feedBag;
+
+},{"../utils/utils":26}],2:[function(require,module,exports){
+"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class Config {
 }
@@ -26,7 +255,7 @@ Config.NetdiskURL = "链接：https://pan.baidu.com/s/17eyRRSrFUQVSKdYwIcDsHg �
 Config.multiFlag = false;
 Config.importFlag = false;
 
-},{}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class CookieHandler {
@@ -71,7 +300,7 @@ class CookieHandler {
 }
 exports.CookieHandler = CookieHandler;
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -151,7 +380,7 @@ class CookieManager {
 exports.default = CookieManager;
 CookieManager.cookieArr = [];
 
-},{"../config/config":1,"../utils/fetch-jsonp":24,"../utils/utils":25,"./CookieHandler":2}],4:[function(require,module,exports){
+},{"../config/config":2,"../utils/fetch-jsonp":25,"../utils/utils":26,"./CookieHandler":3}],5:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -219,7 +448,7 @@ class CoinPurchase {
 }
 exports.default = CoinPurchase;
 
-},{"../utils/utils":25}],5:[function(require,module,exports){
+},{"../utils/utils":26}],6:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -304,7 +533,7 @@ class Exchange {
 }
 exports.default = Exchange;
 
-},{"../utils/utils":25}],6:[function(require,module,exports){
+},{"../utils/utils":26}],7:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -399,7 +628,7 @@ class GcConvert {
 }
 exports.default = GcConvert;
 
-},{"../utils/utils":25}],7:[function(require,module,exports){
+},{"../utils/utils":26}],8:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -497,7 +726,7 @@ class getCouponCenter {
 }
 exports.default = getCouponCenter;
 
-},{"../utils/fetch-jsonp":24,"../utils/utils":25}],8:[function(require,module,exports){
+},{"../utils/fetch-jsonp":25,"../utils/utils":26}],9:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -571,7 +800,7 @@ class Mfreecoupon {
 }
 exports.default = Mfreecoupon;
 
-},{"../utils/utils":25}],9:[function(require,module,exports){
+},{"../utils/utils":26}],10:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -677,7 +906,7 @@ class NewBabelAwardCollection {
 }
 exports.default = NewBabelAwardCollection;
 
-},{"../utils/utils":25}],10:[function(require,module,exports){
+},{"../utils/utils":26}],11:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -745,7 +974,7 @@ class Purchase {
 }
 exports.default = Purchase;
 
-},{"../utils/utils":25}],11:[function(require,module,exports){
+},{"../utils/utils":26}],12:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -839,7 +1068,7 @@ class ReceiveCoupon {
 }
 exports.default = ReceiveCoupon;
 
-},{"../utils/utils":25}],12:[function(require,module,exports){
+},{"../utils/utils":26}],13:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -936,7 +1165,7 @@ class ReceiveCoupons {
 }
 exports.default = ReceiveCoupons;
 
-},{"../utils/utils":25}],13:[function(require,module,exports){
+},{"../utils/utils":26}],14:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -1024,7 +1253,7 @@ class ReceiveDayCoupon {
 }
 exports.default = ReceiveDayCoupon;
 
-},{"../utils/utils":25}],14:[function(require,module,exports){
+},{"../utils/utils":26}],15:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -1117,7 +1346,7 @@ class SecKillCoupon {
 }
 exports.default = SecKillCoupon;
 
-},{"../utils/utils":25}],15:[function(require,module,exports){
+},{"../utils/utils":26}],16:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -1184,7 +1413,7 @@ class WhiteCoupon {
 }
 exports.default = WhiteCoupon;
 
-},{"../utils/utils":25}],16:[function(require,module,exports){
+},{"../utils/utils":26}],17:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var activityType;
@@ -1194,9 +1423,10 @@ var activityType;
     activityType["brandCitySpring"] = "brandCitySpring";
     activityType["palace"] = "palace";
     activityType["receiveBless"] = "ReceiveBless";
+    activityType["feedBag"] = "feedBag";
 })(activityType = exports.activityType || (exports.activityType = {}));
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var couponType;
@@ -1216,16 +1446,6 @@ var couponType;
     couponType["getCouponCenter"] = "getCouponCenter";
     couponType["exchange"] = "exchange";
 })(couponType = exports.couponType || (exports.couponType = {}));
-
-},{}],18:[function(require,module,exports){
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var gameType;
-(function (gameType) {
-    gameType[gameType["none"] = 0] = "none";
-    gameType["cloudpig"] = "cloudpig";
-    gameType["moneytree"] = "moneytree";
-})(gameType = exports.gameType || (exports.gameType = {}));
 
 },{}],19:[function(require,module,exports){
 "use strict";
@@ -1451,7 +1671,7 @@ class BTGoose {
 }
 exports.default = BTGoose;
 
-},{"../config/config":1,"../cookie/CookieHandler":2,"../cookie/CookieManager":3,"../utils/utils":25}],21:[function(require,module,exports){
+},{"../config/config":2,"../cookie/CookieHandler":3,"../cookie/CookieManager":4,"../utils/utils":26}],21:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -2090,7 +2310,415 @@ class Cloudpig {
 }
 exports.default = Cloudpig;
 
-},{"../config/config":1,"../cookie/CookieHandler":2,"../cookie/CookieManager":3,"../utils/utils":25}],22:[function(require,module,exports){
+},{"../config/config":2,"../cookie/CookieHandler":3,"../cookie/CookieManager":4,"../utils/utils":26}],22:[function(require,module,exports){
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = require("../utils/utils");
+const config_1 = require("../config/config");
+const CookieHandler_1 = require("../cookie/CookieHandler");
+const CookieManager_1 = require("../cookie/CookieManager");
+class MoneyTree {
+    constructor(params, containerDiv, outputTextarea) {
+        this.rootURI = "https://ms.jr.jd.com/gw/generic/uc/h5/m/";
+        this.baseReqData = { "sharePin": "", "shareType": 1, "source": 2, "riskDeviceInfo": "{}" };
+        // baseReqData: Object = { "source": 0, "channelLV": "yqs", "riskDeviceParam": "{\"fp\":\"\",\"eid\":\"\",\"sdkToken\":\"\",\"sid\":\"\"}" };
+        // {"source":0,"skuId":"1001003004","channelLV":"yqs","riskDeviceParam":"{\"eid\":\"\",\"fp\":\"\",\"token\":\"\"}"}
+        this.data = [];
+        this.timer = 1000;
+        this.taskToken = "";
+        this.openBoxFlag = false;
+        this.foodskuId = "1001003004";
+        this.harvestSpan = 1800000;
+        this.autoToWithdrawTimer = 0;
+        this.signNo = 1;
+        this.favoriteFood = "";
+        this.params = params;
+        this.container = containerDiv;
+        this.outputTextarea = outputTextarea;
+        this.content = document.createElement("div");
+    }
+    get() {
+        this.list();
+    }
+    list() {
+        let msg = `
+            <div>
+                <button class="login" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">查看详情</button>
+                <button class="harvest" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">一键收金果</button>
+            </div>
+        <p>自动收蛋间隔：<select class="harvestSpan" name="harvestSpan" style="border: 1px solid #333;padding: 2px;">
+            <option value ="1800000">30分钟</option>
+            <option value ="3600000">60分钟</option>
+            <option value ="5400000">90分钟</option>
+        </select>
+        </p>
+        <button class="autoToWithdraw" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">自动定时收蛋</button>
+        <button class="cancelautoToWithdraw" style="display:none;width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">取消定时收蛋</button>
+        <button class="toGoldExchange" style="display:display;width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">兑换金币</button>
+        <div>`;
+        this.content.innerHTML = msg;
+        this.container.appendChild(this.content);
+        const d = utils_1._$(".login"), g = utils_1._$(".toGoldExchange"), autoToWithdraw = utils_1._$(".autoToWithdraw"), cancelautoToWithdraw = utils_1._$(".cancelautoToWithdraw"), t = utils_1._$(".harvest");
+        t.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            utils_1.default.outPutLog(this.outputTextarea, `开始收取金果`);
+            if (config_1.default.multiFlag) {
+                this.harvestMulti();
+            }
+            else {
+                this.harvest();
+            }
+        }));
+        d.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            utils_1.default.outPutLog(this.outputTextarea, `开始查看金果树详情`);
+            if (config_1.default.multiFlag) {
+                this.homeMulti();
+            }
+            else {
+                this.home();
+            }
+        }));
+        g.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            utils_1.default.outPutLog(this.outputTextarea, `开始兑换金币`);
+            if (config_1.default.multiFlag) {
+                this.toGoldExchangeMulti();
+            }
+            else {
+                this.toGoldExchange();
+            }
+        }));
+        autoToWithdraw.addEventListener("click", () => {
+            autoToWithdraw.style.display = "none";
+            cancelautoToWithdraw.style.display = "block";
+            utils_1.default.outPutLog(this.outputTextarea, `自动定时收蛋已开启！`);
+            this.autoToWithdrawTimer = window.setInterval(() => {
+                utils_1.default.outPutLog(this.outputTextarea, `自动定时收蛋任务开启！`);
+                t.click();
+            }, this.harvestSpan);
+        });
+        cancelautoToWithdraw.addEventListener('click', () => {
+            autoToWithdraw.style.display = "block";
+            cancelautoToWithdraw.style.display = "none";
+            utils_1.default.outPutLog(this.outputTextarea, `自动定时收蛋已关闭！`);
+            window.clearInterval(this.autoToWithdrawTimer);
+        });
+    }
+    harvest(ckObj) {
+        fetch(this.rootURI + "harvest", {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "reqData=" + JSON.stringify(this.baseReqData)
+        }).then(function (response) {
+            return response.json();
+        }).then((res) => {
+            if (res.resultCode == 0) {
+                let data = res.resultData;
+                if (data.code == "0000") {
+                    let eggTotal = data.data.eggTotal;
+                    if (config_1.default.multiFlag && ckObj) {
+                        utils_1.default.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 收蛋成功！当前鹅蛋数量：${eggTotal}`);
+                    }
+                    else {
+                        utils_1.default.outPutLog(this.outputTextarea, `收蛋成功！当前鹅蛋数量：${eggTotal}`);
+                    }
+                }
+                else {
+                    utils_1.default.outPutLog(this.outputTextarea, `${data.msg}`);
+                }
+            }
+            else {
+                utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+            }
+        });
+    }
+    harvestMulti() {
+        CookieManager_1.default.cookieArr.map((item) => {
+            setTimeout(() => {
+                CookieHandler_1.CookieHandler.coverCookie(item);
+                this.harvest(item);
+            }, item.index * 750);
+        });
+    }
+    home(ckObj) {
+        fetch(this.rootURI + "login", {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "reqData=" + JSON.stringify(this.baseReqData)
+        }).then(function (response) {
+            return response.json();
+        }).then((res) => {
+            if (res.resultCode == 0) {
+                let data = res.resultData.data;
+                let { sharePin, treeInfo, firstLogin } = data;
+                if (firstLogin) {
+                    //首次登录
+                }
+                else {
+                    if (config_1.default.multiFlag && ckObj) {
+                        utils_1.default.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 等级：${treeInfo.level} 升级还差：${treeInfo.progressLeft}% 可兑换：${treeInfo.fruit} 未收取：${treeInfo.fruitOnTree}`);
+                    }
+                    else {
+                        utils_1.default.outPutLog(this.outputTextarea, ` 等级：${treeInfo.level} 升级还差：${treeInfo.progressLeft}% 可兑换：${treeInfo.fruit} 未收取：${treeInfo.fruitOnTree}`);
+                    }
+                }
+            }
+            else {
+                utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+            }
+        });
+    }
+    homeMulti() {
+        CookieManager_1.default.cookieArr.map((item) => {
+            setTimeout(() => {
+                CookieHandler_1.CookieHandler.coverCookie(item);
+                this.home(item);
+            }, item.index * 500);
+        });
+    }
+    toGoldExchange(ckObj) {
+        fetch(this.rootURI + "toGoldExchange", {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "reqData=" + JSON.stringify(this.baseReqData)
+        }).then(function (response) {
+            return response.json();
+        }).then((res) => {
+            if (res.resultCode == 0) {
+                if (res.resultData.code == "0000") {
+                    let data = res.resultData.data;
+                    let { cnumber, rate, goldTotal } = data;
+                    if (config_1.default.multiFlag && ckObj) {
+                        utils_1.default.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 已兑换:${cnumber} 比例：${rate} 总金币：${goldTotal}`);
+                    }
+                    else {
+                        utils_1.default.outPutLog(this.outputTextarea, `已兑换:${cnumber} 比例：${rate} 总金币：${goldTotal}`);
+                    }
+                }
+                else {
+                    utils_1.default.outPutLog(this.outputTextarea, `${res.resultData.msg}`);
+                }
+            }
+            else {
+                if (config_1.default.multiFlag && ckObj) {
+                    utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+                }
+            }
+        });
+    }
+    toGoldExchangeMulti() {
+        CookieManager_1.default.cookieArr.map((item) => {
+            setTimeout(() => {
+                CookieHandler_1.CookieHandler.coverCookie(item);
+                this.toGoldExchange(item);
+            }, item.index * 500);
+        });
+    }
+    lotteryIndex(ckObj) {
+        fetch(this.rootURI + "pigPetLotteryIndex", {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "reqData=" + JSON.stringify(this.baseReqData)
+        }).then(function (response) {
+            return response.json();
+        }).then((res) => {
+            var _a, _b, _c, _d;
+            if (res.resultCode == 0) {
+                let data = res.resultData.resultData;
+                if (res.resultData.resultCode == 0) {
+                    let currentCount = (_a = data) === null || _a === void 0 ? void 0 : _a.currentCount, coinCount = (_b = data) === null || _b === void 0 ? void 0 : _b.coinCount, price = (_c = data) === null || _c === void 0 ? void 0 : _c.price, nextFreeTime = (_d = data) === null || _d === void 0 ? void 0 : _d.nextFreeTime;
+                    if (config_1.default.multiFlag && ckObj) {
+                        utils_1.default.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 当前可抽奖次数：${currentCount} 距下一次免费抽奖时间：${nextFreeTime}毫秒 金币抽奖次数：${coinCount} 需花费金币：${price}`);
+                    }
+                    else {
+                        utils_1.default.outPutLog(this.outputTextarea, `当前可抽奖次数：${currentCount} 距下一次免费抽奖时间：${nextFreeTime}毫秒 金币抽奖次数：${coinCount} 需花费金币：${price}`);
+                    }
+                }
+                else {
+                    utils_1.default.outPutLog(this.outputTextarea, `${res.resultData.resultMsg}`);
+                }
+            }
+            else {
+                if (config_1.default.multiFlag && ckObj) {
+                    utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+                }
+            }
+        });
+    }
+    lotteryIndexMulti() {
+        CookieManager_1.default.cookieArr.map((item) => {
+            setTimeout(() => {
+                CookieHandler_1.CookieHandler.coverCookie(item);
+                this.lotteryIndex(item);
+            }, item.index * 500);
+        });
+    }
+    signOne(ckObj) {
+        fetch(this.rootURI + "pigPetSignOne?_=" + utils_1.default.getTimestamp(), {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "reqData=" + JSON.stringify(Object.assign(this.baseReqData, { "no": ckObj ? ckObj.signNo : this.signNo }))
+        }).then(function (response) {
+            return response.json();
+        }).then((res) => {
+            var _a, _b, _c;
+            if (res.resultCode == 0) {
+                let data = res.resultData.resultData;
+                if (res.resultData.resultCode == 0) {
+                    let today = (_a = data) === null || _a === void 0 ? void 0 : _a.today, name = (_c = (_b = data) === null || _b === void 0 ? void 0 : _b.award) === null || _c === void 0 ? void 0 : _c.name;
+                    if (config_1.default.multiFlag && ckObj) {
+                        utils_1.default.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 已签到${today}天 获得奖励：${name}`);
+                    }
+                    else {
+                        utils_1.default.outPutLog(this.outputTextarea, `已签到${today}天 获得奖励：${name}`);
+                    }
+                }
+                else {
+                    utils_1.default.outPutLog(this.outputTextarea, `${res.resultData.resultMsg}`);
+                }
+            }
+            else {
+                if (config_1.default.multiFlag && ckObj) {
+                    utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+                }
+            }
+        });
+    }
+    // signOneMulti() {
+    //     CookieManager.cookieArr.map((item: CookieType) => {
+    //         setTimeout(() => {
+    //             CookieHandler.coverCookie(item);
+    //             this.signOne(item);
+    //         }, item.index * 500)
+    //     });
+    // }
+    signIndex(ckObj) {
+        fetch(this.rootURI + "pigPetSignIndex?_=" + utils_1.default.getTimestamp(), {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "reqData=" + JSON.stringify(this.baseReqData)
+        }).then(function (response) {
+            return response.json();
+        }).then((res) => {
+            var _a;
+            if (res.resultCode == 0) {
+                let data = res.resultData.resultData;
+                if (res.resultData.resultCode == 0) {
+                    let today = (_a = data) === null || _a === void 0 ? void 0 : _a.today;
+                    if (config_1.default.multiFlag && ckObj) {
+                        ckObj.signNo = today;
+                        utils_1.default.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 已签到${today}天 `);
+                        this.signOne(ckObj);
+                    }
+                    else {
+                        this.signNo = today;
+                        utils_1.default.outPutLog(this.outputTextarea, `已签到${today}天`);
+                        this.signOne();
+                    }
+                }
+                else {
+                    utils_1.default.outPutLog(this.outputTextarea, `${res.resultData.resultMsg}`);
+                }
+            }
+            else {
+                if (config_1.default.multiFlag && ckObj) {
+                    utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+                }
+            }
+        });
+    }
+    signIndexMulti() {
+        CookieManager_1.default.cookieArr.map((item) => {
+            setTimeout(() => {
+                CookieHandler_1.CookieHandler.coverCookie(item);
+                this.signIndex(item);
+            }, item.index * 500);
+        });
+    }
+    userBag(ckObj) {
+        fetch(this.rootURI + "pigPetUserBag?_=" + utils_1.default.getTimestamp(), {
+            method: "POST",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "reqData=" + JSON.stringify(Object.assign(this.baseReqData, { "category": "1001" }))
+        }).then(function (response) {
+            return response.json();
+        }).then((res) => {
+            var _a;
+            if (res.resultCode == 0) {
+                let data = res.resultData.resultData;
+                if (res.resultData.resultCode == 0) {
+                    let goods = (_a = data) === null || _a === void 0 ? void 0 : _a.goods, goodStr = "";
+                    if (config_1.default.multiFlag && ckObj) {
+                        goodStr += goods.map((good) => {
+                            return `\n名称:${good.goodsName} 数量：${good.count}g`;
+                        });
+                        utils_1.default.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 ----食物背包一览----${goodStr}`);
+                    }
+                    else {
+                        goodStr += goods.map((good) => {
+                            return `\n名称:${good.goodsName} 数量：${good.count}g`;
+                        });
+                        utils_1.default.outPutLog(this.outputTextarea, `----食物背包一览----${goodStr}`);
+                    }
+                }
+                else {
+                    utils_1.default.outPutLog(this.outputTextarea, `${res.resultData.resultMsg}`);
+                }
+            }
+            else {
+                if (config_1.default.multiFlag && ckObj) {
+                    utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+                }
+            }
+        });
+    }
+    userBagMulti() {
+        CookieManager_1.default.cookieArr.map((item) => {
+            setTimeout(() => {
+                CookieHandler_1.CookieHandler.coverCookie(item);
+                this.userBag(item);
+            }, item.index * 500);
+        });
+    }
+}
+exports.default = MoneyTree;
+
+},{"../config/config":2,"../cookie/CookieHandler":3,"../cookie/CookieManager":4,"../utils/utils":26}],23:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -2204,7 +2832,7 @@ class Goods {
 }
 exports.default = Goods;
 
-},{"../config/config":1,"../utils/fetch-jsonp":24,"../utils/utils":25}],23:[function(require,module,exports){
+},{"../config/config":2,"../utils/fetch-jsonp":25,"../utils/utils":26}],24:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -2219,6 +2847,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const goods_1 = require("./goods/goods");
 const utils_1 = require("./utils/utils");
 const config_1 = require("./config/config");
+const CookieManager_1 = require("./cookie/CookieManager");
+const CookieHandler_1 = require("./cookie/CookieHandler");
 const newBabelAwardCollection_1 = require("./coupons/newBabelAwardCollection");
 const whtieCoupon_1 = require("./coupons/whtieCoupon");
 const purchase_1 = require("./coupons/purchase");
@@ -2235,14 +2865,13 @@ const exchange_1 = require("./coupons/exchange");
 // import BrandCitySpring from "./activitys/brandCitySpring";
 // import Palace from "./activitys/palace";
 // import ReceiveBless from "./activitys/receiveBless";
-const cloudpig_1 = require("./game/cloudpig");
+const feedBag_1 = require("./activitys/feedBag");
 const activityType_1 = require("./enum/activityType");
 const couponType_1 = require("./enum/couponType");
 const goodsType_1 = require("./enum/goodsType");
-const gameType_1 = require("./enum/gameType");
-const CookieManager_1 = require("./cookie/CookieManager");
-const CookieHandler_1 = require("./cookie/CookieHandler");
 const btgoose_1 = require("./game/btgoose");
+const moneyTree_1 = require("./game/moneyTree");
+const cloudpig_1 = require("./game/cloudpig");
 let coupon, goods, game, activity, gameMap = {}, isJDcontext = true;
 const container = document.createElement("div"), title = document.createElement("div"), timerTittleDiv = document.createElement("div"), receiveTextInput = document.createElement("input"), receiveCountInput = document.createElement("input"), receiveTimerBtn = document.createElement("button"), operateAreaDiv = document.createElement("div"), outputTextArea = document.createElement("textarea"), outputTextAreaDiv = document.createElement("div"), loginMsgDiv = document.createElement("div");
 let getLoginMsg = function (res) {
@@ -2253,7 +2882,7 @@ let getLoginMsg = function (res) {
 };
 function buildOperate() {
     operateAreaDiv.setAttribute("style", "border: 1px solid #000;margin: 10px 0;");
-    operateAreaDiv.innerHTML = "<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;padding: 0 37.5vw 5px;'>操作区</h3>";
+    operateAreaDiv.innerHTML = "<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;padding: 0 25vw 5px;'>操作区</h3>";
     if (coupon) {
         buildTimerControl();
     }
@@ -2380,10 +3009,11 @@ function buildTitle() {
     document.body.append(container);
 }
 function buildActivity() {
-    // const activityArea: HTMLDivElement = document.createElement("div");
-    // activityArea.setAttribute("style", "border: 1px solid #000");
-    // activityArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>活动推荐</h3>`;
-    // container.append(activityArea);
+    const activityArea = document.createElement("div");
+    activityArea.setAttribute("style", "border: 1px solid #000");
+    activityArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>活动推荐</h3>
+    <p style="color:red;font-weight:bold;"><a style="color:red" href="https://u.jr.jd.com/uc-fe-wxgrowing/feedbag/cover/channelLv=syfc/" target="_blank">全民养京贴</a></p>`;
+    container.append(activityArea);
 }
 function buildRecommend() {
     const recommandArea = document.createElement("div");
@@ -2409,7 +3039,7 @@ function buildUAarea() {
 }
 function buildSensorArea() {
     let sensorArea = document.createElement("div");
-    sensorArea.innerHTML = `<div style="border: 1px solid #000;margin: 10px 0;font-weight:bold"><h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;padding: 0 37.5vw 5px;'>扩展功能区</h3>
+    sensorArea.innerHTML = `<div style="border: 1px solid #000;margin: 10px 0;font-weight:bold"><h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;padding: 0 25vw 5px;'>扩展功能区</h3>
     <p style="color:red;font-weight:bold;">使用本栏目功能前请查看教程</p>
     <div><button style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;" onclick="Utils.copyText(Config.NetdiskURL)">下载教程</button>
     <button class="toggle" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">展开栏目</button></div>
@@ -2483,9 +3113,6 @@ function buildSensorArea() {
     utils_1._$(".activity-list").addEventListener("click", (e) => {
         let target = e.target;
         let nodes = activityExtensionDiv.childNodes;
-        // if (nodes.length > 0) {
-        //     activityExtensionDiv.removeChild(nodes[0]);
-        // }
         nodes.forEach((node) => {
             node.style.display = "none";
         });
@@ -2508,13 +3135,13 @@ function buildSensorArea() {
             }
         }
         else if (target.getAttribute("class") == "moneyTree") {
-            alert("该功能正在开发中，晚点再来吧~");
-            // if (!gameMap.MoneyTree) {
-            //     gameMap.MoneyTree = new MoneyTree(null, activityExtensionDiv, outputTextArea);
-            //     gameMap.MoneyTree.get();
-            // }else{
-            //     gameMap.MoneyTree.content.style.display = "block";
-            // }
+            if (!gameMap.MoneyTree) {
+                gameMap.MoneyTree = new moneyTree_1.default(null, activityExtensionDiv, outputTextArea);
+                gameMap.MoneyTree.get();
+            }
+            else {
+                gameMap.MoneyTree.content.style.display = "block";
+            }
         }
         else {
             alert("该功能正在开发中，晚点再来吧~");
@@ -2582,6 +3209,7 @@ function getEntryType() {
     else if (config_1.default.locationHref.includes("vip.m.jd.com/index.html?appName=fuli&id=")) {
         type = couponType_1.couponType.exchange;
     }
+    //京东APP节假日营销活动
     if (config_1.default.locationHref.includes("bunearth.m.jd.com")) {
         if (config_1.default.locationHref.includes("4PWgqmrFHunn8C38mJA712fufguU")) {
             type = activityType_1.activityType.monsterNian;
@@ -2596,19 +3224,26 @@ function getEntryType() {
     if (config_1.default.locationHref.includes("palace")) {
         type = activityType_1.activityType.palace;
     }
-    if (config_1.default.locationHref.includes("uc-fe-wxgrowing")) {
-        if (config_1.default.locationHref.includes("moneytree")) {
-            // type = gameType.moneytree;
-        }
-        else if (config_1.default.locationHref.includes("cloudpig")) {
-            type = gameType_1.gameType.cloudpig;
+    //京东金融APP节假日营销活动
+    if (config_1.default.locationHref.includes("u.jr.jd.com")) {
+        //https://u.jr.jd.com/uc-fe-wxgrowing/feedbag/cover/channelLv=syfc/
+        if (config_1.default.locationHref.includes("feedbag")) {
+            type = activityType_1.activityType.feedBag;
         }
     }
+    //调整为全局主动切换
+    // if (Config.locationHref.includes("uc-fe-wxgrowing")) {
+    //     if (Config.locationHref.includes("moneytree")) {
+    //         // type = gameType.moneytree;
+    //     } else if (Config.locationHref.includes("cloudpig")) {
+    //         type = gameType.cloudpig;
+    //     }
+    // }
     return type;
 }
 function getEntryDesc(type) {
     buildTitle();
-    buildPromotion();
+    // buildPromotion();
     switch (type) {
         case goodsType_1.goodsType.goods:
             const goodsId = config_1.default.locationHref.match(/jd.com\/(\S*).html/)[1];
@@ -2670,9 +3305,9 @@ function getEntryDesc(type) {
         //     activity = new ReceiveBless(null, container, outputTextArea);
         //     Config.UAFlag = true;
         //     break;
-        // case gameType.cloudpig:
-        //     game = new Cloudpig(null, container, outputTextArea);
-        //     break;
+        case activityType_1.activityType.feedBag:
+            activity = new feedBag_1.default(null, container, outputTextArea);
+            break;
         default:
             break;
     }
@@ -2693,7 +3328,7 @@ function getEntryDesc(type) {
     }
     else if (activity) {
         // buildActivity();
-        buildTimeoutArea();
+        // buildTimeoutArea();
         activity.get();
     }
     else if (goods) {
@@ -2759,7 +3394,7 @@ getEntryDesc(getEntryType());
 statistical();
 Object.assign(window, { "getLoginMsg": getLoginMsg, "krapnik": krapnik, "Utils": utils_1.default, "Config": config_1.default });
 
-},{"./config/config":1,"./cookie/CookieHandler":2,"./cookie/CookieManager":3,"./coupons/coinPurchase":4,"./coupons/exchange":5,"./coupons/gcConvert":6,"./coupons/getCouponCenter":7,"./coupons/mfreecoupon":8,"./coupons/newBabelAwardCollection":9,"./coupons/purchase":10,"./coupons/receiveCoupon":11,"./coupons/receiveCoupons":12,"./coupons/receiveDayCoupon":13,"./coupons/secKillCoupon":14,"./coupons/whtieCoupon":15,"./enum/activityType":16,"./enum/couponType":17,"./enum/gameType":18,"./enum/goodsType":19,"./game/btgoose":20,"./game/cloudpig":21,"./goods/goods":22,"./utils/utils":25}],24:[function(require,module,exports){
+},{"./activitys/feedBag":1,"./config/config":2,"./cookie/CookieHandler":3,"./cookie/CookieManager":4,"./coupons/coinPurchase":5,"./coupons/exchange":6,"./coupons/gcConvert":7,"./coupons/getCouponCenter":8,"./coupons/mfreecoupon":9,"./coupons/newBabelAwardCollection":10,"./coupons/purchase":11,"./coupons/receiveCoupon":12,"./coupons/receiveCoupons":13,"./coupons/receiveDayCoupon":14,"./coupons/secKillCoupon":15,"./coupons/whtieCoupon":16,"./enum/activityType":17,"./enum/couponType":18,"./enum/goodsType":19,"./game/btgoose":20,"./game/cloudpig":21,"./game/moneyTree":22,"./goods/goods":23,"./utils/utils":26}],25:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class FetchJsonp {
@@ -2835,7 +3470,7 @@ FetchJsonp.defaultOptions = {
     jsonpCallbackFunction: null,
 };
 
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 window.jsonpBind = function (res) {
@@ -3059,4 +3694,4 @@ class Utils {
 exports.default = Utils;
 exports._$ = Utils.querySelector;
 
-},{}]},{},[23]);
+},{}]},{},[24]);

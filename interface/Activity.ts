@@ -1,4 +1,4 @@
-export default interface Coupon {
+export default interface Activity {
     params:any;
     // data: Array<object>;
     container: HTMLDivElement;
