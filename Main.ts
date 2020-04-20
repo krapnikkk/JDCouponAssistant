@@ -36,6 +36,7 @@ import { gameType } from "./enum/gameType";
 import BTGoose from "./game/btgoose";
 import MoneyTree from "./game/moneyTree";
 import Cloudpig from "./game/cloudpig";
+import signInCenter from "./game/signInCenter";
 
 let coupon: Coupon,
     goods: Goods,
@@ -336,11 +337,19 @@ function buildSensorArea() {
                 gameMap.BTGoose.content.style.display = "block";
             }
         } else if (target.getAttribute("class") == "moneyTree") {
-            if (!gameMap.MoneyTree) {
-                gameMap.MoneyTree = new MoneyTree(null, activityExtensionDiv, outputTextArea);
-                gameMap.MoneyTree.get();
+            alert("该功能正在开发中，晚点再来吧~");
+            // if (!gameMap.MoneyTree) {
+            //     gameMap.MoneyTree = new MoneyTree(null, activityExtensionDiv, outputTextArea);
+            //     gameMap.MoneyTree.get();
+            // } else {
+            //     gameMap.MoneyTree.content.style.display = "block";
+            // }
+        } else if (target.getAttribute("class") == "signInCenter") {
+            if (!gameMap.signInCenter) {
+                gameMap.signInCenter = new signInCenter(null, activityExtensionDiv, outputTextArea);
+                gameMap.signInCenter.get();
             } else {
-                gameMap.MoneyTree.content.style.display = "block";
+                gameMap.signInCenter.content.style.display = "block";
             }
         }
         else {
