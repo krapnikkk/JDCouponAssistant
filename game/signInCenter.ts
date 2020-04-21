@@ -6,8 +6,8 @@ import CookieManager from "../cookie/CookieManager";
 
 
 export default class signInCenter implements Game {
-    rootURI: string = "https://ms.jr.jd.com/gw/generic/uc/h5/m/";
-    baseReqData: Object = { "actKey":"AbeQry"};
+    rootURI: string = "https://ms.jr.jd.com/gw/generic/hy/h5/m/";
+    baseReqData: Object = { "actKey": "AbeQry" };
     // baseReqData: {"actKey":"AbeQry","t":1587359500448}
     data: any = [];
     timer: number = 1000;
@@ -53,34 +53,33 @@ export default class signInCenter implements Game {
     }
 
     lottery(ckObj?: CookieType) {
-        fetch(this.rootURI + "lottery", {
-            method: "POST",
-            mode: "cors",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: "reqData=" + JSON.stringify(Object.assign({"t":new Date().getMilliseconds()},this.baseReqData))
-        }).then(function (response) {
-            return response.json()
-        }).then((res) => {
-            if (res.resultCode == 0) {
-                let data = res.resultData;
-                if (data.code == "0000") {
-                    let {awardName} = data.data;
-                    if (Config.multiFlag && ckObj) {
-                        Utils.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 获得奖品：${awardName}`);
-                    } else {
-                        Utils.outPutLog(this.outputTextarea, `收蛋成功！当前鹅蛋数量：${awardName}`);
-                    }
-
-                } else {
-                    Utils.outPutLog(this.outputTextarea, `${data.msg}`);
+        fetch(this.rootURI + "lottery?reqData=" + encodeURI(JSON.stringify(Object.assign({ "t": new Date().getTime() }, this.baseReqData))),
+            {
+                mode: "no-cors",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
                 }
-            } else {
-                Utils.outPutLog(this.outputTextarea, `${res.resultMsg}`);
-            }
-        })
+            }).then(function (response) {
+                return response.json()
+            }).then((res) => {
+                if (res.resultCode == 0) {
+                    let data = res.resultData;
+                    if (data.code == "0000") {
+                        let { awardName } = data.data;
+                        if (Config.multiFlag && ckObj) {
+                            Utils.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 获得奖品：${awardName}`);
+                        } else {
+                            Utils.outPutLog(this.outputTextarea, `获得奖品：${awardName}`);
+                        }
+
+                    } else {
+                        Utils.outPutLog(this.outputTextarea, `${data.msg}`);
+                    }
+                } else {
+                    Utils.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+                }
+            })
     }
 
     lotteryMulti() {

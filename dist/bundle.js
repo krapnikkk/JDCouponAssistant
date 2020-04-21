@@ -2326,12 +2326,11 @@ const utils_1 = require("../utils/utils");
 const config_1 = require("../config/config");
 const CookieHandler_1 = require("../cookie/CookieHandler");
 const CookieManager_1 = require("../cookie/CookieManager");
-class MoneyTree {
+class signInCenter {
     constructor(params, containerDiv, outputTextarea) {
-        this.rootURI = "https://ms.jr.jd.com/gw/generic/uc/h5/m/";
-        this.baseReqData = { "sharePin": "", "shareType": 1, "source": 2, "riskDeviceInfo": "{}" };
-        // baseReqData: Object = { "source": 0, "channelLV": "yqs", "riskDeviceParam": "{\"fp\":\"\",\"eid\":\"\",\"sdkToken\":\"\",\"sid\":\"\"}" };
-        // {"source":0,"skuId":"1001003004","channelLV":"yqs","riskDeviceParam":"{\"eid\":\"\",\"fp\":\"\",\"token\":\"\"}"}
+        this.rootURI = "https://ms.jr.jd.com/gw/generic/hy/h5/m/";
+        this.baseReqData = { "actKey": "AbeQry" };
+        // baseReqData: {"actKey":"AbeQry","t":1587359500448}
         this.data = [];
         this.timer = 1000;
         this.taskToken = "";
@@ -2352,86 +2351,41 @@ class MoneyTree {
     list() {
         let msg = `
             <div>
-                <button class="login" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">查看详情</button>
+                <button class="lottery" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">金币天天抽奖</button>
                 <button class="harvest" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">一键收金果</button>
-            </div>
-        <p>自动收蛋间隔：<select class="harvestSpan" name="harvestSpan" style="border: 1px solid #333;padding: 2px;">
-            <option value ="1800000">30分钟</option>
-            <option value ="3600000">60分钟</option>
-            <option value ="5400000">90分钟</option>
-        </select>
-        </p>
-        <button class="autoToWithdraw" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">自动定时收蛋</button>
-        <button class="cancelautoToWithdraw" style="display:none;width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">取消定时收蛋</button>
-        <button class="toGoldExchange" style="display:display;width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">兑换金币</button>
-        <div>`;
+            </div>`;
         this.content.innerHTML = msg;
         this.container.appendChild(this.content);
-        const d = utils_1._$(".login"), g = utils_1._$(".toGoldExchange"), autoToWithdraw = utils_1._$(".autoToWithdraw"), cancelautoToWithdraw = utils_1._$(".cancelautoToWithdraw"), t = utils_1._$(".harvest");
-        t.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
-            utils_1.default.outPutLog(this.outputTextarea, `开始收取金果`);
+        const l = utils_1._$(".lottery");
+        l.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            utils_1.default.outPutLog(this.outputTextarea, `开始金币天天抽奖`);
             if (config_1.default.multiFlag) {
-                this.harvestMulti();
+                this.lotteryMulti();
             }
             else {
-                this.harvest();
+                this.lottery();
             }
         }));
-        d.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
-            utils_1.default.outPutLog(this.outputTextarea, `开始查看金果树详情`);
-            if (config_1.default.multiFlag) {
-                this.homeMulti();
-            }
-            else {
-                this.home();
-            }
-        }));
-        g.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
-            utils_1.default.outPutLog(this.outputTextarea, `开始兑换金币`);
-            if (config_1.default.multiFlag) {
-                this.toGoldExchangeMulti();
-            }
-            else {
-                this.toGoldExchange();
-            }
-        }));
-        autoToWithdraw.addEventListener("click", () => {
-            autoToWithdraw.style.display = "none";
-            cancelautoToWithdraw.style.display = "block";
-            utils_1.default.outPutLog(this.outputTextarea, `自动定时收蛋已开启！`);
-            this.autoToWithdrawTimer = window.setInterval(() => {
-                utils_1.default.outPutLog(this.outputTextarea, `自动定时收蛋任务开启！`);
-                t.click();
-            }, this.harvestSpan);
-        });
-        cancelautoToWithdraw.addEventListener('click', () => {
-            autoToWithdraw.style.display = "block";
-            cancelautoToWithdraw.style.display = "none";
-            utils_1.default.outPutLog(this.outputTextarea, `自动定时收蛋已关闭！`);
-            window.clearInterval(this.autoToWithdrawTimer);
-        });
     }
-    harvest(ckObj) {
-        fetch(this.rootURI + "harvest", {
-            method: "POST",
+    lottery(ckObj) {
+        fetch(this.rootURI + "lottery?reqData=" + encodeURI(JSON.stringify(Object.assign({ "t": new Date().getTime() }, this.baseReqData))), {
             mode: "cors",
             credentials: "include",
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: "reqData=" + JSON.stringify(this.baseReqData)
+                "Content-Type": "application/json"
+            }
         }).then(function (response) {
             return response.json();
         }).then((res) => {
             if (res.resultCode == 0) {
                 let data = res.resultData;
                 if (data.code == "0000") {
-                    let eggTotal = data.data.eggTotal;
+                    let { awardName } = data.data;
                     if (config_1.default.multiFlag && ckObj) {
-                        utils_1.default.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 收蛋成功！当前鹅蛋数量：${eggTotal}`);
+                        utils_1.default.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 获得奖品：${awardName}`);
                     }
                     else {
-                        utils_1.default.outPutLog(this.outputTextarea, `收蛋成功！当前鹅蛋数量：${eggTotal}`);
+                        utils_1.default.outPutLog(this.outputTextarea, `获得奖品：${awardName}`);
                     }
                 }
                 else {
@@ -2443,280 +2397,16 @@ class MoneyTree {
             }
         });
     }
-    harvestMulti() {
+    lotteryMulti() {
         CookieManager_1.default.cookieArr.map((item) => {
             setTimeout(() => {
                 CookieHandler_1.CookieHandler.coverCookie(item);
-                this.harvest(item);
+                this.lottery(item);
             }, item.index * 750);
         });
     }
-    home(ckObj) {
-        fetch(this.rootURI + "login", {
-            method: "POST",
-            mode: "cors",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: "reqData=" + JSON.stringify(this.baseReqData)
-        }).then(function (response) {
-            return response.json();
-        }).then((res) => {
-            if (res.resultCode == 0) {
-                let data = res.resultData.data;
-                let { sharePin, treeInfo, firstLogin } = data;
-                if (firstLogin) {
-                    //首次登录
-                }
-                else {
-                    if (config_1.default.multiFlag && ckObj) {
-                        utils_1.default.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 等级：${treeInfo.level} 升级还差：${treeInfo.progressLeft}% 可兑换：${treeInfo.fruit} 未收取：${treeInfo.fruitOnTree}`);
-                    }
-                    else {
-                        utils_1.default.outPutLog(this.outputTextarea, ` 等级：${treeInfo.level} 升级还差：${treeInfo.progressLeft}% 可兑换：${treeInfo.fruit} 未收取：${treeInfo.fruitOnTree}`);
-                    }
-                }
-            }
-            else {
-                utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
-            }
-        });
-    }
-    homeMulti() {
-        CookieManager_1.default.cookieArr.map((item) => {
-            setTimeout(() => {
-                CookieHandler_1.CookieHandler.coverCookie(item);
-                this.home(item);
-            }, item.index * 500);
-        });
-    }
-    toGoldExchange(ckObj) {
-        fetch(this.rootURI + "toGoldExchange", {
-            method: "POST",
-            mode: "cors",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: "reqData=" + JSON.stringify(this.baseReqData)
-        }).then(function (response) {
-            return response.json();
-        }).then((res) => {
-            if (res.resultCode == 0) {
-                if (res.resultData.code == "0000") {
-                    let data = res.resultData.data;
-                    let { cnumber, rate, goldTotal } = data;
-                    if (config_1.default.multiFlag && ckObj) {
-                        utils_1.default.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 已兑换:${cnumber} 比例：${rate} 总金币：${goldTotal}`);
-                    }
-                    else {
-                        utils_1.default.outPutLog(this.outputTextarea, `已兑换:${cnumber} 比例：${rate} 总金币：${goldTotal}`);
-                    }
-                }
-                else {
-                    utils_1.default.outPutLog(this.outputTextarea, `${res.resultData.msg}`);
-                }
-            }
-            else {
-                if (config_1.default.multiFlag && ckObj) {
-                    utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
-                }
-            }
-        });
-    }
-    toGoldExchangeMulti() {
-        CookieManager_1.default.cookieArr.map((item) => {
-            setTimeout(() => {
-                CookieHandler_1.CookieHandler.coverCookie(item);
-                this.toGoldExchange(item);
-            }, item.index * 500);
-        });
-    }
-    lotteryIndex(ckObj) {
-        fetch(this.rootURI + "pigPetLotteryIndex", {
-            method: "POST",
-            mode: "cors",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: "reqData=" + JSON.stringify(this.baseReqData)
-        }).then(function (response) {
-            return response.json();
-        }).then((res) => {
-            var _a, _b, _c, _d;
-            if (res.resultCode == 0) {
-                let data = res.resultData.resultData;
-                if (res.resultData.resultCode == 0) {
-                    let currentCount = (_a = data) === null || _a === void 0 ? void 0 : _a.currentCount, coinCount = (_b = data) === null || _b === void 0 ? void 0 : _b.coinCount, price = (_c = data) === null || _c === void 0 ? void 0 : _c.price, nextFreeTime = (_d = data) === null || _d === void 0 ? void 0 : _d.nextFreeTime;
-                    if (config_1.default.multiFlag && ckObj) {
-                        utils_1.default.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 当前可抽奖次数：${currentCount} 距下一次免费抽奖时间：${nextFreeTime}毫秒 金币抽奖次数：${coinCount} 需花费金币：${price}`);
-                    }
-                    else {
-                        utils_1.default.outPutLog(this.outputTextarea, `当前可抽奖次数：${currentCount} 距下一次免费抽奖时间：${nextFreeTime}毫秒 金币抽奖次数：${coinCount} 需花费金币：${price}`);
-                    }
-                }
-                else {
-                    utils_1.default.outPutLog(this.outputTextarea, `${res.resultData.resultMsg}`);
-                }
-            }
-            else {
-                if (config_1.default.multiFlag && ckObj) {
-                    utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
-                }
-            }
-        });
-    }
-    lotteryIndexMulti() {
-        CookieManager_1.default.cookieArr.map((item) => {
-            setTimeout(() => {
-                CookieHandler_1.CookieHandler.coverCookie(item);
-                this.lotteryIndex(item);
-            }, item.index * 500);
-        });
-    }
-    signOne(ckObj) {
-        fetch(this.rootURI + "pigPetSignOne?_=" + utils_1.default.getTimestamp(), {
-            method: "POST",
-            mode: "cors",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: "reqData=" + JSON.stringify(Object.assign(this.baseReqData, { "no": ckObj ? ckObj.signNo : this.signNo }))
-        }).then(function (response) {
-            return response.json();
-        }).then((res) => {
-            var _a, _b, _c;
-            if (res.resultCode == 0) {
-                let data = res.resultData.resultData;
-                if (res.resultData.resultCode == 0) {
-                    let today = (_a = data) === null || _a === void 0 ? void 0 : _a.today, name = (_c = (_b = data) === null || _b === void 0 ? void 0 : _b.award) === null || _c === void 0 ? void 0 : _c.name;
-                    if (config_1.default.multiFlag && ckObj) {
-                        utils_1.default.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 已签到${today}天 获得奖励：${name}`);
-                    }
-                    else {
-                        utils_1.default.outPutLog(this.outputTextarea, `已签到${today}天 获得奖励：${name}`);
-                    }
-                }
-                else {
-                    utils_1.default.outPutLog(this.outputTextarea, `${res.resultData.resultMsg}`);
-                }
-            }
-            else {
-                if (config_1.default.multiFlag && ckObj) {
-                    utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
-                }
-            }
-        });
-    }
-    // signOneMulti() {
-    //     CookieManager.cookieArr.map((item: CookieType) => {
-    //         setTimeout(() => {
-    //             CookieHandler.coverCookie(item);
-    //             this.signOne(item);
-    //         }, item.index * 500)
-    //     });
-    // }
-    signIndex(ckObj) {
-        fetch(this.rootURI + "pigPetSignIndex?_=" + utils_1.default.getTimestamp(), {
-            method: "POST",
-            mode: "cors",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: "reqData=" + JSON.stringify(this.baseReqData)
-        }).then(function (response) {
-            return response.json();
-        }).then((res) => {
-            var _a;
-            if (res.resultCode == 0) {
-                let data = res.resultData.resultData;
-                if (res.resultData.resultCode == 0) {
-                    let today = (_a = data) === null || _a === void 0 ? void 0 : _a.today;
-                    if (config_1.default.multiFlag && ckObj) {
-                        ckObj.signNo = today;
-                        utils_1.default.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 已签到${today}天 `);
-                        this.signOne(ckObj);
-                    }
-                    else {
-                        this.signNo = today;
-                        utils_1.default.outPutLog(this.outputTextarea, `已签到${today}天`);
-                        this.signOne();
-                    }
-                }
-                else {
-                    utils_1.default.outPutLog(this.outputTextarea, `${res.resultData.resultMsg}`);
-                }
-            }
-            else {
-                if (config_1.default.multiFlag && ckObj) {
-                    utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
-                }
-            }
-        });
-    }
-    signIndexMulti() {
-        CookieManager_1.default.cookieArr.map((item) => {
-            setTimeout(() => {
-                CookieHandler_1.CookieHandler.coverCookie(item);
-                this.signIndex(item);
-            }, item.index * 500);
-        });
-    }
-    userBag(ckObj) {
-        fetch(this.rootURI + "pigPetUserBag?_=" + utils_1.default.getTimestamp(), {
-            method: "POST",
-            mode: "cors",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: "reqData=" + JSON.stringify(Object.assign(this.baseReqData, { "category": "1001" }))
-        }).then(function (response) {
-            return response.json();
-        }).then((res) => {
-            var _a;
-            if (res.resultCode == 0) {
-                let data = res.resultData.resultData;
-                if (res.resultData.resultCode == 0) {
-                    let goods = (_a = data) === null || _a === void 0 ? void 0 : _a.goods, goodStr = "";
-                    if (config_1.default.multiFlag && ckObj) {
-                        goodStr += goods.map((good) => {
-                            return `\n名称:${good.goodsName} 数量：${good.count}g`;
-                        });
-                        utils_1.default.outPutLog(this.outputTextarea, `【${ckObj["mark"]}】 ----食物背包一览----${goodStr}`);
-                    }
-                    else {
-                        goodStr += goods.map((good) => {
-                            return `\n名称:${good.goodsName} 数量：${good.count}g`;
-                        });
-                        utils_1.default.outPutLog(this.outputTextarea, `----食物背包一览----${goodStr}`);
-                    }
-                }
-                else {
-                    utils_1.default.outPutLog(this.outputTextarea, `${res.resultData.resultMsg}`);
-                }
-            }
-            else {
-                if (config_1.default.multiFlag && ckObj) {
-                    utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
-                }
-            }
-        });
-    }
-    userBagMulti() {
-        CookieManager_1.default.cookieArr.map((item) => {
-            setTimeout(() => {
-                CookieHandler_1.CookieHandler.coverCookie(item);
-                this.userBag(item);
-            }, item.index * 500);
-        });
-    }
 }
-exports.default = MoneyTree;
+exports.default = signInCenter;
 
 },{"../config/config":2,"../cookie/CookieHandler":3,"../cookie/CookieManager":4,"../utils/utils":26}],23:[function(require,module,exports){
 "use strict";
@@ -2870,8 +2560,8 @@ const activityType_1 = require("./enum/activityType");
 const couponType_1 = require("./enum/couponType");
 const goodsType_1 = require("./enum/goodsType");
 const btgoose_1 = require("./game/btgoose");
-const moneyTree_1 = require("./game/moneyTree");
 const cloudpig_1 = require("./game/cloudpig");
+const signInCenter_1 = require("./game/signInCenter");
 let coupon, goods, game, activity, gameMap = {}, isJDcontext = true;
 const container = document.createElement("div"), title = document.createElement("div"), timerTittleDiv = document.createElement("div"), receiveTextInput = document.createElement("input"), receiveCountInput = document.createElement("input"), receiveTimerBtn = document.createElement("button"), operateAreaDiv = document.createElement("div"), outputTextArea = document.createElement("textarea"), outputTextAreaDiv = document.createElement("div"), loginMsgDiv = document.createElement("div");
 let getLoginMsg = function (res) {
@@ -3135,12 +2825,21 @@ function buildSensorArea() {
             }
         }
         else if (target.getAttribute("class") == "moneyTree") {
-            if (!gameMap.MoneyTree) {
-                gameMap.MoneyTree = new moneyTree_1.default(null, activityExtensionDiv, outputTextArea);
-                gameMap.MoneyTree.get();
+            alert("该功能正在开发中，晚点再来吧~");
+            // if (!gameMap.MoneyTree) {
+            //     gameMap.MoneyTree = new MoneyTree(null, activityExtensionDiv, outputTextArea);
+            //     gameMap.MoneyTree.get();
+            // } else {
+            //     gameMap.MoneyTree.content.style.display = "block";
+            // }
+        }
+        else if (target.getAttribute("class") == "signInCenter") {
+            if (!gameMap.signInCenter) {
+                gameMap.signInCenter = new signInCenter_1.default(null, activityExtensionDiv, outputTextArea);
+                gameMap.signInCenter.get();
             }
             else {
-                gameMap.MoneyTree.content.style.display = "block";
+                gameMap.signInCenter.content.style.display = "block";
             }
         }
         else {
@@ -3394,7 +3093,7 @@ getEntryDesc(getEntryType());
 statistical();
 Object.assign(window, { "getLoginMsg": getLoginMsg, "krapnik": krapnik, "Utils": utils_1.default, "Config": config_1.default });
 
-},{"./activitys/feedBag":1,"./config/config":2,"./cookie/CookieHandler":3,"./cookie/CookieManager":4,"./coupons/coinPurchase":5,"./coupons/exchange":6,"./coupons/gcConvert":7,"./coupons/getCouponCenter":8,"./coupons/mfreecoupon":9,"./coupons/newBabelAwardCollection":10,"./coupons/purchase":11,"./coupons/receiveCoupon":12,"./coupons/receiveCoupons":13,"./coupons/receiveDayCoupon":14,"./coupons/secKillCoupon":15,"./coupons/whtieCoupon":16,"./enum/activityType":17,"./enum/couponType":18,"./enum/goodsType":19,"./game/btgoose":20,"./game/cloudpig":21,"./game/moneyTree":22,"./goods/goods":23,"./utils/utils":26}],25:[function(require,module,exports){
+},{"./activitys/feedBag":1,"./config/config":2,"./cookie/CookieHandler":3,"./cookie/CookieManager":4,"./coupons/coinPurchase":5,"./coupons/exchange":6,"./coupons/gcConvert":7,"./coupons/getCouponCenter":8,"./coupons/mfreecoupon":9,"./coupons/newBabelAwardCollection":10,"./coupons/purchase":11,"./coupons/receiveCoupon":12,"./coupons/receiveCoupons":13,"./coupons/receiveDayCoupon":14,"./coupons/secKillCoupon":15,"./coupons/whtieCoupon":16,"./enum/activityType":17,"./enum/couponType":18,"./enum/goodsType":19,"./game/btgoose":20,"./game/cloudpig":21,"./game/signInCenter":22,"./goods/goods":23,"./utils/utils":26}],25:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class FetchJsonp {
