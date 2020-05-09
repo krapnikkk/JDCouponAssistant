@@ -524,7 +524,7 @@ function getEntryDesc(type: couponType | activityType | goodsType | gameType) {
         buildUAarea();
     }
     buildRecommend();
-    buildActivity();
+    // buildActivity();
     if (isJDcontext) {
         buildSensorArea();
         buildOperate();
