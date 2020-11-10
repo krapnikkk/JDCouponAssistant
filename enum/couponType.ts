@@ -13,4 +13,5 @@ export enum couponType {
     ReceiveCoupon = "ReceiveCoupon",
     getCouponCenter = "getCouponCenter",
     exchange = "exchange",
+    receiveSeckillReward = "receiveSeckillReward"
 }

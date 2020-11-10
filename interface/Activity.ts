@@ -1,5 +1,5 @@
 export default interface Activity {
-    params:any;
+    // params:any;
     // data: Array<object>;
     container: HTMLDivElement;
     get(): void;

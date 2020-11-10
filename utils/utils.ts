@@ -115,7 +115,7 @@ export default class Utils {
         postMessage(res, '*');
     }
 
-    static outPutLog(output: HTMLTextAreaElement, log: string, timeFlag: boolean = true): void {
+    static outPutLog(output: HTMLTextAreaElement, log: string, timeFlag: boolean = true, isClear: boolean = false): void {
         if (output.parentElement!.style.display == 'none') {
             output.parentElement!.style.display = 'block';
         }
@@ -128,14 +128,18 @@ export default class Utils {
         } else {
             output.value = `${output.value}\n${log}`;
         }
-
+        if (isClear) {
+            console.clear();
+            output.value = new Date().toLocaleString() + log;
+        }
+        console.log(log);
     }
 
     static random(n: number, m: number): number {
         return Math.floor(Math.random() * (m - n + 1) + n);
     }
 
-    static getTimestamp():number{
+    static getTimestamp(): number {
         return new Date().getTime();
     }
 
@@ -144,17 +148,15 @@ export default class Utils {
             alert("好像没有需要复制的内容哦！");
             return;
         }
-        var oInput: HTMLInputElement | null = document.querySelector('.oInput');
-        if (!oInput) {
-            oInput = document.createElement('input');
-            oInput.className = 'oInput';
-            document.body.appendChild(oInput);
-        }
+        var oInput: HTMLInputElement = document.createElement('input') as HTMLInputElement;
+        oInput.className = 'oInput';
+        document.body.appendChild(oInput);
         oInput.value = text;
         oInput.select();
         document.execCommand("Copy");
         oInput.style.display = 'none';
         alert('内容已经复制到黏贴板啦');
+        document.body.removeChild(oInput);
     }
 
     static importFile(ext: string): Promise<string | ArrayBuffer | null> {
@@ -241,6 +243,62 @@ export default class Utils {
     // }
     static querySelector(dom: string): HTMLElement {
         return <HTMLElement>document.querySelector(dom);
+    }
+
+    static request(functionId: string, body: any = {}): Promise<any> {
+        return fetch(`https://api.m.jd.com/client.action?functionId=${functionId}`, {
+            body: `functionId=${functionId}&body=${JSON.stringify(
+                body
+            )}&client=wh5&clientVersion=1.0.0`,
+            headers: {
+                "content-type": "application/x-www-form-urlencoded",
+            },
+            method: "POST",
+            credentials: "include",
+        }).then(res => res.json())
+    };
+
+    static publicRequest(functionId: string, body: any = { "lat": "", "lng": "" }): Promise<any> {
+        return fetch(`https://api.m.jd.com/client.action`, {
+            body: `functionId=${functionId}&body=${JSON.stringify(
+                body
+            )}&client=wh5&clientVersion=1.0.0&sid&t=${new Date().getTime()}&appid=publicUseApi`,
+            headers: {
+                "content-type": "application/x-www-form-urlencoded",
+            },
+            method: "POST",
+            credentials: "include",
+        }).then(res => res.json())
+    }
+
+    static clientPost(functionId: string, body: any = {}): Promise<any> {
+        return fetch(`https://api.m.jd.com/api`, {
+            body: `functionId=${functionId}&body=${JSON.stringify(
+                body
+            )}&loginType=2&appid=jd_mp_h5`,
+            headers: {
+                "content-type": "application/x-www-form-urlencoded",
+            },
+            method: "POST",
+            credentials: "include",
+        }).then(res => res.json())
+    }
+
+    static post(url: string, body: any = {}): Promise<any> {
+        return fetch(url, {
+            body: JSON.stringify(body),
+            headers: {
+                "content-type": "application/x-www-form-urlencoded",
+            },
+            method: "POST",
+            credentials: "include",
+        }).then(res => res.json())
+    }
+
+    static sleep(delay: number) {
+        return new Promise(reslove => {
+            setTimeout(reslove, delay)
+        })
     }
 }
 

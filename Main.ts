@@ -25,7 +25,7 @@ import Exchange from "./coupons/exchange";
 // import BrandCitySpring from "./activitys/brandCitySpring";
 // import Palace from "./activitys/palace";
 // import ReceiveBless from "./activitys/receiveBless";
-import FeedBag from "./activitys/feedBag";
+// import FeedBag from "./activitys/feedBag";
 
 
 import { activityType } from "./enum/activityType";
@@ -34,9 +34,14 @@ import { goodsType } from "./enum/goodsType";
 import { gameType } from "./enum/gameType";
 
 import BTGoose from "./game/btgoose";
-import MoneyTree from "./game/moneyTree";
+// import MoneyTree from "./game/moneyTree";
 import Cloudpig from "./game/cloudpig";
 import signInCenter from "./game/signInCenter";
+import Stall from "./activitys/stall";
+import TimeMachine from "./activitys/timeMachine";
+import ReceiveSeckillReward from "./coupons/receiveSeckillReward";
+import StarMall from "./activitys/starMall";
+import Guardianstar from "./activitys/guardianstar";
 
 let coupon: Coupon,
     goods: Goods,
@@ -46,6 +51,8 @@ let coupon: Coupon,
     isJDcontext = true;
 
 const container: HTMLDivElement = document.createElement("div"),
+    UATipsDiv: HTMLDivElement = document.createElement("div"),
+
     title: HTMLDivElement = document.createElement("div"),
     timerTittleDiv: HTMLDivElement = document.createElement("div"),
     receiveTextInput: HTMLInputElement = document.createElement("input"),
@@ -55,7 +62,7 @@ const container: HTMLDivElement = document.createElement("div"),
     outputTextArea: HTMLTextAreaElement = document.createElement("textarea"),
     outputTextAreaDiv: HTMLDivElement = document.createElement("div"),
     loginMsgDiv: HTMLDivElement = document.createElement("div");
-
+UATipsDiv.setAttribute('id', "UATipsDiv");
 let getLoginMsg = function (res: any) {
     if (res.base.nickname) {
         loginMsgDiv.innerHTML = "当前登录京东帐号：" + res.base.nickname;
@@ -99,7 +106,7 @@ function buildTimerControl() {
         timerTextInput: HTMLInputElement = document.createElement("input"),
         timerResetBtn: HTMLButtonElement = document.createElement("button"),
         spanTextInput: HTMLInputElement = document.createElement("input"),
-        spanResetBtn: HTMLButtonElement = document.createElement("button"),
+        // spanResetBtn: HTMLButtonElement = document.createElement("button"),
         timerDiv: HTMLDivElement = document.createElement("div");
     timerTextInput.type = "text";
     timerTextInput.placeholder = "请输入获取时间的刷新频率【毫秒】";
@@ -162,7 +169,7 @@ function buildTimerControl() {
     timerDiv.append(timerTextInput);
     timerDiv.append(timerResetBtn);
     timerDiv.append(spanTextInput);
-    timerDiv.append(spanResetBtn);
+    // timerDiv.append(spanResetBtn);
     operateAreaDiv.append(receiveDiv);
     receiveDiv.append(receiveTipsDiv);
     receiveDiv.append(receiveTextInput);
@@ -175,7 +182,7 @@ function buildTimerControl() {
 
 function buildTips() {
     const tips = document.createElement('h4');
-    tips.innerHTML = '<h4>页面地址暂未被扩展或者有误！</h4><p>本插件只能在指定活动地址或领券地址使用！</p><p>如果这是个活动地址或领券地址，<a href="tencent://message/?uin=708873725Menu=yes" target="_blank" title="发起QQ聊天">联系作者</a>扩展~</p><a style="color:red" href="https://gitee.com/krapnik/res/raw/master/tutorial.mp4" target="_blank">点击下载教程视频</a>'
+    tips.innerHTML = '<h4>页面地址暂未被扩展或者有误！</h4><p>本插件只能在指定活动地址或领券地址使用！</p><p>如果这是个活动地址或领券地址，<a href="tencent://message/?uin=708873725Menu=yes" target="_blank" title="发起QQ聊天">联系作者</a>扩展~</p><a style="color:red" onclick=Utils.copyText(Config.NetdiskURL)>点击下载教程视频</a>'
     title.append(tips);
 }
 
@@ -206,19 +213,35 @@ function buildTitle() {
 
 function buildActivity() {
     const activityArea: HTMLDivElement = document.createElement("div");
-    activityArea.setAttribute("style", "border: 1px solid #000");
-    activityArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>活动推荐</h3>
-    <p style="color:red;font-weight:bold;"><a style="color:red" href="https://u.jr.jd.com/uc-fe-wxgrowing/feedbag/cover/channelLv=syfc/" target="_blank">全民养京贴</a></p>`;
+    activityArea.setAttribute("style", "padding: 5px;border: 1px solid #000");
+    activityArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>推荐活动</h3>
+    <p style="padding: 5px;color:red;font-weight:bold;">
+    <a style="color:red" href="https://bunearth.m.jd.com/babelDiy/Zeus/4SJUHwGdUQYgg94PFzjZZbGZRjDd/index.html#/land" target="_blank">全民营业，瓜分十亿</a>
+    <br>
+    <a style="color:red" href="https://bunearth.m.jd.com/babelDiy/Zeus/3DDunaJMLDamrmGwu73QbqtGtbX1/index.html" target="_blank">热爱时光机</a>
+    <br>
+    <a style="color:red" href="https://urvsaggpt.m.jd.com/static/index.html#/?starId=meiditongliya" target="_blank">家电星推官</a>
+    <br>
+    <a style="color:red" href="https://bunearth.m.jd.com/babelDiy/Zeus/4DEZi5iUgrNLD9EWknrGZhCjNv7V/index.html#/" target="_blank">星店长热爱行动</a>
+    <br>
+    <a style="color:red" onclick=Utils.copyText("https://u.jd.com/tbFM0kn")>每天领取三个京东红包</a>
+    </p>`;
+    // https://u.jd.com/toUGpaC
     container.append(activityArea);
 }
 
 function buildRecommend() {
     const recommandArea: HTMLDivElement = document.createElement("div");
     recommandArea.setAttribute("style", "border: 1px solid #000;margin: 10px 0;");
-    recommandArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>好券推荐</h3>
+    recommandArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>活动推荐</h3>
     <p style="color:red;font-weight:bold;">
-    <a style="color:red" href="https://m.jr.jd.com/member/9GcConvert/?channel=01-shouye-191214" target="_blank">9金币抢兑</a>
-    <br><a style="color:red" href="https://m.jr.jd.com/member/rightsCenter/#/white" target="_blank">12期免息券</a>
+    <a style="color:red" href="https://bunearth.m.jd.com/babelDiy/Zeus/4SJUHwGdUQYgg94PFzjZZbGZRjDd/index.html#/land" target="_blank">全民营业，瓜分十亿</a>
+    <br>
+    <a style="color:red" href="https://bunearth.m.jd.com/babelDiy/Zeus/3DDunaJMLDamrmGwu73QbqtGtbX1/index.html" target="_blank">热爱时光机</a>
+    <br>
+    <a style="color:red" href="https://urvsaggpt.m.jd.com/static/index.html#/?starId=meiditongliya" target="_blank">家电星推官</a>
+    <br>
+    <a style="color:red" href="https://bunearth.m.jd.com/babelDiy/Zeus/4DEZi5iUgrNLD9EWknrGZhCjNv7V/index.html#/" target="_blank">星店长热爱行动</a>
     </p>`;
     container.append(recommandArea);
 }
@@ -231,10 +254,16 @@ function buildPromotion() {
     container.append(promotionArea);
 }
 
+
 function buildUAarea() {
-    let UATipsDiv: HTMLDivElement = document.createElement("div");
-    UATipsDiv.innerHTML = `<div style="border: 1px solid #000;margin: 10px 0;font-weight:bold"><h2>该活动需要设置user-Agent为京东APP</h2><p><a style="color:red" href="https://gitee.com/krapnik/res/raw/master/tutorial.mp4" target="_blank">点击下载教程视频</a></p><p>部分浏览器插件会覆盖UA设置，请自行排查并关闭</p><p>【比如：京价保】</p><button style="width: 200px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block" onclick=Utils.copyText(Config.JDAppUA)>点击一键复制User-Agent</button></div>`;
+    UATipsDiv.innerHTML = `<div style="border: 1px solid #000;margin: 10px 0;font-weight:bold"><h2>该活动需要设置user-Agent为京东APP</h2><p><a style="color:red" onclick=Utils.copyText(Config.NetdiskURL)>点击下载教程视频</a></p><p>部分浏览器插件会覆盖UA设置，请自行排查并关闭</p><p>【比如：京价保】</p><button style="width: 200px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block" onclick=Utils.copyText(Config.JDAppUA)>点击一键复制User-Agent</button></div>`;
     container.append(UATipsDiv);
+}
+
+function hideUAArea() {
+    if (container && UATipsDiv) {
+        container.removeChild(UATipsDiv);
+    }
 }
 
 function buildSensorArea() {
@@ -402,8 +431,6 @@ function getEntryType(): couponType | activityType | goodsType | gameType {
         type = couponType.secKillCoupon
     } else if (/coupons\/show.action\?key=(\S*)&roleId=(\S*)/.test(Config.locationHref)) {
         type = couponType.mfreecoupon
-    } else if (Config.locationHref.includes("4PN6NLSX1vyp8xibC5sk7WZEFF5U")) {
-        type = couponType.secKillCoupon
     } else if (Config.locationHref.includes("m.jr.jd.com/member/rightsCenter/#/white")) {
         type = couponType.ReceiveCoupons
     } else if (Config.locationHref.includes("m.jr.jd.com/consumer/baitiaom/index.html")) {
@@ -414,6 +441,12 @@ function getEntryType(): couponType | activityType | goodsType | gameType {
         type = couponType.exchange
     }
 
+    if (Config.locationHref.includes("9dkC9G9avZsJoKSvqw7EbmY8pCM")) {//全民掘金大会
+        type = couponType.receiveSeckillReward
+    } else if (Config.locationHref.includes("4PN6NLSX1vyp8xibC5sk7WZEFF5U")) {
+        type = couponType.secKillCoupon
+    }
+
     //京东APP节假日营销活动
     if (Config.locationHref.includes("bunearth.m.jd.com")) {
         if (Config.locationHref.includes("4PWgqmrFHunn8C38mJA712fufguU")) {
@@ -422,20 +455,29 @@ function getEntryType(): couponType | activityType | goodsType | gameType {
             type = activityType.brandCitySpring;
         } else if (Config.locationHref.includes("21tFbS6Xm4tpon3oJnwzbnCJBo1Z")) {
             type = activityType.receiveBless;
+        } else if (Config.locationHref.includes("4SJUHwGdUQYgg94PFzjZZbGZRjDd")) {
+            type = activityType.stall;
+        } else if (Config.locationHref.includes("3DDunaJMLDamrmGwu73QbqtGtbX1")) {
+            type = activityType.timeMachine;
+        } else if (Config.locationHref.includes("4DEZi5iUgrNLD9EWknrGZhCjNv7V")) {
+            type = activityType.starMall;
         }
     }
-    if (Config.locationHref.includes("palace")) {
-        type = activityType.palace;
+    if (Config.locationHref.includes("3gSzKSnvrrhYushciUpzHcDnkYE3")) {
+        type = activityType.guardianstar;
+    }
+    if(Config.locationHref.includes("urvsaggpt.m.jd.com")){
+        type = activityType.guardianstar;
     }
 
     //京东金融APP节假日营销活动
 
-    if (Config.locationHref.includes("u.jr.jd.com")) {
-        //https://u.jr.jd.com/uc-fe-wxgrowing/feedbag/cover/channelLv=syfc/
-        if (Config.locationHref.includes("feedbag")) {
-            type = activityType.feedBag;
-        }
-    }
+    // if (Config.locationHref.includes("u.jr.jd.com")) {
+    //     //https://u.jr.jd.com/uc-fe-wxgrowing/feedbag/cover/channelLv=syfc/
+    //     if (Config.locationHref.includes("feedbag")) {
+    //         type = activityType.feedBag;
+    //     }
+    // }
 
     //调整为全局主动切换
     // if (Config.locationHref.includes("uc-fe-wxgrowing")) {
@@ -452,6 +494,7 @@ function getEntryType(): couponType | activityType | goodsType | gameType {
 function getEntryDesc(type: couponType | activityType | goodsType | gameType) {
     buildTitle();
     // buildPromotion();
+
     switch (type) {
         case goodsType.goods:
             const goodsId = Config.locationHref.match(/jd.com\/(\S*).html/)![1];
@@ -500,6 +543,10 @@ function getEntryDesc(type: couponType | activityType | goodsType | gameType) {
             const itemId = Utils.GetQueryString("id");
             coupon = new Exchange({ "itemId": itemId }, container, outputTextArea);
             break;
+        case couponType.receiveSeckillReward:
+            coupon = new ReceiveSeckillReward(null, container, outputTextArea);
+            break
+
         // case activityType.monsterNian:
         //     activity = new MonsterNian(null, container, outputTextArea);
         //     Config.UAFlag = true;
@@ -514,8 +561,20 @@ function getEntryDesc(type: couponType | activityType | goodsType | gameType) {
         //     activity = new ReceiveBless(null, container, outputTextArea);
         //     Config.UAFlag = true;
         //     break;
-        case activityType.feedBag:
-            activity = new FeedBag(null, container, outputTextArea);
+        case activityType.stall:
+            activity = new Stall(container, outputTextArea);
+            Config.UAFlag = true;
+            break;
+        case activityType.timeMachine:
+            activity = new TimeMachine(container, outputTextArea);
+            break;
+        case activityType.starMall:
+            Config.UAFlag = true;
+            activity = new StarMall(container, outputTextArea);
+            break;
+        case activityType.guardianstar:
+            Config.UAFlag = true;
+            activity = new Guardianstar(container, outputTextArea);
             break;
         default:
             break;
@@ -523,20 +582,22 @@ function getEntryDesc(type: couponType | activityType | goodsType | gameType) {
     if (Config.UAFlag) {
         buildUAarea();
     }
-    buildRecommend();
-    // buildActivity();
+    // buildRecommend();//活动推荐
+    buildActivity();
     if (isJDcontext) {
-        buildSensorArea();
+        // buildSensorArea();
         buildOperate();
         // buildExtensionTab();
         Utils.createJsonp(`${Config.JDUserInfoURL}&callback=getLoginMsg`);
     }
+
+    
     if (coupon) {
         Config.intervalId = window.setInterval(getTime, Config.intervalSpan);
         coupon.get();
     } else if (activity) {
         // buildActivity();
-        // buildTimeoutArea();
+        buildTimeoutArea();
         activity.get();
     } else if (goods) {
         goods.get();

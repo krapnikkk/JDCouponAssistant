@@ -11,230 +11,1482 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
-class feedBag {
-    // shareLink: object = { "shareRandom": "1587146063292JtfbSwE6ct05RxB_AvGf5g", "shareId": "JtfbSwE6ct05RxB_AvGf5g" };
-    constructor(params, containerDiv, outputTextarea) {
-        this.rootURI = "https://ms.jr.jd.com/gw/generic/uc/h5/m/";
-        this.baseReqData = { "channelLv": null, "source": "0", "riskDeviceParam": "{\"eid\":\"\",\"fp\":\"\",\"sdkToken\":\"\",\"token\":\"\",\"jstub\":\"\"}" };
-        this.userTotalScore = 0;
-        this.shareId = "";
-        this.shareRandom = "";
-        this.shareLink = { "shareRandom": "1587139212990lQpOJD2ANodhfTtc592rN8AdoUJQ3Dik", "shareId": "lQpOJD2ANodhfTtc592rN8AdoUJQ3Dik" };
-        this.params = params;
+class Guardianstar {
+    constructor(containerDiv, outputTextarea) {
+        this.data = [];
+        this.token = "jd6df03bd53f0f292f";
+        this.starIdArr = ['meiditongliya', 'bolangwutiaoren', 'quechaozhuyilong', 'haierchenxiao', 'oulebyangzi', 'haiermaoxiaotong', 'changhongsongyi', 'skgwangyibo'];
         this.container = containerDiv;
         this.outputTextarea = outputTextarea;
-        this.content = document.createElement("div");
     }
     get() {
-        this.list();
+        return __awaiter(this, void 0, void 0, function* () {
+            this.doTask();
+        });
+    }
+    doTask() {
+        return __awaiter(this, void 0, void 0, function* () {
+            for (let i = 0; i < this.starIdArr.length; i++) {
+                yield new Promise(resolve => {
+                    let starId = this.starIdArr[i];
+                    utils_1.default.outPutLog(this.outputTextarea, `当前明星：${starId}`);
+                    fetch(`https://urvsaggpt.m.jd.com/guardianstar/getHomePage?t=${new Date().getTime()}&starId=${starId}`).then(res => res.json()).then((json) => __awaiter(this, void 0, void 0, function* () {
+                        let data = json.data;
+                        let { shopList, venueList, productList } = data[0];
+                        yield utils_1.default.sleep(1000);
+                        utils_1.default.outPutLog(this.outputTextarea, '开始商店任务');
+                        for (let i = 0; i < shopList.length; i++) {
+                            // await Utils.sleep(1000);
+                            let shop = shopList[i];
+                            yield new Promise((resolveFn) => __awaiter(this, void 0, void 0, function* () {
+                                utils_1.default.outPutLog(this.outputTextarea, `商店任务${i + 1}/${shopList.length}`);
+                                if (shop.shopStatus != 3 && shop.shopStatus != 4) {
+                                    let body = { starId: starId, id: shop.shopId, type: "shop", status: shop.shopStatus };
+                                    if (shop.shopStatus == 1) {
+                                        this.doTaskPost(body).then((res) => {
+                                            utils_1.default.outPutLog(this.outputTextarea, res.msg);
+                                        });
+                                        utils_1.default.outPutLog(this.outputTextarea, '模拟浏览任务等待10s');
+                                        yield utils_1.default.sleep(11000);
+                                    }
+                                    body.status = 2;
+                                    this.doTaskPost(body).then((res) => {
+                                        utils_1.default.outPutLog(this.outputTextarea, res.msg);
+                                    });
+                                }
+                                else {
+                                    utils_1.default.outPutLog(this.outputTextarea, `任务已完成`);
+                                }
+                                yield utils_1.default.sleep(1000);
+                                resolveFn();
+                            }));
+                        }
+                        utils_1.default.outPutLog(this.outputTextarea, '商店任务已完成~');
+                        yield utils_1.default.sleep(1000);
+                        utils_1.default.outPutLog(this.outputTextarea, '开始会场任务');
+                        for (let i = 0; i < venueList.length; i++) {
+                            let venue = venueList[i];
+                            yield new Promise((resolveFn) => __awaiter(this, void 0, void 0, function* () {
+                                utils_1.default.outPutLog(this.outputTextarea, `会场任务:${i + 1}/${venueList.length}`);
+                                let body = { starId: starId, id: venue.venueId, type: "venue", status: venue.venueStatus };
+                                if (venue.venueStatus != 3 && venue.venueStatus != 4) {
+                                    if (venue.venueStatus == 1) {
+                                        this.doTaskPost(body).then((res) => {
+                                            utils_1.default.outPutLog(this.outputTextarea, res.msg);
+                                        });
+                                        utils_1.default.outPutLog(this.outputTextarea, '模拟浏览任务等待10s');
+                                        yield utils_1.default.sleep(11000);
+                                    }
+                                    body.status = 2;
+                                    this.doTaskPost(body).then((res) => {
+                                        utils_1.default.outPutLog(this.outputTextarea, res.msg);
+                                    });
+                                }
+                                else {
+                                    utils_1.default.outPutLog(this.outputTextarea, `任务已完成`);
+                                }
+                                yield utils_1.default.sleep(1000);
+                                resolveFn();
+                            }));
+                        }
+                        utils_1.default.outPutLog(this.outputTextarea, '商品任务已完成~');
+                        yield utils_1.default.sleep(1000);
+                        utils_1.default.outPutLog(this.outputTextarea, '开始商品任务');
+                        for (let i = 0; i < productList.length; i++) {
+                            let product = productList[i];
+                            yield new Promise((resolveFn) => __awaiter(this, void 0, void 0, function* () {
+                                utils_1.default.outPutLog(this.outputTextarea, `商品任务:${i + 1}/${productList.length}`);
+                                let body = { starId: starId, id: product.productId, type: "product", status: product.productStatus };
+                                if (product.productStatus != 3 && product.productStatus != 4) {
+                                    if (product.productStatus == 1) {
+                                        this.doTaskPost(body).then((res) => {
+                                            utils_1.default.outPutLog(this.outputTextarea, res.msg);
+                                        });
+                                        utils_1.default.outPutLog(this.outputTextarea, '模拟浏览任务等待10s');
+                                        yield utils_1.default.sleep(11000);
+                                    }
+                                    body.status = 2;
+                                    this.doTaskPost(body).then((res) => {
+                                        utils_1.default.outPutLog(this.outputTextarea, res.msg);
+                                    });
+                                }
+                                else {
+                                    utils_1.default.outPutLog(this.outputTextarea, `任务已完成`);
+                                }
+                                yield utils_1.default.sleep(1000);
+                                resolveFn();
+                            }));
+                        }
+                        utils_1.default.outPutLog(this.outputTextarea, '商品任务已完成~');
+                        resolve();
+                    }));
+                });
+            }
+        });
+    }
+    list() {
+        const content = document.createElement("div");
+        content.innerHTML = `<h1 style="color:red;font-weight: 700;font-size: 18px;">本活动页脚本自动执行,请留意控制台输出</h1>`;
+        this.container.appendChild(content);
+    }
+    doTaskPost(data) {
+        let { starId, id, type, status } = data;
+        return fetch('https://urvsaggpt.m.jd.com/guardianstar/doTask', {
+            body: `starId=${starId}&type=${type}&id=${id}&status=${status}`,
+            headers: {
+                "content-type": "application/x-www-form-urlencoded",
+            },
+            method: "POST",
+            credentials: "include"
+        }).then(res => res.json());
+    }
+}
+exports.default = Guardianstar;
+
+},{"../utils/utils":30}],2:[function(require,module,exports){
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = require("../utils/utils");
+const config_1 = require("../config/config");
+class Stall {
+    constructor(containerDiv, outputTextarea) {
+        this.data = [];
+        this.taskVos = [];
+        this.timer = 1000;
+        this.secretp = "";
+        this.inviteUrl = 'https://bunearth.m.jd.com/babelDiy/Zeus/4SJUHwGdUQYgg94PFzjZZbGZRjDd/index.html?shareType=homeTask&inviteId=';
+        this.groupInvitedUrl = 'https://bunearth.m.jd.com/babelDiy/Zeus/4SJUHwGdUQYgg94PFzjZZbGZRjDd/index.html?shareType=cbdDay&inviteId=';
+        this.switchFlag = true;
+        this.switchtimer = 0;
+        this.container = containerDiv;
+        this.outputTextarea = outputTextarea;
+    }
+    get() {
+        utils_1.default.outPutLog(this.outputTextarea, `当你看到这行文字时，说明你还没有配置好浏览器UA或者还没有登录京东帐号！`);
+        // 获取基础信息
+        Promise.all([
+            utils_1.default.request("stall_getHomeData"),
+            new Promise((resolve) => {
+                setTimeout(() => {
+                    utils_1.default.request("stall_getTaskDetail").then(resolve);
+                }, 1000);
+            }),
+        ]).then(([homeData, taskData]) => Promise.all([homeData, taskData]))
+            .then(([homeData, taskData]) => {
+            this.secretp = homeData.data.result.homeMainInfo.secretp;
+            this.data = taskData.data.result;
+            if (this.data) {
+                this.taskVos = this.data.taskVos;
+                let value = "";
+                for (let j = 0; j < this.data.taskVos.length; j++) {
+                    value += `\n${this.taskVos[j]["taskName"]}：${this.data.taskVos[1]["status"] == 2 ? "已完成" : "未完成"}(${this.taskVos[j]["times"]}/${this.taskVos[j]["maxTimes"]})`;
+                }
+                utils_1.default.outPutLog(this.outputTextarea, value, true, true);
+                this.list();
+            }
+        });
+    }
+    updateTask() {
+        return new Promise(reslove => {
+            utils_1.default.request("stall_getTaskDetail").then((res) => {
+                this.data = res.data.result;
+                if (this.data) {
+                    this.taskVos = this.data.taskVos;
+                    let value = '任务数据更新成功';
+                    for (let j = 0; j < this.data.taskVos.length; j++) {
+                        value += `\n${this.taskVos[j]["taskName"]}：${this.data.taskVos[1]["status"] == 2 ? "已完成" : "未完成"}(${this.taskVos[j]["times"]}/${this.taskVos[j]["maxTimes"]})`;
+                    }
+                    utils_1.default.outPutLog(this.outputTextarea, value);
+                }
+                reslove();
+            }).catch(() => {
+                utils_1.default.outPutLog(this.outputTextarea, "数据获取失败，请稍后再试");
+            });
+        });
     }
     list() {
+        let hours = new Date().getHours();
+        if (hours >= 20 && hours < 22) {
+            this.helpGroup(false);
+        }
+        let UATipsDiv = utils_1._$('#UATipsDiv');
+        if (this.container && UATipsDiv) {
+            this.container.removeChild(UATipsDiv);
+        }
+        const content = document.createElement("div");
         let msg = `
-            <div>
-                <button class="login1" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">查看金贴详情</button>
-                <button class="getMainMission" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">每天主线任务</button>
-                <button class="getMainMission1" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">每天支线任务</button>
-                <button class="userFeedAction" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">投喂金贴</button>
-                <button class="share" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">获取我的助力链接</button>
-                <button class="help" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;">给作者助力</button>
-            </div>
-        <div>`;
-        this.content.innerHTML = msg;
-        this.container.appendChild(this.content);
-        const l = utils_1._$(".login1"), u = utils_1._$(".userFeedAction"), s = utils_1._$(".share"), h = utils_1._$(".help"), g = utils_1._$(".getMainMission");
-        g.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
-            utils_1.default.outPutLog(this.outputTextarea, `每天主线任务`);
-            this.getMainMission();
+        <div style="margin:10px;">
+        <button class="help" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">帮作者助力</button>
+        <button class="helpGroup" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">帮助作者商圈助力</button>
+        <button class="invite" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">获取助力链接</button>
+        <input class="inviteLink" type="text" style="width:80vw;height: 25px;font-size:14px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;" placeholder="请输入需要助力的分享链接">
+        <button class="assist" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">为TA助力</button>
+        <button class="group" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">获取商圈分享链接</button>
+        <input class="groupLink" type="text" style="width:80vw;height: 25px;font-size:14px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;" placeholder="请输入需要助力的商圈的分享链接">
+        <button class="assistGroup" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">为这个商圈助力</button>
+        <button class="steal" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">抢夺商圈红包</button>
+        <button class="raise" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">解锁升级</button>
+        <button class="collect" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">收取金币</button>
+        <input class="timerSpan" type="text" style="width:80vw;height: 25px;font-size:14px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;" placeholder="请输入定时时间间隔（毫秒）">
+        <button class="timer" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">定时收取金币</button>
+        <button class="auto" style="width: 120px;height:30px;background-color: red;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键完成任务</button>
+        <hr>
+        <p style="text-align:center;font-weight:700;color:red;">一键完成任务将会默认为作者助力<br>操作的时候不要执行其他任务</p>
+        <hr>
+        <button class="deliver" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">快递小哥送货</button>
+        <button class="signIn" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">每天签到</button>
+        <button class="master" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">逛逛主会场</button>
+        <button class="browser" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">逛逛商铺</button>
+        <button class="shopping" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">逛逛会场</button>
+        <button class="funny" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">好玩互动</button>
+        <button class="viewProduct" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">浏览好物</button>
+        <button class="addproduct" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">好物加购</button>
+        <button class="goodShopping" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">逛逛好物会场</button>
+        <button class="others" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">浏览其他活动</button>
+        <button class="treasure" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">寻宝箱领金币</button>
+        <button class="city" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">城市版图任务</button>
+        
+        </div>`;
+        // <button class="" disabled style="width: 120px;height:30px;background-color: gray;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">开通联合会员任务</button>
+        // <button class="join" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">加入作者战队</button>
+        content.innerHTML = msg;
+        this.container.appendChild(content);
+        const signIn = utils_1._$('.signIn'), others = utils_1._$('.others'), group = utils_1._$('.group'), master = utils_1._$('.master'), steal = utils_1._$('.steal'), help = utils_1._$('.help'), funny = utils_1._$('.funny'), viewProduct = utils_1._$('.viewProduct'), city = utils_1._$('.city'), shopping = utils_1._$('.shopping'), invite = utils_1._$('.invite'), goodShopping = utils_1._$('.goodShopping'), timer = utils_1._$('.timer'), deliver = utils_1._$('.deliver'), raise = utils_1._$('.raise'), collect = utils_1._$(".collect"), browser = utils_1._$('.browser'), assistGroup = utils_1._$('.assistGroup'), helpGroup = utils_1._$('.helpGroup'), assist = utils_1._$('.assist'), auto = utils_1._$('.auto'), treasure = utils_1._$('.treasure'), addproduct = utils_1._$('.addproduct');
+        auto.addEventListener('click', () => {
+            this.autoDoTask();
+        });
+        signIn.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            this.signInEvent();
         }));
-        u.addEventListener('click', () => {
-            utils_1.default.outPutLog(this.outputTextarea, `投喂金贴`);
-            this.userFeedAction();
-        });
-        l.addEventListener('click', () => {
-            utils_1.default.outPutLog(this.outputTextarea, `查看金贴详情`);
-            this.login1();
-        });
-        s.addEventListener('click', () => {
-            alert("邀请链接每天都会变动！！");
-            utils_1.default.copyText(`https://u.jr.jd.com/uc-fe-wxgrowing/feedbag/cover/channelLv=syfc/?channelLv=&sourceID=326&actflag=FE0AD3214D&isPay=N&shareId=${this.shareId}&shareRandom=${this.shareRandom}&jrcontainer=h5&jrlogin=true#/pages/home/index?id=2&type=test`);
-        });
-        h.addEventListener('click', () => {
-            this.login1(this.shareLink);
-        });
-        this.login1();
-    }
-    login1(options = {}) {
-        fetch(this.rootURI + "login1", {
-            method: "POST",
-            mode: "cors",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: options == {} ? "reqData=" + JSON.stringify(this.baseReqData) : "reqData=" + JSON.stringify(Object.assign(options, this.baseReqData))
-        }).then(function (response) {
-            return response.json();
-        }).then((res) => {
-            if (res.resultCode == 0) {
-                let data = res.resultData;
-                if (data.code == "0") {
-                    let { userGrade, currentLevelRewardName, upGradeFeedNum, userTotalScore, nowGradeFeedingNum, shareId, shareRandom, popupType, assistanceReward } = data.data;
-                    this.userTotalScore = (userTotalScore > nowGradeFeedingNum) && nowGradeFeedingNum > 0 ? nowGradeFeedingNum : userTotalScore;
-                    this.shareId = shareId;
-                    this.shareRandom = shareRandom;
-                    if (popupType.length > 0 && popupType[0] == 1) {
-                        utils_1.default.outPutLog(this.outputTextarea, `谢谢你, 助力成功啦~ 获得金币:${assistanceReward}`);
-                    }
-                    else {
-                        utils_1.default.outPutLog(this.outputTextarea, `等级:${userGrade} ${currentLevelRewardName} 可用金币:${userTotalScore} 当前进度:${nowGradeFeedingNum}/${upGradeFeedNum}`);
-                    }
-                }
-                else {
-                    utils_1.default.outPutLog(this.outputTextarea, `${data.msg}`);
-                }
+        deliver.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            this.deliverEvent();
+        }));
+        treasure.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            this.openTreasure();
+        }));
+        master.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            this.doTask(3, `开始每天主会场任务`, "shoppingActivityVos");
+        }));
+        addproduct.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            this.addproductEvent();
+        }));
+        shopping.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            this.doTask(9, `开始自动逛逛会场任务`, "shoppingActivityVos");
+        }));
+        goodShopping.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            this.doTask(16, `开始自动逛逛好物会场任务`, "shoppingActivityVos");
+        }));
+        funny.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            this.doTask(14, `开始自动好玩互动任务`, "shoppingActivityVos");
+        }));
+        others.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            this.doTask(15, `开始自动好玩互动任务`, "shoppingActivityVos");
+        }));
+        viewProduct.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            this.viewProductEvent();
+        }));
+        browser.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            this.browserEvent();
+        }));
+        steal.addEventListener('click', () => {
+            utils_1.default.outPutLog(this.outputTextarea, `开始抢夺红包`);
+            if (new Date().getHours() < 20) {
+                alert('不在使用时间范围内！');
             }
             else {
-                utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+                this.steal();
+            }
+        });
+        collect.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            utils_1.default.outPutLog(this.outputTextarea, `开始收取金币`);
+            yield this.collect();
+        }));
+        group.addEventListener('click', () => {
+            this.group();
+        });
+        timer.addEventListener('click', () => {
+            this.switchTimer();
+        });
+        helpGroup.addEventListener('click', () => {
+            this.helpGroup();
+        });
+        help.addEventListener('click', () => {
+            this.help();
+        });
+        invite.addEventListener('click', () => {
+            this.getInvite();
+        });
+        assistGroup.addEventListener('click', () => {
+            const link = utils_1._$('.groupLink');
+            this.assistGroup(link.value);
+        });
+        assist.addEventListener('click', () => {
+            const link = utils_1._$('.inviteLink');
+            this.assist(link.value);
+        });
+        raise.addEventListener('click', () => {
+            this.raise();
+        });
+        city.addEventListener('click', () => {
+            utils_1.default.outPutLog(this.outputTextarea, `开始城市版图任务`);
+            this.visit();
+        });
+        let e = document.createEvent("MouseEvents");
+        e.initEvent("click", true, true);
+    }
+    signInEvent() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new Promise((reslove) => __awaiter(this, void 0, void 0, function* () {
+                let taskVo = this.getTaskById(1);
+                utils_1.default.outPutLog(this.outputTextarea, `开始每天签到任务`);
+                if (!taskVo || taskVo["status"] == 2) {
+                    utils_1.default.outPutLog(this.outputTextarea, `系统尚未分配到该任务或者任务已完成，先去完成其他任务吧~`);
+                }
+                else {
+                    yield this.single(1, "1");
+                }
+                reslove();
+            }));
+        });
+    }
+    deliverEvent() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new Promise((reslove) => __awaiter(this, void 0, void 0, function* () {
+                let taskVo = this.getTaskById(24);
+                utils_1.default.outPutLog(this.outputTextarea, `开始快递小哥送快递任务`);
+                if (!taskVo || taskVo["status"] == 2) {
+                    utils_1.default.outPutLog(this.outputTextarea, `系统尚未分配到该任务或者任务已完成，先去完成其他任务吧~`);
+                }
+                else {
+                    yield this.multi(24, "1", 5);
+                    yield this.updateTask();
+                }
+                reslove();
+            }));
+        });
+    }
+    addproductEvent() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new Promise((reslove) => __awaiter(this, void 0, void 0, function* () {
+                let taskVo = this.getTaskById(101);
+                if (!taskVo || taskVo["status"] == 2) {
+                    utils_1.default.outPutLog(this.outputTextarea, `系统尚未分配到该任务或者任务已完成，先去完成其他任务吧~`);
+                }
+                else {
+                    utils_1.default.outPutLog(this.outputTextarea, `开始自动加购好物任务`);
+                    yield this.add(taskVo["productInfoVos"], taskVo["taskId"]);
+                    yield this.updateTask();
+                }
+                reslove();
+            }));
+        });
+    }
+    viewProductEvent() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new Promise((reslove) => __awaiter(this, void 0, void 0, function* () {
+                let taskVo = this.getTaskById(100);
+                if (!taskVo || taskVo["status"] == 2) {
+                    utils_1.default.outPutLog(this.outputTextarea, `系统尚未分配到该任务或者任务已完成，先去完成其他任务吧~`);
+                }
+                else {
+                    utils_1.default.outPutLog(this.outputTextarea, `开始自动浏览好物任务`);
+                    yield this.view(taskVo["productInfoVos"], taskVo["taskId"]);
+                    yield this.updateTask();
+                }
+                reslove();
+            }));
+        });
+    }
+    browserEvent() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new Promise((reslove) => __awaiter(this, void 0, void 0, function* () {
+                utils_1.default.outPutLog(this.outputTextarea, `开始自逛逛商店任务`);
+                let taskVo = this.getTaskById(10);
+                if (!taskVo || taskVo["status"] == 2) {
+                    utils_1.default.outPutLog(this.outputTextarea, `系统尚未分配到该任务或者任务已完成，先去完成其他任务吧~`);
+                }
+                else {
+                    yield this.browser(taskVo["browseShopVo"], taskVo["taskId"]);
+                    yield this.updateTask();
+                }
+                reslove();
+            }));
+        });
+    }
+    doTask(taskId, title, key, once = false) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let taskVo = this.getTaskById(taskId);
+            utils_1.default.outPutLog(this.outputTextarea, title);
+            if (!taskVo || taskVo["status"] == 2) {
+                utils_1.default.outPutLog(this.outputTextarea, `系统尚未分配到该任务或者任务已完成，先去完成其他任务吧~`);
+            }
+            else {
+                yield this.send(taskVo[key], taskVo["taskId"]);
+                yield this.updateTask();
             }
         });
     }
-    getMainMission() {
-        fetch(this.rootURI + "getMainMission", {
-            method: "POST",
-            mode: "cors",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: "reqData=" + JSON.stringify(this.baseReqData)
-        }).then(function (response) {
-            return response.json();
-        }).then((res) => {
-            if (res.resultCode == 0) {
-                let data = res.resultData;
-                if (data.code == "0") {
-                    let allMissionDone = data.data.allMissionDone;
-                    if (allMissionDone) {
-                        utils_1.default.outPutLog(this.outputTextarea, `当天的主线任务已经完成啦~`);
+    autoDoTask() {
+        return __awaiter(this, void 0, void 0, function* () {
+            utils_1.default.outPutLog(this.outputTextarea, '开始自动一键执行任务');
+            yield this.updateTask();
+            this.helpGroup();
+            this.help();
+            yield this.signInEvent();
+            yield this.deliverEvent();
+            yield this.browserEvent();
+            yield this.viewProductEvent();
+            yield this.doTask(3, `开始每天主会场任务`, "shoppingActivityVos");
+            yield this.doTask(9, `开始自动逛逛会场任务`, "shoppingActivityVos");
+            yield this.doTask(14, `开始自动好玩互动任务`, "shoppingActivityVos");
+            yield this.doTask(16, `开始自动逛逛好物会场任务`, "shoppingActivityVos");
+            yield this.doTask(15, `开始自动好玩互动任务`, "shoppingActivityVos");
+            yield this.addproductEvent();
+            yield this.visit();
+            yield this.openTreasure();
+            utils_1.default.outPutLog(this.outputTextarea, '所有任务已完成');
+        });
+    }
+    getTaskById(id) {
+        return this.taskVos.filter((value) => {
+            return value['taskId'] == id;
+        })[0];
+    }
+    single(taskId, itemId) {
+        return new Promise(reslove => {
+            let extraData = {
+                id: "homeWorldCityCourierSmashId0",
+                data: {
+                    inviteId: "-1",
+                    stealId: "-1",
+                    rnd: this.getRnd(),
+                    taskId: taskId
+                }
+            };
+            let postData = { "taskId": taskId, "itemId": itemId, "ss": `{\"extraData\":${this.getExtraData(extraData)},\"businessData\":{\"taskId\":${taskId},\"rnd\":\"${extraData['data']['rnd']}\",\"inviteId\":\"-1\",\"stealId\":\"-1\"},\"secretp\":\"${this.secretp}\"}`, "shopSign": "" };
+            utils_1.default.request("stall_collectScore", postData).then((res) => {
+                utils_1.default.outPutLog(this.outputTextarea, res.data.bizMsg);
+                reslove();
+            }).catch(() => {
+                reslove();
+            });
+        });
+    }
+    multi(taskId, itemId, count) {
+        return __awaiter(this, void 0, void 0, function* () {
+            for (let i = 0; i < count; i++) {
+                yield this.single(taskId, itemId);
+                yield utils_1.default.sleep(8000);
+            }
+        });
+    }
+    collect() {
+        return new Promise(reslove => {
+            let extraData = {
+                id: "jmdd-react-smash_0",
+                data: {
+                    inviteId: "-1",
+                    stealId: "-1",
+                    rnd: this.getRnd(),
+                    taskId: "collectProducedCoin"
+                }
+            };
+            let postData = {
+                "ss": `{\"extraData\":${this.getExtraData(extraData)},\"businessData\":{\"taskId\":\"collectProducedCoin\",\"rnd\":\"${extraData['data']['rnd']}\",\"inviteId\":\"-1\",\"stealId\":\"-1\"},\"secretp\":\"${this.secretp}\"}`
+            };
+            utils_1.default.request('stall_collectProduceScore', postData).then(res => {
+                utils_1.default.outPutLog(this.outputTextarea, "领取金币:" + res.data.result.produceScore);
+                reslove();
+            });
+        });
+    }
+    switchTimer() {
+        if (this.switchFlag) {
+            let span = +utils_1._$('.timerSpan').value;
+            if (span <= 60000) {
+                alert(`当前领取时间间隔太短了！建议调整一下！`);
+                return;
+            }
+            utils_1.default.outPutLog(this.outputTextarea, "开启定时器");
+            utils_1._$('.timer').innerText = '取消定时收取';
+            this.switchtimer = window.setInterval(() => {
+                this.collect();
+            }, span);
+        }
+        else {
+            utils_1.default.outPutLog(this.outputTextarea, "停止定时器");
+            utils_1._$('.timer').innerText = '定时收取金币';
+            window.clearInterval(this.switchtimer);
+            this.timer = 0;
+        }
+        this.switchFlag = !this.switchFlag;
+    }
+    visit() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new Promise((next) => __awaiter(this, void 0, void 0, function* () {
+                utils_1.default.request('stall_myShop', {}).then((res) => __awaiter(this, void 0, void 0, function* () {
+                    let shopList = res.data.result.shopList;
+                    let self = this, length = shopList.length;
+                    for (let i = 0; i < length; i++) {
+                        let city = shopList[i], shopSign = city['shopId'];
+                        utils_1.default.outPutLog(self.outputTextarea, `任务城市进度：${i + 1}/${length}当前任务城市：${city['name']}`);
+                        yield utils_1.default.sleep(3000);
+                        let postData = { "shopSign": shopSign };
+                        yield new Promise(resolve => {
+                            utils_1.default.request('stall_getTaskDetail', postData).then((result) => __awaiter(this, void 0, void 0, function* () {
+                                let taskVos = result.data.result.taskVos;
+                                for (let j = 0; j < taskVos.length; j++) {
+                                    let taskVo = taskVos[j];
+                                    if (taskVo['status'] == 2) {
+                                        utils_1.default.outPutLog(self.outputTextarea, `当前任务已完成!跳过~`);
+                                    }
+                                    else {
+                                        yield new Promise(resolveFn => {
+                                            utils_1.default.outPutLog(self.outputTextarea, `定时模拟等待任务结束!`);
+                                            setTimeout(() => __awaiter(this, void 0, void 0, function* () {
+                                                let extraData = {
+                                                    id: "domainAutoSignSmashId",
+                                                    data: {
+                                                        inviteId: "-1",
+                                                        stealId: "-1",
+                                                        rnd: this.getRnd(),
+                                                        taskId: taskVo['taskId']
+                                                    }
+                                                };
+                                                let postData = { "taskId": taskVo['taskId'], "itemId": this.getItemIdByName(taskVo, taskVo['taskName'], taskVo['taskId']), "ss": `{\"extraData\":${this.getExtraData(extraData)},\"businessData\":{\"taskId\":${taskVo['taskId']},\"rnd\":\"${extraData['data']['rnd']}\",\"inviteId\":\"-1\",\"stealId\":\"-1\"},\"secretp\":\"${this.secretp}\"}`, "shopSign": shopSign };
+                                                yield utils_1.default.request("stall_collectScore", postData).then(() => {
+                                                    utils_1.default.outPutLog(self.outputTextarea, `当前任务已完成!`);
+                                                    resolveFn();
+                                                });
+                                            }), (config_1.default.timeoutSpan + utils_1.default.random(300, 500)));
+                                        });
+                                    }
+                                }
+                                utils_1.default.outPutLog(self.outputTextarea, `任务已完成${i + 1}/${length}`);
+                                resolve();
+                            })).catch(() => {
+                                resolve();
+                            });
+                        });
                     }
-                    else {
-                        let awrad = data.data.bigAwardList;
-                        let { workName, prizeAmount, mid } = awrad;
-                        utils_1.default.outPutLog(this.outputTextarea, `任务名称：${workName} 任务奖励：${prizeAmount}`);
-                        this.setBrowserAward(mid, prizeAmount, workName);
-                    }
+                    next();
+                })).catch(() => {
+                    next();
+                });
+            }));
+        });
+    }
+    getVoNameById(id) {
+        let voName = '';
+        switch (id) {
+            case 1:
+                voName = 'simpleRecordInfoVo';
+                break;
+            case 2:
+                voName = 'followShopVo';
+                break;
+            case 3:
+                voName = 'shoppingActivityVos';
+                break;
+            default:
+                voName = 'shoppingActivityVos';
+                break;
+        }
+        return voName;
+    }
+    getItemIdByName(task, name, taskId) {
+        let VoName = this.getVoNameById(taskId);
+        if (taskId == 1) {
+            return task[VoName]['itemId'];
+        }
+        else {
+            let shop = task[VoName].filter((shopVo) => {
+                return shopVo['shopName'] == task['taskName'] || shopVo['subtitle'] == task['taskName'];
+            })[0];
+            return shop ? shop['itemId'] : task[VoName][0]['itemId'];
+        }
+    }
+    browser(data, taskId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new Promise((next) => __awaiter(this, void 0, void 0, function* () {
+                let self = this, length = data.length;
+                for (let i = 0; i < length; i++) {
+                    let extraData = {
+                        id: "jmdd-react-smash_74",
+                        data: {
+                            inviteId: "-1",
+                            stealId: "-1",
+                            rnd: this.getRnd(),
+                            taskId: taskId
+                        }
+                    };
+                    let postData = { "taskId": taskId, "itemId": data[i]['itemId'], "actionType": "1", "ss": `{\"extraData\":${this.getExtraData(extraData)},\"businessData\":{\"taskId\":${taskId},\"rnd\":\"${extraData['data']['rnd']}\",\"inviteId\":\"-1\",\"stealId\":\"-1\"},\"secretp\":\"${this.secretp}\"}`, "shopSign": "" };
+                    yield new Promise((resolve) => __awaiter(this, void 0, void 0, function* () {
+                        yield utils_1.default.sleep(config_1.default.timeoutSpan + utils_1.default.random(300, 500));
+                        yield utils_1.default.request("stall_collectScore", postData).then(() => {
+                            utils_1.default.outPutLog(self.outputTextarea, `模拟关注店铺中!`);
+                            utils_1.default.request('followShop', { "shopId": data[i]['shopId'], "follow": true, "type": "0" }).then(() => __awaiter(this, void 0, void 0, function* () {
+                                utils_1.default.outPutLog(self.outputTextarea, `等待8s任务完成后再领取奖励中`);
+                                yield utils_1.default.sleep(8000 + utils_1.default.random(300, 500));
+                                let extraData = {
+                                    id: "jmdd-react-smash_74",
+                                    data: {
+                                        inviteId: "-1",
+                                        stealId: "-1",
+                                        rnd: this.getRnd(),
+                                        taskId: taskId
+                                    }
+                                };
+                                let postData = { "taskId": taskId, "itemId": data[i]['itemId'], "ss": `{\"extraData\":${this.getExtraData(extraData)},\"businessData\":{\"taskId\":${taskId},\"rnd\":\"${extraData['data']['rnd']}\",\"inviteId\":\"-1\",\"stealId\":\"-1\"},\"secretp\":\"${this.secretp}\"}`, "shopSign": "" };
+                                utils_1.default.request('stall_collectScore', postData).then((res) => {
+                                    var _a, _b, _c;
+                                    utils_1.default.outPutLog(self.outputTextarea, `${(_c = (_b = (_a = res) === null || _a === void 0 ? void 0 : _a.data) === null || _b === void 0 ? void 0 : _b.result) === null || _c === void 0 ? void 0 : _c.successToast}`);
+                                    utils_1.default.outPutLog(self.outputTextarea, `操作成功！任务序号：${i + 1}/${length}`);
+                                    if (i + 1 >= length) {
+                                        utils_1.default.outPutLog(self.outputTextarea, `当前任务已完成!`);
+                                    }
+                                    resolve();
+                                }).catch(() => {
+                                    resolve();
+                                });
+                            }));
+                        }).catch(() => {
+                            resolve();
+                        });
+                    }));
                 }
-                else {
-                    utils_1.default.outPutLog(this.outputTextarea, `${data.msg}`);
+                next();
+            }));
+        });
+    }
+    view(data, taskId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new Promise((next) => __awaiter(this, void 0, void 0, function* () {
+                let length = data.length;
+                for (let i = 0; i < length; i++) {
+                    let postData = { "taskId": taskId };
+                    yield new Promise((resolve) => __awaiter(this, void 0, void 0, function* () {
+                        yield utils_1.default.sleep(config_1.default.timeoutSpan + utils_1.default.random(300, 500));
+                        yield utils_1.default.request("stall_getFeedDetail", postData).then((res) => __awaiter(this, void 0, void 0, function* () {
+                            utils_1.default.outPutLog(this.outputTextarea, `模拟浏览商品中!`);
+                            let totalCounter = 5;
+                            for (let j = 0; j < totalCounter; j++) {
+                                let productInfoVos = res.data.result.viewProductVos[i].productInfoVos, productInfoVo = productInfoVos[j], taskId = res.data.result.viewProductVos[i]['taskId'];
+                                yield new Promise((resolveFn) => __awaiter(this, void 0, void 0, function* () {
+                                    yield utils_1.default.sleep(5000 + utils_1.default.random(300, 500));
+                                    let extraData = {
+                                        id: "jmdd-react-smash_77",
+                                        data: {
+                                            inviteId: "-1",
+                                            stealId: "-1",
+                                            rnd: this.getRnd(),
+                                            taskId: taskId
+                                        }
+                                    };
+                                    let postData = { "taskId": taskId, "itemId": productInfoVo['itemId'], "ss": `{\"extraData\":${this.getExtraData(extraData)},\"businessData\":{\"taskId\":${taskId},\"rnd\":\"${extraData['data']['rnd']}\",\"inviteId\":\"-1\",\"stealId\":\"-1\"},\"secretp\":\"${this.secretp}\"}`, "shopSign": "" };
+                                    utils_1.default.request('stall_collectScore', postData).then(() => {
+                                        resolveFn();
+                                        utils_1.default.outPutLog(this.outputTextarea, `浏览商品完成!`);
+                                        if (j >= totalCounter - 1) {
+                                            utils_1.default.outPutLog(this.outputTextarea, `操作成功！任务序号：${i + 1}/${length}`);
+                                            if (i + 1 >= length) {
+                                                utils_1.default.outPutLog(this.outputTextarea, `当前任务已完成!`);
+                                            }
+                                            resolve();
+                                        }
+                                    }).catch(() => {
+                                        resolveFn();
+                                    });
+                                }));
+                            }
+                        })).catch(() => {
+                            resolve();
+                        });
+                    }));
                 }
+                next();
+            }));
+        });
+    }
+    add(data, taskId) {
+        return new Promise((next) => __awaiter(this, void 0, void 0, function* () {
+            let self = this, length = data.length;
+            for (let i = 0; i < length; i++) {
+                let postData = { "taskId": taskId };
+                yield new Promise((resolve) => __awaiter(this, void 0, void 0, function* () {
+                    yield utils_1.default.sleep(config_1.default.timeoutSpan + utils_1.default.random(300, 500));
+                    yield utils_1.default.request("stall_getFeedDetail", postData).then((res) => __awaiter(this, void 0, void 0, function* () {
+                        utils_1.default.outPutLog(self.outputTextarea, `模拟加购商品中!`);
+                        let totalCounter = 5;
+                        for (let j = 0; j < totalCounter; j++) {
+                            let productInfoVos = res.data.result.addProductVos[i].productInfoVos, productInfoVo = productInfoVos[j], taskId = res.data.result.addProductVos[i]['taskId'];
+                            yield new Promise((resolveFn) => __awaiter(this, void 0, void 0, function* () {
+                                yield utils_1.default.sleep(5000 + utils_1.default.random(300, 500));
+                                let extraData = {
+                                    id: "jmdd-react-smash_174",
+                                    data: {
+                                        inviteId: "-1",
+                                        stealId: "-1",
+                                        rnd: this.getRnd(),
+                                        taskId: taskId
+                                    }
+                                };
+                                let postData = { "taskId": taskId, "itemId": productInfoVo['itemId'], "ss": `{\"extraData\":${this.getExtraData(extraData)},\"businessData\":{\"taskId\":${taskId},\"rnd\":\"${extraData['data']['rnd']}\",\"inviteId\":\"-1\",\"stealId\":\"-1\"},\"secretp\":\"${this.secretp}\"}`, "shopSign": "" };
+                                utils_1.default.request('stall_collectScore', postData).then(() => {
+                                    resolveFn();
+                                    utils_1.default.outPutLog(self.outputTextarea, `加购商品完成!`);
+                                    if (j >= totalCounter - 1) {
+                                        utils_1.default.outPutLog(self.outputTextarea, `操作成功！任务序号：${i + 1}/${length}`);
+                                        if (i + 1 >= length) {
+                                            utils_1.default.outPutLog(self.outputTextarea, `当前任务已完成!`);
+                                        }
+                                        resolve();
+                                    }
+                                }).catch(() => {
+                                    resolveFn();
+                                });
+                            }));
+                        }
+                    })).catch(() => {
+                        resolve();
+                    });
+                }));
+            }
+            next();
+        }));
+    }
+    steal() {
+        return __awaiter(this, void 0, void 0, function* () {
+            utils_1.default.request('stall_pk_getStealForms', {}).then((res) => __awaiter(this, void 0, void 0, function* () {
+                let stealGroups = res.data.result.stealGroups;
+                let self = this, length = stealGroups.length;
+                for (let i = 0; i < length; i++) {
+                    let steal = stealGroups[i];
+                    let extraData = {
+                        id: "jmdd-react-smash_74",
+                        data: {
+                            inviteId: "-1",
+                            stealId: steal['id'],
+                            rnd: this.getRnd(),
+                            taskId: `BUSINESSID_${this.getRnd()}`
+                        }
+                    };
+                    let postData = { "stealId": steal['id'], "ss": `{\"extraData\":${this.getExtraData(extraData)},\"businessData\":{\"taskId\":\"${extraData.data.taskId}\",\"rnd\":\"${extraData.data.rnd}\",\"inviteId\":\"-1\",\"stealId\":\"${steal['id']}\"},\"secretp\":\"${this.secretp}\"}` };
+                    yield new Promise(resolve => {
+                        setTimeout(() => __awaiter(this, void 0, void 0, function* () {
+                            utils_1.default.request("stall_pk_doSteal", postData).then((res) => __awaiter(this, void 0, void 0, function* () {
+                                utils_1.default.outPutLog(self.outputTextarea, `夺取红包中!`);
+                                utils_1.default.outPutLog(self.outputTextarea, res.data.bizMsg);
+                                resolve();
+                            }));
+                        }), (5000 + utils_1.default.random(300, 500)));
+                    });
+                }
+                utils_1.default.outPutLog(self.outputTextarea, '已偷取所有可以偷取的用户的红包');
+            }));
+        });
+    }
+    openTreasure() {
+        return __awaiter(this, void 0, void 0, function* () {
+            utils_1.default.outPutLog(this.outputTextarea, '开始自动寻宝箱领金币任务');
+            utils_1.default.request('qryCompositeMaterials', { "qryParam": "[{\"type\":\"advertGroup\",\"mapTo\":\"homeFeedBanner\",\"id\":\"04891279\"},{\"type\":\"advertGroup\",\"mapTo\":\"homeBottomBanner\",\"id\":\"04888981\"},{\"type\":\"advertGroup\",\"mapTo\":\"homeBottomBanner2\",\"id\":\"04958033\"}]", "activityId": "4SJUHwGdUQYgg94PFzjZZbGZRjDd", "pageId": "", "reqSrc": "", "applyKey": "raiders_venue_lite" }).then((res) => __awaiter(this, void 0, void 0, function* () {
+                let homeBottomBanner = res.data.homeBottomBanner2.list;
+                for (let i = 0; i < 10; i++) {
+                    let shop = homeBottomBanner[i];
+                    let extraData = {
+                        id: "domainAutoSignSmashId",
+                        data: {
+                            inviteId: "-1",
+                            stealId: "-1",
+                            rnd: this.getRnd(),
+                            taskId: shop['link']
+                        }
+                    };
+                    let postData = { "shopSign": shop['link'], "ss": `{\"extraData\":${this.getExtraData(extraData)},\"businessData\":{\"taskId\":\"${shop['link']}\",\"rnd\":\"${extraData['data']['rnd']}\",\"inviteId\":\"-1\",\"stealId\":\"-1\"},\"secretp\":\"${this.secretp}\"}` };
+                    yield new Promise(resolve => {
+                        setTimeout(() => __awaiter(this, void 0, void 0, function* () {
+                            utils_1.default.request("stall_shopSignInWrite", postData).then((res) => __awaiter(this, void 0, void 0, function* () {
+                                utils_1.default.outPutLog(this.outputTextarea, `(${i + 1}/10)寻宝箱领金币中`);
+                                utils_1.default.outPutLog(this.outputTextarea, res.data.bizMsg);
+                                resolve();
+                            }));
+                        }), (5000 + utils_1.default.random(300, 500)));
+                    });
+                }
+                utils_1.default.outPutLog(this.outputTextarea, '已领取所有可以寻宝箱的金币');
+            }));
+        });
+    }
+    send(data, taskId, once = false) {
+        return new Promise((next) => __awaiter(this, void 0, void 0, function* () {
+            let self = this, length = data.length;
+            for (let i = 0; i < length; i++) {
+                yield new Promise((resolve) => __awaiter(this, void 0, void 0, function* () {
+                    yield utils_1.default.sleep(config_1.default.timeoutSpan + utils_1.default.random(300, 500));
+                    let extraData = {
+                        id: "jmdd-react-smash_73",
+                        data: {
+                            inviteId: "-1",
+                            stealId: "-1",
+                            rnd: this.getRnd(),
+                            taskId: taskId
+                        }
+                    };
+                    let postData = { "taskId": taskId, "itemId": data[i]['itemId'], "actionType": "1", "ss": `{\"extraData\":${this.getExtraData(extraData)},\"businessData\":{\"taskId\":${taskId},\"rnd\":\"${extraData['data']['rnd']}\",\"inviteId\":\"-1\",\"stealId\":\"-1\"},\"secretp\":\"${this.secretp}\"}`, "shopSign": "" };
+                    yield utils_1.default.request('stall_collectScore', postData).then((res) => __awaiter(this, void 0, void 0, function* () {
+                        if (once) { //立即完成
+                            resolve();
+                        }
+                        else {
+                            if (res.data.result) {
+                                yield utils_1.default.sleep(8000);
+                                utils_1.default.outPutLog(self.outputTextarea, `等待8s任务完成后再领取奖励中`);
+                                utils_1.default.request('qryViewkitCallbackResult', { "clientLanguage": "zh", "dataSource": "newshortAward", "method": "getTaskAward", "reqParams": `{\"taskToken\":\"${res.data.result.taskToken}\"}`, "taskSDKVersion": "1.0.3", "vkVersion": "1.0.0" }).then(() => {
+                                    utils_1.default.outPutLog(self.outputTextarea, `操作成功！任务序号：${i + 1}/${length}`);
+                                    if (i + 1 >= length) {
+                                        utils_1.default.outPutLog(self.outputTextarea, `当前任务已完成!`);
+                                    }
+                                    resolve();
+                                }).catch(() => {
+                                    resolve();
+                                });
+                            }
+                            else {
+                                utils_1.default.outPutLog(self.outputTextarea, `操作成功！任务序号：${i + 1}/${length}`);
+                                resolve();
+                            }
+                        }
+                    })).catch(() => {
+                        resolve();
+                    });
+                }));
+            }
+            next();
+        }));
+    }
+    raise() {
+        utils_1.default.request('stall_raise').then((res) => {
+            if (res.data.bizCode == 0) {
+                utils_1.default.outPutLog(this.outputTextarea, `操作成功！获取奖励如下:${JSON.stringify(res.data.result.levelUpAward)}`);
             }
             else {
-                utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+                utils_1.default.outPutLog(this.outputTextarea, `操作失败！${res.data.bizMsg}`);
             }
         });
     }
-    setBrowserAward(missionId, prizeAmount, workName) {
-        fetch(this.rootURI + "setBrowserAward", {
-            method: "POST",
-            mode: "cors",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: "reqData=" + JSON.stringify(Object.assign({ "missionId": missionId, "prizeAmount": prizeAmount, "channelType": 2 }, this.baseReqData))
-        }).then(function (response) {
-            return response.json();
-        }).then((res) => {
-            if (res.resultCode == 0) {
-                let data = res.resultData;
-                if (data.code == "0") {
-                    let opMsg = data.data.opMsg;
-                    utils_1.default.outPutLog(this.outputTextarea, `任务名称：${workName} ${opMsg}`);
-                    this.browserAwardInit();
-                }
-                else {
-                    utils_1.default.outPutLog(this.outputTextarea, `${data.msg}`);
-                }
+    getInvite() {
+        utils_1.default.request('stall_getTaskDetail', { "shopSign": "" }).then((res) => {
+            const inviteId = res.data.result.inviteId.replace("#/", "");
+            if (inviteId) {
+                utils_1.default.outPutLog(this.outputTextarea, `获取到邀请地址:${this.inviteUrl}${inviteId}`);
+                utils_1.default.copyText(`${this.inviteUrl}${inviteId}`);
             }
             else {
-                utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+                utils_1.default.outPutLog(this.outputTextarea, `数据异常`);
             }
         });
     }
-    browserAwardInit() {
-        fetch(this.rootURI + "browserAwardInit", {
-            method: "POST",
-            mode: "cors",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: "reqData=" + JSON.stringify(this.baseReqData)
-        }).then(function (response) {
-            return response.json();
-        }).then((res) => {
-            if (res.resultCode == 0) {
-                let data = res.resultData;
-                if (data.code == "0") {
-                    let { awardNum, userScore, opMsg } = data.data;
-                    utils_1.default.outPutLog(this.outputTextarea, `任务:${opMsg} 已获得金币:${awardNum} 可用金币:${userScore}`);
-                    this.userTotalScore = userScore;
-                    setTimeout(() => {
-                        this.getMainMission();
-                    }, 1000);
-                }
-                else {
-                    utils_1.default.outPutLog(this.outputTextarea, `${data.msg}`);
-                }
+    help() {
+        utils_1.default.outPutLog(this.outputTextarea, `操作成功！谢谢你的助力！`);
+        let InviteIdArr = [
+            '2YbXmX7Kla3k9gGb6yPYYofPF9MRBzEqhb6qz9ahKg',
+            '2ZzBmkDDlbfy9T-ScMEdLdPvdqRU9KDJdhTj-t1jUuzmATGdKow',
+            'T0kkDJUmGX0Sdet46x7KGSqKNI-klg18GVA8f5s',
+            'DgxlSNRnRyNRPa01oWqgYGmh6fowp7KSdvYh_P9xeptD0UnvN0zMq6o',
+            'Vl4ISd5jEiEFcvpmp26qZav87uKzPCWcwKvhRo7eBzfAk5ohP8TK9SY',
+            "f182DIcnSSUYbNhh0B7RYr5TIRvyOQ",
+            "CwllT95jQidJIakxpWehLWP9nOSuyQ3OUHt8DKuuejFiiyA6WyQ"
+        ];
+        this.assist(this.inviteUrl + InviteIdArr[utils_1.default.random(0, InviteIdArr.length - 1)]);
+    }
+    helpGroup(flag = true) {
+        if (new Date().getHours() >= 9) {
+            let InviteIdArr = [
+                "标记",
+            ];
+            if (InviteIdArr.length == 0 || InviteIdArr[0] == "标记") {
+                return;
+            }
+            let inviteUrl = this.groupInvitedUrl + InviteIdArr[utils_1.default.random(0, InviteIdArr.length - 1)];
+            this.assistGroup(inviteUrl, flag);
+        }
+    }
+    group() {
+        utils_1.default.request('stall_pk_getHomeData').then((res) => {
+            const groupAssistInviteId = res.data.result.groupInfo.groupAssistInviteId;
+            if (groupAssistInviteId) {
+                utils_1.default.outPutLog(this.outputTextarea, `获取到邀请地址:${this.groupInvitedUrl}${groupAssistInviteId}`);
+                utils_1.default.copyText(`${this.groupInvitedUrl}${groupAssistInviteId}`);
             }
             else {
-                utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+                utils_1.default.outPutLog(this.outputTextarea, `请先创建商圈！`);
             }
         });
     }
-    userFeedAction() {
-        if (this.userTotalScore <= 0) {
-            utils_1.default.outPutLog(this.outputTextarea, `可用金币不足！！`);
+    assistGroup(url, flag = true) {
+        if (!url || !url.includes('inviteId')) {
+            alert("请输入要助力的商圈分享链接或输入正确的商圈分享地址！");
             return;
         }
-        fetch(this.rootURI + "userFeedAction", {
-            method: "POST",
-            mode: "cors",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: "reqData=" + JSON.stringify(Object.assign({ "userTotalScore": this.userTotalScore }, this.baseReqData))
-        }).then(function (response) {
-            return response.json();
-        }).then((res) => {
-            if (res.resultCode == 0) {
-                let data = res.resultData;
-                if (data.code == "0") {
-                    let { userGrade, currentLevelRewardName, upGradeFeedingNum, upGradeExtraReward, nowGradeFeedingNum } = data.data;
-                    this.userTotalScore = upGradeExtraReward;
-                    utils_1.default.outPutLog(this.outputTextarea, `等级:${userGrade} ${currentLevelRewardName} 可用金币:${upGradeExtraReward} 当前进度:${nowGradeFeedingNum}/${upGradeFeedingNum}`);
+        const inviteId = utils_1.default.getSearchString(url, "inviteId").replace("#/", "");
+        let extraData = {
+            id: "jmdd-react-smash_0",
+            data: {
+                inviteId: inviteId,
+                stealId: "-1",
+                rnd: this.getRnd(),
+                taskId: `BUSINESSID_${this.getRnd()}`
+            }
+        };
+        let postData = { "confirmFlag": 1, "inviteId": `${inviteId}`, "ss": `{\"extraData\":${this.getExtraData(extraData)},\"businessData\":{\"taskId\":\"${extraData['data']['taskId']}\",\"rnd\":\"${extraData['data']['rnd']}\",\"inviteId\":\"${inviteId}\",\"stealId\":\"-1\"},\"secretp\":\"${this.secretp}\"}` };
+        utils_1.default.request('stall_pk_assistGroup', postData)
+            .then((res) => {
+            if (flag) {
+                utils_1.default.outPutLog(this.outputTextarea, `操作成功！谢谢你为我的商圈助力！`);
+                utils_1.default.outPutLog(this.outputTextarea, `助力结果：${res.data.bizMsg}`);
+            }
+        });
+    }
+    assist(url) {
+        if (!url && !url.includes('inviteId')) {
+            alert("请输入要助力的分享链接或输入正确的分享地址！");
+            return;
+        }
+        const inviteId = utils_1.default.getSearchString(url, "inviteId").replace("#/", "");
+        utils_1.default.request('stall_getHomeData', { "inviteId": inviteId }).then((res) => {
+            let extraData = {
+                id: "jmdd-react-smash_0",
+                data: {
+                    inviteId: inviteId,
+                    stealId: "-1",
+                    rnd: this.getRnd(),
+                    taskId: `2`
                 }
-                else {
-                    utils_1.default.outPutLog(this.outputTextarea, `${data.msg}`);
+            };
+            const itemId = res.data.result.homeMainInfo.guestInfo.itemId;
+            let postData = { "taskId": "2", "itemId": itemId, "ss": `{\"extraData\":${this.getExtraData(extraData)},\"businessData\":{\"taskId\":\"2\",\"rnd\":\"${extraData['data']['rnd']}\",\"inviteId\":\"${inviteId}\",\"stealId\":\"-1\"},\"secretp\":\"${this.secretp}\"}`, "inviteId": inviteId };
+            utils_1.default.request('stall_collectScore', postData).then((res) => {
+                utils_1.default.outPutLog(this.outputTextarea, `助力结果：${res.data.bizMsg}`);
+            });
+        });
+    }
+    getExtraData(args) {
+        return JSON.stringify(Object.assign(smashUtils.get_info(args)['data'], { "buttonid": args['id'], "sceneid": "homePageh5", "appid": "50073" }));
+    }
+    getRnd() {
+        return Math.floor(1e6 * Math.random()).toString();
+    }
+}
+exports.default = Stall;
+
+},{"../config/config":5,"../utils/utils":30}],3:[function(require,module,exports){
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const config_1 = require("../config/config");
+const utils_1 = require("../utils/utils");
+class StarMall {
+    constructor(containerDiv, outputTextarea) {
+        this.data = [];
+        this.token = "jd6df03bd53f0f292f";
+        this.container = containerDiv;
+        this.outputTextarea = outputTextarea;
+    }
+    get() {
+        return __awaiter(this, void 0, void 0, function* () {
+            utils_1.default.clientPost("mcxhd_starmall_getStarShopPage", { "token": this.token }).then((res) => {
+                let shopId = res.result.shopId;
+                this.doTask(shopId);
+            });
+        });
+    }
+    doTask(shopId) {
+        utils_1.default.clientPost("mcxhd_starmall_taskList", { "shopId": shopId, "token": this.token }).then((res) => __awaiter(this, void 0, void 0, function* () {
+            this.data = res.result.tasks;
+            yield utils_1.default.sleep(config_1.default.timeoutSpan);
+            utils_1.default.clientPost("mcxhd_starmall_doTask", { "itemId": this.data[0].subItem[0].itemId, "taskType": "1", "shopId": shopId, "token": this.token }).then((json) => { utils_1.default.outPutLog(this.outputTextarea, json.retMessage); });
+            yield utils_1.default.sleep(config_1.default.timeoutSpan);
+            utils_1.default.clientPost("mcxhd_starmall_doTask", { "itemId": this.data[1].subItem[0].itemId, "taskType": "2", "shopId": shopId, "token": this.token }).then((json) => { utils_1.default.outPutLog(this.outputTextarea, json.retMessage); });
+            yield utils_1.default.sleep(config_1.default.timeoutSpan);
+            utils_1.default.clientPost("mcxhd_starmall_doTask", { "itemId": this.data[2].subItem[0].itemId, "taskType": "4", "shopId": shopId, "token": this.token }).then((json) => { utils_1.default.outPutLog(this.outputTextarea, json.retMessage); });
+            yield utils_1.default.sleep(config_1.default.timeoutSpan);
+            utils_1.default.clientPost("mcxhd_starmall_doTask", { "itemId": this.data[2].subItem[1].itemId, "taskType": "4", "shopId": shopId, "token": this.token }).then((json) => { utils_1.default.outPutLog(this.outputTextarea, json.retMessage); });
+            yield utils_1.default.sleep(config_1.default.timeoutSpan);
+            utils_1.default.clientPost("mcxhd_starmall_doTask", { "itemId": this.data[2].subItem[2].itemId, "taskType": "4", "shopId": shopId, "token": this.token }).then((json) => { utils_1.default.outPutLog(this.outputTextarea, json.retMessage); });
+            yield utils_1.default.sleep(config_1.default.timeoutSpan);
+            utils_1.default.clientPost("mcxhd_starmall_doTask", { "itemId": this.data[2].subItem[3].itemId, "taskType": "4", "shopId": shopId, "token": this.token }).then((json) => { utils_1.default.outPutLog(this.outputTextarea, json.retMessage); });
+            yield utils_1.default.sleep(config_1.default.timeoutSpan);
+            utils_1.default.clientPost("mcxhd_starmall_doTask", { "itemId": this.data[2].subItem[4].itemId, "taskType": "4", "shopId": shopId, "token": this.token }).then((json) => { utils_1.default.outPutLog(this.outputTextarea, json.retMessage); });
+            yield utils_1.default.sleep(config_1.default.timeoutSpan);
+            utils_1.default.clientPost("mcxhd_starmall_doTask", { "itemId": this.data[3].subItem[0].itemId, "taskType": "4", "shopId": shopId, "token": this.token }).then((json) => { utils_1.default.outPutLog(this.outputTextarea, json.retMessage); });
+            yield utils_1.default.sleep(config_1.default.timeoutSpan);
+            utils_1.default.clientPost("mcxhd_starmall_doTask", { "itemId": this.data[4].subItem[0].itemId, "taskType": "6", "shopId": shopId, "token": this.token }).then((json) => { utils_1.default.outPutLog(this.outputTextarea, json.retMessage); });
+            yield utils_1.default.sleep(config_1.default.timeoutSpan);
+            utils_1.default.clientPost("mcxhd_starmall_doTask", { "itemId": this.data[5].subItem[0].itemId, "taskType": "5", "shopId": shopId, "token": this.token }).then((json) => { utils_1.default.outPutLog(this.outputTextarea, json.retMessage); });
+            yield utils_1.default.sleep(config_1.default.timeoutSpan);
+            utils_1.default.clientPost("mcxhd_starmall_doTask", { "itemId": this.data[6].subItem[0].itemId, "taskType": "5", "shopId": shopId, "token": this.token }).then((json) => { utils_1.default.outPutLog(this.outputTextarea, json.retMessage); });
+            yield utils_1.default.sleep(config_1.default.timeoutSpan);
+            utils_1.default.clientPost("mcxhd_starmall_doTask", { "itemId": this.data[7].subItem[0].itemId, "taskType": "3", "shopId": shopId, "token": this.token }).then((json) => { utils_1.default.outPutLog(this.outputTextarea, json.retMessage); });
+            yield utils_1.default.sleep(config_1.default.timeoutSpan);
+            utils_1.default.outPutLog(this.outputTextarea, '所有任务已完成~');
+        }));
+    }
+    list() {
+        const content = document.createElement("div");
+        content.innerHTML = `<h1 style="color:red;font-weight: 700;font-size: 18px;">本活动页脚本自动执行,请留意控制台输出</h1>`;
+        this.container.appendChild(content);
+    }
+}
+exports.default = StarMall;
+
+},{"../config/config":5,"../utils/utils":30}],4:[function(require,module,exports){
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = require("../utils/utils");
+const config_1 = require("../config/config");
+class TimeMachine {
+    constructor(containerDiv, outputTextarea) {
+        this.data = [];
+        this.taskVos = [];
+        this.timer = 1000;
+        this.plusAdvertList = [];
+        this.t1AdvertList = [];
+        this.nearbyShopList = [];
+        this.sendHomeShopList = [];
+        this.inviteUrl = 'https://h5.m.jd.com/babelDiy/Zeus/3DDunaJMLDamrmGwu73QbqtGtbX1/index.html?babelChannel=ttt4&inviteId=';
+        this.ePin = '';
+        this.position = { lat: "22.578764099999997", lng: "113.9463329" };
+        this.switchFlag = true;
+        this.switchtimer = 0;
+        this.container = containerDiv;
+        this.outputTextarea = outputTextarea;
+    }
+    get() {
+        return __awaiter(this, void 0, void 0, function* () {
+            // alert('请允许浏览器获取地理位置扩展任务');
+            // await this.getLocation().then((location) => {
+            //     console.log(location);
+            // });
+            // console.log(this.position);
+            Promise.all([
+                utils_1.default.publicRequest("bc_getHome", this.position),
+                this.updateTask(),
+            ]).then(([homeData, taskData]) => Promise.all([homeData, taskData])).then(([homeData]) => {
+                let homeAdvertVO = homeData.data.result.homeAdvertVO;
+                this.plusAdvertList = homeAdvertVO.plusAdvertList;
+                this.t1AdvertList = homeAdvertVO.t1AdvertList;
+                this.nearbyShopList = homeAdvertVO.nearbyShopList;
+                this.sendHomeShopList = homeAdvertVO.sendHomeShopList;
+                this.ePin = homeData.data.result.ePin;
+                this.list();
+            });
+        });
+    }
+    updateTask() {
+        return new Promise(reslove => {
+            utils_1.default.publicRequest("bc_taskList", this.position).then((res) => {
+                this.data = res.data.result;
+                if (this.data) {
+                    this.taskVos = this.data.taskList;
+                    let value = '任务数据更新成功';
+                    for (let j = 0; j < this.taskVos.length; j++) {
+                        value += `\n${this.taskVos[j]["mainTitle"]}：${this.taskVos[j]["isCompleted"] ? "已完成" : "未完成"}(${this.taskVos[j]["taskProgress"]})`;
+                    }
+                    utils_1.default.outPutLog(this.outputTextarea, value);
                 }
+                reslove();
+            });
+        });
+    }
+    list() {
+        const content = document.createElement("div");
+        let msg = `
+        <div style="margin:10px;">
+        <button class="help" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">帮作者助力</button>
+        <button class="invite" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">获取助力链接</button>
+        <input class="inviteLink" type="text" style="width:80vw;height: 25px;font-size:14px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;" placeholder="请输入需要助力的分享链接">
+        <button class="assist" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">为TA助力</button>
+        <button class="raise" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">寻找碎片</button>
+        <button class="collect" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">领取能量</button>
+        <input class="timerSpan" type="text" style="width:80vw;height: 25px;font-size:14px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;" placeholder="请输入定时时间间隔（毫秒）">
+        <button class="timer" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">定时收取能量</button>
+        <button class="auto" style="width: 120px;height:30px;background-color: red;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">一键完成任务</button>
+        <hr>
+        <p style="text-align:center;font-weight:700;color:red;">一键完成任务将会默认为作者助力<br>操作的时候不要执行其他任务</p>
+        <hr>
+        <button class="signIn" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">每天签到</button>
+        <button class="shopping_super" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">逛“超级”品牌</button>
+        <button class="shopping_big" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">逛“大牌”品牌</button>
+        <button class="shopping" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">逛"精选"品牌店铺</button>
+        <button class="place" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">逛逛会场</button>
+        <button class="market" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">逛同城好店</button>
+        <button class="funny" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">体验热爱空间</button>
+        <button class="visit" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">采集能量包</button>
+        <button class="play" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">套圈圈领能量</button>
+        </div>`;
+        content.innerHTML = msg;
+        this.container.appendChild(content);
+        const signIn = utils_1._$('.signIn'), shopping_big = utils_1._$('.shopping_big'), help = utils_1._$('.help'), funny = utils_1._$('.funny'), collect = utils_1._$('.collect'), place = utils_1._$('.place'), shopping = utils_1._$('.shopping'), shopping_super = utils_1._$('.shopping_super'), invite = utils_1._$('.invite'), timer = utils_1._$('.timer'), raise = utils_1._$('.raise'), visit = utils_1._$('.visit'), play = utils_1._$('.play'), assist = utils_1._$('.assist'), market = utils_1._$('.market'), auto = utils_1._$('.auto');
+        auto.addEventListener('click', () => {
+            this.autoDoTask();
+        });
+        signIn.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            this.signInEvent();
+        }));
+        shopping.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            this.doTask(3, `开始逛“精选”品牌店铺任务`);
+        }));
+        market.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            this.doTask(4, `开始逛同城好店任务`);
+        }));
+        funny.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            this.doTask(5, `开始体验AR热爱空间任务`);
+        }));
+        place.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            this.doTask(6, `开始逛11.11精选会场任务`);
+        }));
+        shopping_super.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            this.doTask(1, `开始逛“超级”品牌店铺任务`);
+        }));
+        shopping_big.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            this.doTask(2, `开始逛“大牌”品牌店铺任务`);
+        }));
+        visit.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            this.doTask(7, `开始浏览会场采集能量包任务`);
+        }));
+        play.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            utils_1.default.outPutLog(this.outputTextarea, `开始套圈圈游戏任务`);
+            yield this.repeatTask({}, 10, 'bc_getGameReward', { "score": 200 });
+        }));
+        collect.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            this.collect();
+        }));
+        timer.addEventListener('click', () => {
+            this.switchTimer();
+        });
+        help.addEventListener('click', () => {
+            this.help();
+        });
+        invite.addEventListener('click', () => {
+            this.getInvite();
+        });
+        assist.addEventListener('click', () => {
+            const link = utils_1._$('.inviteLink');
+            this.assist(link.value);
+        });
+        raise.addEventListener('click', () => {
+            this.raise();
+        });
+    }
+    signInEvent() {
+        return __awaiter(this, void 0, void 0, function* () {
+            utils_1.default.outPutLog(this.outputTextarea, `开始签到任务`);
+            return new Promise((reslove) => __awaiter(this, void 0, void 0, function* () {
+                let postData = { "taskType": 0 };
+                yield utils_1.default.publicRequest('bc_doTask', postData).then((res) => __awaiter(this, void 0, void 0, function* () {
+                    if (res.data.result) {
+                        utils_1.default.outPutLog(this.outputTextarea, `操作成功！获得能量${res.data.result.energy || res.data.result.rewardEnergy}`);
+                    }
+                    else {
+                        utils_1.default.outPutLog(this.outputTextarea, `${res.data.bizMsg}`);
+                    }
+                }));
+                reslove();
+            }));
+        });
+    }
+    doTask(taskId, title) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let taskVo = this.getTaskById(taskId);
+            utils_1.default.outPutLog(this.outputTextarea, title);
+            if (!taskVo || taskVo["isCompleted"]) {
+                utils_1.default.outPutLog(this.outputTextarea, `任务已完成，先去完成其他任务吧~`);
             }
             else {
-                utils_1.default.outPutLog(this.outputTextarea, `${res.resultMsg}`);
+                if (taskId == 1) {
+                    yield this.singleDoTask(taskVo, this.t1AdvertList);
+                }
+                else if (taskId == 2) {
+                    yield this.singleDoTask(taskVo, this.t1AdvertList);
+                }
+                else if (taskId == 3) {
+                    yield this.repeatTask(taskVo, taskVo.timesLimit);
+                }
+                else if (taskId == 4) {
+                    yield this.singleDoTask(taskVo, this.nearbyShopList);
+                }
+                else if (taskId == 5) {
+                    yield this.repeatTask(taskVo, taskVo.timesLimit);
+                }
+                else if (taskId == 6) {
+                    yield this.repeatTask(taskVo, taskVo.timesLimit);
+                }
+                else if (taskId == 7) {
+                    yield this.doSubTask(taskVo);
+                }
+            }
+        });
+    }
+    autoDoTask() {
+        return __awaiter(this, void 0, void 0, function* () {
+            utils_1.default.outPutLog(this.outputTextarea, '开始自动一键执行任务');
+            yield this.signInEvent();
+            yield this.doTask(3, `开始逛“精选”品牌店铺任务`);
+            yield this.doTask(5, `开始体验AR热爱空间任务`);
+            yield this.doTask(6, `开始逛11.11精选会场任务`);
+            yield this.doTask(1, `开始逛“超级”品牌店铺任务`);
+            yield this.doTask(2, `开始逛“大牌”品牌店铺任务`);
+            yield this.doTask(7, `开始浏览会场采集能量包任务`);
+            yield this.doTask(4, `开始逛同城好店任务`);
+            yield this.updateTask();
+            utils_1.default.outPutLog(this.outputTextarea, `开始套圈圈游戏任务`);
+            yield this.repeatTask({}, 10, 'bc_getGameReward', { "score": 200 });
+            utils_1.default.outPutLog(this.outputTextarea, '所有任务已完成');
+        });
+    }
+    getTaskById(id) {
+        return this.taskVos.filter((value) => {
+            return value['taskType'] == id;
+        })[0];
+    }
+    collect() {
+        return new Promise(reslove => {
+            utils_1.default.publicRequest('bc_collectEnergyBall', {}).then(res => {
+                if (res.data.success) {
+                    utils_1.default.outPutLog(this.outputTextarea, "领取能量:" + res.data.result.energy);
+                }
+                else {
+                    utils_1.default.outPutLog(this.outputTextarea, "领取能量:" + res.data.bizMsg);
+                }
+                reslove();
+            });
+        });
+    }
+    switchTimer() {
+        if (this.switchFlag) {
+            let span = +utils_1._$('.timerSpan').value;
+            if (span <= 60000) {
+                alert(`当前领取时间间隔太短了！建议调整一下！`);
+                return;
+            }
+            utils_1.default.outPutLog(this.outputTextarea, "开启定时器");
+            utils_1._$('.timer').innerText = '取消定时收取';
+            this.switchtimer = window.setInterval(() => {
+                this.collect();
+            }, span);
+        }
+        else {
+            utils_1.default.outPutLog(this.outputTextarea, "停止定时器");
+            utils_1._$('.timer').innerText = '定时收取能量';
+            window.clearInterval(this.switchtimer);
+            this.timer = 0;
+        }
+        this.switchFlag = !this.switchFlag;
+    }
+    getVoNameById(id) {
+        let voName = '';
+        switch (id) {
+            case 1:
+                voName = 'simpleRecordInfoVo';
+                break;
+            case 2:
+                voName = 'followShopVo';
+                break;
+            case 3:
+                voName = 'shoppingActivityVos';
+                break;
+            default:
+                voName = 'shoppingActivityVos';
+                break;
+        }
+        return voName;
+    }
+    getItemIdByName(task, name, taskId) {
+        let VoName = this.getVoNameById(taskId);
+        if (taskId == 1) {
+            return task[VoName]['itemId'];
+        }
+        else {
+            let shop = task[VoName].filter((shopVo) => {
+                return shopVo['shopName'] == task['taskName'] || shopVo['subtitle'] == task['taskName'];
+            })[0];
+            return shop ? shop['itemId'] : task[VoName][0]['itemId'];
+        }
+    }
+    singleDoTask(data, args) {
+        return new Promise((next) => __awaiter(this, void 0, void 0, function* () {
+            let length = data.timesLimit;
+            for (let i = 0; i < length; i++) {
+                yield utils_1.default.sleep(config_1.default.timeoutSpan + utils_1.default.random(300, 500));
+                let item = args[i];
+                let postData = {};
+                if (data.taskType == 4) {
+                    let type = 1;
+                    if (i >= 4) {
+                        type = 2;
+                    }
+                    postData = { "taskType": data['taskType'], "storeId": item['storeid'], "storeType": type, "lat": this.position.lat };
+                }
+                else {
+                    postData = { "taskType": data['taskType'], "shopId": item['comments0'] };
+                }
+                yield utils_1.default.publicRequest('bc_doTask', postData).then((res) => __awaiter(this, void 0, void 0, function* () {
+                    utils_1.default.outPutLog(this.outputTextarea, `操作成功！任务序号：${i + 1}/${length}`);
+                    if (res.data.result) {
+                        utils_1.default.outPutLog(this.outputTextarea, `操作成功！获得能量${res.data.result.energy}`);
+                    }
+                })).catch(() => {
+                    next();
+                });
+            }
+            next();
+        }));
+    }
+    doSubTask(data) {
+        return new Promise((next) => __awaiter(this, void 0, void 0, function* () {
+            let subTaskList = data.subTaskList;
+            let length = subTaskList.length;
+            let ballNos = ['A', 'B', 'C'];
+            for (let i = 0; i < length; i++) {
+                let task = subTaskList[i];
+                for (let j = 0; j < task.timesLimit; j++) {
+                    yield utils_1.default.sleep(config_1.default.timeoutSpan + utils_1.default.random(300, 500));
+                    let postData = { "taskType": data.taskType, "channel": task.channel, "babelChannel": "ttt1", "ballno": ballNos[j] };
+                    yield utils_1.default.publicRequest('bc_doTask', postData).then((res) => __awaiter(this, void 0, void 0, function* () {
+                        if (res.data.result) {
+                            utils_1.default.outPutLog(this.outputTextarea, `操作成功！获得能量${res.data.result.energy}`);
+                        }
+                    }));
+                }
+            }
+            next();
+        }));
+    }
+    repeatTask(data, times, url, args) {
+        return new Promise((next) => __awaiter(this, void 0, void 0, function* () {
+            for (let i = 0; i < times; i++) {
+                yield utils_1.default.sleep(config_1.default.timeoutSpan + utils_1.default.random(300, 500));
+                let postData = args || { "taskType": data['taskType'] };
+                yield utils_1.default.publicRequest(url || 'bc_doTask', postData).then((res) => __awaiter(this, void 0, void 0, function* () {
+                    utils_1.default.outPutLog(this.outputTextarea, `操作成功！任务序号：${i + 1}/${times}`);
+                    if (res.data.result) {
+                        utils_1.default.outPutLog(this.outputTextarea, `操作成功！获得能量${res.data.result.energy || res.data.result.rewardEnergy}`);
+                    }
+                }));
+            }
+            next();
+        }));
+    }
+    raise() {
+        utils_1.default.publicRequest('bc_fragmentCharge').then((res) => {
+            if (res.data.bizCode == 0) {
+                utils_1.default.outPutLog(this.outputTextarea, `操作成功！返回信息:${JSON.stringify(res.data.result)}`);
+            }
+            else {
+                utils_1.default.outPutLog(this.outputTextarea, `操作成功！返回信息:${JSON.stringify(res.data.bizMsg)}`);
+            }
+        });
+    }
+    getInvite() {
+        utils_1.default.outPutLog(this.outputTextarea, `获取到邀请地址:${this.inviteUrl}${this.ePin}`);
+        utils_1.default.copyText(`${this.inviteUrl}${this.ePin}`);
+    }
+    help() {
+        utils_1.default.outPutLog(this.outputTextarea, `操作成功！谢谢你的助力！`);
+        let InviteIdArr = [
+            'sfV-pa1Vgoaknh9Vq3k5bw',
+            'Zn_MdAf4UAgRVbP7',
+            '8LA_4ewU3Njn1lk',
+            'ZmXadznxUBIHVo3yetKE'
+        ];
+        this.assist(this.inviteUrl + InviteIdArr[utils_1.default.random(0, InviteIdArr.length - 1)]);
+    }
+    assist(url) {
+        if (!url && !url.includes('inviteId')) {
+            alert("请输入要助力的分享链接或输入正确的分享地址！");
+            return;
+        }
+        const inviteId = utils_1.default.getSearchString(url, "inviteId").replace("#/", "");
+        utils_1.default.publicRequest('bc_doTask', { "taskType": 8, "invitePin": inviteId }).then((res) => {
+            utils_1.default.outPutLog(this.outputTextarea, `助力结果：${res.data.bizMsg}`);
+        });
+    }
+    getExtraData(args) {
+        return JSON.stringify({ "buttonid": args['id'], "sceneid": "homePageh5", "appid": "50073" });
+    }
+    getRnd() {
+        return Math.floor(1e6 * Math.random()).toString();
+    }
+    getLocation() {
+        return new Promise((reslove) => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            }
+            else {
+                alert("浏览器不支持地理定位。");
+                reslove();
+            }
+            function showPosition(position) {
+                var lat = position.coords.latitude; //纬度
+                var lag = position.coords.longitude; //经度
+                reslove({ lat, lag });
+            }
+            function showError(error) {
+                switch (error.code) {
+                    case error.PERMISSION_DENIED:
+                        alert("定位失败,用户拒绝请求地理定位");
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        alert("定位失败,位置信息是不可用");
+                        break;
+                    case error.TIMEOUT:
+                        alert("定位失败,请求获取用户位置超时");
+                        break;
+                    case error.UNKNOWN_ERROR:
+                        alert("定位失败,定位系统失效");
+                        break;
+                }
+                reslove();
             }
         });
     }
 }
-exports.default = feedBag;
+exports.default = TimeMachine;
 
-},{"../utils/utils":26}],2:[function(require,module,exports){
+},{"../config/config":5,"../utils/utils":30}],5:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class Config {
 }
 exports.default = Config;
 Config.title = "京东领券助手";
-Config.version = "v0.4.2";
+Config.version = "v0.4.5";
 Config.author = "krapnik";
 Config.timingFlag = false;
 Config.UAFlag = false;
@@ -255,7 +1507,7 @@ Config.NetdiskURL = "链接：https://pan.baidu.com/s/17eyRRSrFUQVSKdYwIcDsHg �
 Config.multiFlag = false;
 Config.importFlag = false;
 
-},{}],3:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class CookieHandler {
@@ -300,7 +1552,7 @@ class CookieHandler {
 }
 exports.CookieHandler = CookieHandler;
 
-},{}],4:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -380,7 +1632,7 @@ class CookieManager {
 exports.default = CookieManager;
 CookieManager.cookieArr = [];
 
-},{"../config/config":2,"../utils/fetch-jsonp":25,"../utils/utils":26,"./CookieHandler":3}],5:[function(require,module,exports){
+},{"../config/config":5,"../utils/fetch-jsonp":29,"../utils/utils":30,"./CookieHandler":6}],8:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -448,7 +1700,7 @@ class CoinPurchase {
 }
 exports.default = CoinPurchase;
 
-},{"../utils/utils":26}],6:[function(require,module,exports){
+},{"../utils/utils":30}],9:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -533,7 +1785,7 @@ class Exchange {
 }
 exports.default = Exchange;
 
-},{"../utils/utils":26}],7:[function(require,module,exports){
+},{"../utils/utils":30}],10:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -628,7 +1880,7 @@ class GcConvert {
 }
 exports.default = GcConvert;
 
-},{"../utils/utils":26}],8:[function(require,module,exports){
+},{"../utils/utils":30}],11:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -726,7 +1978,7 @@ class getCouponCenter {
 }
 exports.default = getCouponCenter;
 
-},{"../utils/fetch-jsonp":25,"../utils/utils":26}],9:[function(require,module,exports){
+},{"../utils/fetch-jsonp":29,"../utils/utils":30}],12:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -800,7 +2052,7 @@ class Mfreecoupon {
 }
 exports.default = Mfreecoupon;
 
-},{"../utils/utils":26}],10:[function(require,module,exports){
+},{"../utils/utils":30}],13:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -906,7 +2158,7 @@ class NewBabelAwardCollection {
 }
 exports.default = NewBabelAwardCollection;
 
-},{"../utils/utils":26}],11:[function(require,module,exports){
+},{"../utils/utils":30}],14:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -974,7 +2226,7 @@ class Purchase {
 }
 exports.default = Purchase;
 
-},{"../utils/utils":26}],12:[function(require,module,exports){
+},{"../utils/utils":30}],15:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -1068,7 +2320,7 @@ class ReceiveCoupon {
 }
 exports.default = ReceiveCoupon;
 
-},{"../utils/utils":26}],13:[function(require,module,exports){
+},{"../utils/utils":30}],16:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -1165,7 +2417,7 @@ class ReceiveCoupons {
 }
 exports.default = ReceiveCoupons;
 
-},{"../utils/utils":26}],14:[function(require,module,exports){
+},{"../utils/utils":30}],17:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -1253,7 +2505,105 @@ class ReceiveDayCoupon {
 }
 exports.default = ReceiveDayCoupon;
 
-},{"../utils/utils":26}],15:[function(require,module,exports){
+},{"../utils/utils":30}],18:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = require("../utils/utils");
+class ReceiveSeckillReward {
+    constructor(couponParams, containerDiv, outputTextarea) {
+        this.getInfoURL = "https://ms.jr.jd.com/gw/generic/uc/h5/m/getSeckillInfo";
+        this.url = "https://ms.jr.jd.com/gw/generic/uc/h5/m/getSeckillInfo";
+        this.detailurl = "https://rsp.jd.com/coupon/dayCouponList/v1/?lt=m&an=plus.mobile&couponType=0_1";
+        this.couponList = [];
+        this.couponParams = couponParams;
+        this.container = containerDiv;
+        this.outputTextarea = outputTextarea;
+    }
+    get() {
+        Promise.all([
+            utils_1.default.post(this.getInfoURL, {}),
+            new Promise((resolve) => {
+                setTimeout(() => {
+                    utils_1.default.request("stall_getTaskDetail").then(resolve);
+                }, 1000);
+            }),
+        ]).then(([homeData, taskData]) => Promise.all([homeData, taskData]))
+            .then(([homeData, taskData]) => {
+        });
+        fetch(this.detailurl, { credentials: "include" })
+            .then(res => { return res.json(); })
+            .then(json => {
+            const data = json["rs"]["wholeCategoryCoupon"];
+            for (let j = 0; j < data.length; j++) {
+                let coupon = data[j], giftAmount = coupon["giftAmount"], discount = coupon["discount"], quota = coupon["quota"], couponState = coupon["couponState"], activityId = coupon["activtyId"], limitStr = coupon["limitStr"], hour = coupon["hour"];
+                this.couponList.push({
+                    "giftAmount": giftAmount,
+                    "activityId": activityId,
+                    "discount": discount,
+                    "quota": quota,
+                    "hour": hour,
+                    "limitStr": limitStr,
+                    "couponState": couponState,
+                    "flag": false
+                });
+            }
+            this.list();
+        });
+    }
+    list() {
+        const content = document.createElement("div");
+        content.innerHTML = "<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin-top: 5px;padding: 0 37.5vw 5px;'>优惠券</h3><p style='margin: 5px 0;color:red'>点击列表项选择要领取的券</p>";
+        content.setAttribute('style', 'display:flex;flex-direction:column;padding: 5px;margin-top: 5px;border: 1px solid #000;');
+        for (let i = 0; i < this.couponList.length; i++) {
+            const item = this.couponList[i], itemDiv = document.createElement("div");
+            itemDiv.setAttribute('style', 'text-align:left;border:1px solid gray;border-radius: 10px;margin-top:5px;padding: 5px');
+            itemDiv.setAttribute('data-item', "coupon");
+            itemDiv.innerHTML = `<h3 style="user-select: none;pointer-events:none;">折扣：${item.quota}-${item.discount}</h3>
+                                    <p style="margin-bottom:10px;user-select: none;pointer-events:none;">状态：${item.couponState == 1 ? "可领取" : item.couponState == 6 ? "已领光" : "不可领取"}<br/>说明：${item.limitStr}<br/>兑换礼金：${item.giftAmount}<br/>领取时间：${item.hour || "现在可领"}</p>
+                                    <button class="receive" data-id=${i} style="width: 80px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;">直接领取</button>`;
+            content.appendChild(itemDiv);
+            itemDiv.addEventListener("click", (evt) => {
+                const target = evt.target;
+                if (target.getAttribute('data-item') || (target.parentNode == itemDiv && target.tagName != "BUTTON")) {
+                    if (!item.flag) {
+                        itemDiv.style.border = "3px solid red";
+                    }
+                    else {
+                        itemDiv.style.border = "1px solid gray";
+                    }
+                    item.flag = !item.flag;
+                }
+                else if (target.getAttribute("data-id")) {
+                    this.singleSend(+target.getAttribute("data-id"));
+                }
+            }, false);
+        }
+        this.container.appendChild(content);
+    }
+    send() {
+        for (let i = 0; i < this.couponList.length; i++) {
+            let item = this.couponList[i], url = this.url.replace("{activityId}", item["activityId"]);
+            if (item.flag) {
+                fetch(url, { credentials: "include" })
+                    .then((res) => { return res.json(); })
+                    .then((json) => {
+                    utils_1.default.outPutLog(this.outputTextarea, `${item.quota}-${item.discount} 领券结果:${json.msg}`);
+                });
+            }
+        }
+    }
+    singleSend(index) {
+        let item = this.couponList[index], url = this.url.replace("{activityId}", item["activityId"]);
+        fetch(url, { credentials: "include" })
+            .then((res) => { return res.json(); })
+            .then((json) => {
+            utils_1.default.outPutLog(this.outputTextarea, `${item.quota}-${item.discount} 领券结果:${json.msg}`);
+        });
+    }
+}
+exports.default = ReceiveSeckillReward;
+
+},{"../utils/utils":30}],19:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -1346,7 +2696,7 @@ class SecKillCoupon {
 }
 exports.default = SecKillCoupon;
 
-},{"../utils/utils":26}],16:[function(require,module,exports){
+},{"../utils/utils":30}],20:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -1413,7 +2763,7 @@ class WhiteCoupon {
 }
 exports.default = WhiteCoupon;
 
-},{"../utils/utils":26}],17:[function(require,module,exports){
+},{"../utils/utils":30}],21:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var activityType;
@@ -1424,9 +2774,13 @@ var activityType;
     activityType["palace"] = "palace";
     activityType["receiveBless"] = "ReceiveBless";
     activityType["feedBag"] = "feedBag";
+    activityType["stall"] = "stall";
+    activityType["timeMachine"] = "timeMachine";
+    activityType["starMall"] = "starMall";
+    activityType["guardianstar"] = "guardianstar";
 })(activityType = exports.activityType || (exports.activityType = {}));
 
-},{}],18:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var couponType;
@@ -1445,9 +2799,10 @@ var couponType;
     couponType["ReceiveCoupon"] = "ReceiveCoupon";
     couponType["getCouponCenter"] = "getCouponCenter";
     couponType["exchange"] = "exchange";
+    couponType["receiveSeckillReward"] = "receiveSeckillReward";
 })(couponType = exports.couponType || (exports.couponType = {}));
 
-},{}],19:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var goodsType;
@@ -1455,7 +2810,7 @@ var goodsType;
     goodsType["goods"] = "goods";
 })(goodsType = exports.goodsType || (exports.goodsType = {}));
 
-},{}],20:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -1671,7 +3026,7 @@ class BTGoose {
 }
 exports.default = BTGoose;
 
-},{"../config/config":2,"../cookie/CookieHandler":3,"../cookie/CookieManager":4,"../utils/utils":26}],21:[function(require,module,exports){
+},{"../config/config":5,"../cookie/CookieHandler":6,"../cookie/CookieManager":7,"../utils/utils":30}],25:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -2310,7 +3665,7 @@ class Cloudpig {
 }
 exports.default = Cloudpig;
 
-},{"../config/config":2,"../cookie/CookieHandler":3,"../cookie/CookieManager":4,"../utils/utils":26}],22:[function(require,module,exports){
+},{"../config/config":5,"../cookie/CookieHandler":6,"../cookie/CookieManager":7,"../utils/utils":30}],26:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -2369,7 +3724,7 @@ class signInCenter {
     }
     lottery(ckObj) {
         fetch(this.rootURI + "lottery?reqData=" + encodeURI(JSON.stringify(Object.assign({ "t": new Date().getTime() }, this.baseReqData))), {
-            mode: "cors",
+            mode: "no-cors",
             credentials: "include",
             headers: {
                 "Content-Type": "application/json"
@@ -2408,7 +3763,7 @@ class signInCenter {
 }
 exports.default = signInCenter;
 
-},{"../config/config":2,"../cookie/CookieHandler":3,"../cookie/CookieManager":4,"../utils/utils":26}],23:[function(require,module,exports){
+},{"../config/config":5,"../cookie/CookieHandler":6,"../cookie/CookieManager":7,"../utils/utils":30}],27:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../utils/utils");
@@ -2522,7 +3877,7 @@ class Goods {
 }
 exports.default = Goods;
 
-},{"../config/config":2,"../utils/fetch-jsonp":25,"../utils/utils":26}],24:[function(require,module,exports){
+},{"../config/config":5,"../utils/fetch-jsonp":29,"../utils/utils":30}],28:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -2555,15 +3910,22 @@ const exchange_1 = require("./coupons/exchange");
 // import BrandCitySpring from "./activitys/brandCitySpring";
 // import Palace from "./activitys/palace";
 // import ReceiveBless from "./activitys/receiveBless";
-const feedBag_1 = require("./activitys/feedBag");
+// import FeedBag from "./activitys/feedBag";
 const activityType_1 = require("./enum/activityType");
 const couponType_1 = require("./enum/couponType");
 const goodsType_1 = require("./enum/goodsType");
 const btgoose_1 = require("./game/btgoose");
+// import MoneyTree from "./game/moneyTree";
 const cloudpig_1 = require("./game/cloudpig");
 const signInCenter_1 = require("./game/signInCenter");
+const stall_1 = require("./activitys/stall");
+const timeMachine_1 = require("./activitys/timeMachine");
+const receiveSeckillReward_1 = require("./coupons/receiveSeckillReward");
+const starMall_1 = require("./activitys/starMall");
+const guardianstar_1 = require("./activitys/guardianstar");
 let coupon, goods, game, activity, gameMap = {}, isJDcontext = true;
-const container = document.createElement("div"), title = document.createElement("div"), timerTittleDiv = document.createElement("div"), receiveTextInput = document.createElement("input"), receiveCountInput = document.createElement("input"), receiveTimerBtn = document.createElement("button"), operateAreaDiv = document.createElement("div"), outputTextArea = document.createElement("textarea"), outputTextAreaDiv = document.createElement("div"), loginMsgDiv = document.createElement("div");
+const container = document.createElement("div"), UATipsDiv = document.createElement("div"), title = document.createElement("div"), timerTittleDiv = document.createElement("div"), receiveTextInput = document.createElement("input"), receiveCountInput = document.createElement("input"), receiveTimerBtn = document.createElement("button"), operateAreaDiv = document.createElement("div"), outputTextArea = document.createElement("textarea"), outputTextAreaDiv = document.createElement("div"), loginMsgDiv = document.createElement("div");
+UATipsDiv.setAttribute('id', "UATipsDiv");
 let getLoginMsg = function (res) {
     if (res.base.nickname) {
         loginMsgDiv.innerHTML = "当前登录京东帐号：" + res.base.nickname;
@@ -2596,7 +3958,9 @@ function buildOutput() {
     operateAreaDiv.append(outputTextAreaDiv);
 }
 function buildTimerControl() {
-    const receiveDiv = document.createElement("div"), receiveAreaDiv = document.createElement("div"), receiveTipsDiv = document.createElement("div"), receiveAllBtn = document.createElement("button"), timerTextInput = document.createElement("input"), timerResetBtn = document.createElement("button"), spanTextInput = document.createElement("input"), spanResetBtn = document.createElement("button"), timerDiv = document.createElement("div");
+    const receiveDiv = document.createElement("div"), receiveAreaDiv = document.createElement("div"), receiveTipsDiv = document.createElement("div"), receiveAllBtn = document.createElement("button"), timerTextInput = document.createElement("input"), timerResetBtn = document.createElement("button"), spanTextInput = document.createElement("input"), 
+    // spanResetBtn: HTMLButtonElement = document.createElement("button"),
+    timerDiv = document.createElement("div");
     timerTextInput.type = "text";
     timerTextInput.placeholder = "请输入获取时间的刷新频率【毫秒】";
     timerTextInput.setAttribute("style", "width:80vw;height: 25px;border: solid 1px #000;border-radius: 5px;margin: 10px auto;display: block;");
@@ -2659,7 +4023,7 @@ function buildTimerControl() {
     timerDiv.append(timerTextInput);
     timerDiv.append(timerResetBtn);
     timerDiv.append(spanTextInput);
-    timerDiv.append(spanResetBtn);
+    // timerDiv.append(spanResetBtn);
     operateAreaDiv.append(receiveDiv);
     receiveDiv.append(receiveTipsDiv);
     receiveDiv.append(receiveTextInput);
@@ -2671,7 +4035,7 @@ function buildTimerControl() {
 }
 function buildTips() {
     const tips = document.createElement('h4');
-    tips.innerHTML = '<h4>页面地址暂未被扩展或者有误！</h4><p>本插件只能在指定活动地址或领券地址使用！</p><p>如果这是个活动地址或领券地址，<a href="tencent://message/?uin=708873725Menu=yes" target="_blank" title="发起QQ聊天">联系作者</a>扩展~</p><a style="color:red" href="https://gitee.com/krapnik/res/raw/master/tutorial.mp4" target="_blank">点击下载教程视频</a>';
+    tips.innerHTML = '<h4>页面地址暂未被扩展或者有误！</h4><p>本插件只能在指定活动地址或领券地址使用！</p><p>如果这是个活动地址或领券地址，<a href="tencent://message/?uin=708873725Menu=yes" target="_blank" title="发起QQ聊天">联系作者</a>扩展~</p><a style="color:red" onclick=Utils.copyText(Config.NetdiskURL)>点击下载教程视频</a>';
     title.append(tips);
 }
 function buildTitle() {
@@ -2700,18 +4064,34 @@ function buildTitle() {
 }
 function buildActivity() {
     const activityArea = document.createElement("div");
-    activityArea.setAttribute("style", "border: 1px solid #000");
-    activityArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>活动推荐</h3>
-    <p style="color:red;font-weight:bold;"><a style="color:red" href="https://u.jr.jd.com/uc-fe-wxgrowing/feedbag/cover/channelLv=syfc/" target="_blank">全民养京贴</a></p>`;
+    activityArea.setAttribute("style", "padding: 5px;border: 1px solid #000");
+    activityArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>推荐活动</h3>
+    <p style="padding: 5px;color:red;font-weight:bold;">
+    <a style="color:red" href="https://bunearth.m.jd.com/babelDiy/Zeus/4SJUHwGdUQYgg94PFzjZZbGZRjDd/index.html#/land" target="_blank">全民营业，瓜分十亿</a>
+    <br>
+    <a style="color:red" href="https://bunearth.m.jd.com/babelDiy/Zeus/3DDunaJMLDamrmGwu73QbqtGtbX1/index.html" target="_blank">热爱时光机</a>
+    <br>
+    <a style="color:red" href="https://urvsaggpt.m.jd.com/static/index.html#/?starId=meiditongliya" target="_blank">家电星推官</a>
+    <br>
+    <a style="color:red" href="https://bunearth.m.jd.com/babelDiy/Zeus/4DEZi5iUgrNLD9EWknrGZhCjNv7V/index.html#/" target="_blank">星店长热爱行动</a>
+    <br>
+    <a style="color:red" onclick=Utils.copyText("https://u.jd.com/tbFM0kn")>每天领取三个京东红包</a>
+    </p>`;
+    // https://u.jd.com/toUGpaC
     container.append(activityArea);
 }
 function buildRecommend() {
     const recommandArea = document.createElement("div");
     recommandArea.setAttribute("style", "border: 1px solid #000;margin: 10px 0;");
-    recommandArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>好券推荐</h3>
+    recommandArea.innerHTML = `<h3 style='border-bottom: 1px solid #2196F3;display: inline-block;margin: 5px;'>活动推荐</h3>
     <p style="color:red;font-weight:bold;">
-    <a style="color:red" href="https://m.jr.jd.com/member/9GcConvert/?channel=01-shouye-191214" target="_blank">9金币抢兑</a>
-    <br><a style="color:red" href="https://m.jr.jd.com/member/rightsCenter/#/white" target="_blank">12期免息券</a>
+    <a style="color:red" href="https://bunearth.m.jd.com/babelDiy/Zeus/4SJUHwGdUQYgg94PFzjZZbGZRjDd/index.html#/land" target="_blank">全民营业，瓜分十亿</a>
+    <br>
+    <a style="color:red" href="https://bunearth.m.jd.com/babelDiy/Zeus/3DDunaJMLDamrmGwu73QbqtGtbX1/index.html" target="_blank">热爱时光机</a>
+    <br>
+    <a style="color:red" href="https://urvsaggpt.m.jd.com/static/index.html#/?starId=meiditongliya" target="_blank">家电星推官</a>
+    <br>
+    <a style="color:red" href="https://bunearth.m.jd.com/babelDiy/Zeus/4DEZi5iUgrNLD9EWknrGZhCjNv7V/index.html#/" target="_blank">星店长热爱行动</a>
     </p>`;
     container.append(recommandArea);
 }
@@ -2723,9 +4103,13 @@ function buildPromotion() {
     container.append(promotionArea);
 }
 function buildUAarea() {
-    let UATipsDiv = document.createElement("div");
-    UATipsDiv.innerHTML = `<div style="border: 1px solid #000;margin: 10px 0;font-weight:bold"><h2>该活动需要设置user-Agent为京东APP</h2><p><a style="color:red" href="https://gitee.com/krapnik/res/raw/master/tutorial.mp4" target="_blank">点击下载教程视频</a></p><p>部分浏览器插件会覆盖UA设置，请自行排查并关闭</p><p>【比如：京价保】</p><button style="width: 200px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block" onclick=Utils.copyText(Config.JDAppUA)>点击一键复制User-Agent</button></div>`;
+    UATipsDiv.innerHTML = `<div style="border: 1px solid #000;margin: 10px 0;font-weight:bold"><h2>该活动需要设置user-Agent为京东APP</h2><p><a style="color:red" onclick=Utils.copyText(Config.NetdiskURL)>点击下载教程视频</a></p><p>部分浏览器插件会覆盖UA设置，请自行排查并关闭</p><p>【比如：京价保】</p><button style="width: 200px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block" onclick=Utils.copyText(Config.JDAppUA)>点击一键复制User-Agent</button></div>`;
     container.append(UATipsDiv);
+}
+function hideUAArea() {
+    if (container && UATipsDiv) {
+        container.removeChild(UATipsDiv);
+    }
 }
 function buildSensorArea() {
     let sensorArea = document.createElement("div");
@@ -2893,9 +4277,6 @@ function getEntryType() {
     else if (/coupons\/show.action\?key=(\S*)&roleId=(\S*)/.test(config_1.default.locationHref)) {
         type = couponType_1.couponType.mfreecoupon;
     }
-    else if (config_1.default.locationHref.includes("4PN6NLSX1vyp8xibC5sk7WZEFF5U")) {
-        type = couponType_1.couponType.secKillCoupon;
-    }
     else if (config_1.default.locationHref.includes("m.jr.jd.com/member/rightsCenter/#/white")) {
         type = couponType_1.couponType.ReceiveCoupons;
     }
@@ -2908,6 +4289,12 @@ function getEntryType() {
     else if (config_1.default.locationHref.includes("vip.m.jd.com/index.html?appName=fuli&id=")) {
         type = couponType_1.couponType.exchange;
     }
+    if (config_1.default.locationHref.includes("9dkC9G9avZsJoKSvqw7EbmY8pCM")) { //全民掘金大会
+        type = couponType_1.couponType.receiveSeckillReward;
+    }
+    else if (config_1.default.locationHref.includes("4PN6NLSX1vyp8xibC5sk7WZEFF5U")) {
+        type = couponType_1.couponType.secKillCoupon;
+    }
     //京东APP节假日营销活动
     if (config_1.default.locationHref.includes("bunearth.m.jd.com")) {
         if (config_1.default.locationHref.includes("4PWgqmrFHunn8C38mJA712fufguU")) {
@@ -2919,17 +4306,29 @@ function getEntryType() {
         else if (config_1.default.locationHref.includes("21tFbS6Xm4tpon3oJnwzbnCJBo1Z")) {
             type = activityType_1.activityType.receiveBless;
         }
-    }
-    if (config_1.default.locationHref.includes("palace")) {
-        type = activityType_1.activityType.palace;
-    }
-    //京东金融APP节假日营销活动
-    if (config_1.default.locationHref.includes("u.jr.jd.com")) {
-        //https://u.jr.jd.com/uc-fe-wxgrowing/feedbag/cover/channelLv=syfc/
-        if (config_1.default.locationHref.includes("feedbag")) {
-            type = activityType_1.activityType.feedBag;
+        else if (config_1.default.locationHref.includes("4SJUHwGdUQYgg94PFzjZZbGZRjDd")) {
+            type = activityType_1.activityType.stall;
+        }
+        else if (config_1.default.locationHref.includes("3DDunaJMLDamrmGwu73QbqtGtbX1")) {
+            type = activityType_1.activityType.timeMachine;
+        }
+        else if (config_1.default.locationHref.includes("4DEZi5iUgrNLD9EWknrGZhCjNv7V")) {
+            type = activityType_1.activityType.starMall;
         }
     }
+    if (config_1.default.locationHref.includes("3gSzKSnvrrhYushciUpzHcDnkYE3")) {
+        type = activityType_1.activityType.guardianstar;
+    }
+    if (config_1.default.locationHref.includes("urvsaggpt.m.jd.com")) {
+        type = activityType_1.activityType.guardianstar;
+    }
+    //京东金融APP节假日营销活动
+    // if (Config.locationHref.includes("u.jr.jd.com")) {
+    //     //https://u.jr.jd.com/uc-fe-wxgrowing/feedbag/cover/channelLv=syfc/
+    //     if (Config.locationHref.includes("feedbag")) {
+    //         type = activityType.feedBag;
+    //     }
+    // }
     //调整为全局主动切换
     // if (Config.locationHref.includes("uc-fe-wxgrowing")) {
     //     if (Config.locationHref.includes("moneytree")) {
@@ -2990,6 +4389,9 @@ function getEntryDesc(type) {
             const itemId = utils_1.default.GetQueryString("id");
             coupon = new exchange_1.default({ "itemId": itemId }, container, outputTextArea);
             break;
+        case couponType_1.couponType.receiveSeckillReward:
+            coupon = new receiveSeckillReward_1.default(null, container, outputTextArea);
+            break;
         // case activityType.monsterNian:
         //     activity = new MonsterNian(null, container, outputTextArea);
         //     Config.UAFlag = true;
@@ -3004,8 +4406,20 @@ function getEntryDesc(type) {
         //     activity = new ReceiveBless(null, container, outputTextArea);
         //     Config.UAFlag = true;
         //     break;
-        case activityType_1.activityType.feedBag:
-            activity = new feedBag_1.default(null, container, outputTextArea);
+        case activityType_1.activityType.stall:
+            activity = new stall_1.default(container, outputTextArea);
+            config_1.default.UAFlag = true;
+            break;
+        case activityType_1.activityType.timeMachine:
+            activity = new timeMachine_1.default(container, outputTextArea);
+            break;
+        case activityType_1.activityType.starMall:
+            config_1.default.UAFlag = true;
+            activity = new starMall_1.default(container, outputTextArea);
+            break;
+        case activityType_1.activityType.guardianstar:
+            config_1.default.UAFlag = true;
+            activity = new guardianstar_1.default(container, outputTextArea);
             break;
         default:
             break;
@@ -3013,10 +4427,10 @@ function getEntryDesc(type) {
     if (config_1.default.UAFlag) {
         buildUAarea();
     }
-    buildRecommend();
+    // buildRecommend();//活动推荐
     buildActivity();
     if (isJDcontext) {
-        buildSensorArea();
+        // buildSensorArea();
         buildOperate();
         // buildExtensionTab();
         utils_1.default.createJsonp(`${config_1.default.JDUserInfoURL}&callback=getLoginMsg`);
@@ -3027,7 +4441,7 @@ function getEntryDesc(type) {
     }
     else if (activity) {
         // buildActivity();
-        // buildTimeoutArea();
+        buildTimeoutArea();
         activity.get();
     }
     else if (goods) {
@@ -3093,7 +4507,7 @@ getEntryDesc(getEntryType());
 statistical();
 Object.assign(window, { "getLoginMsg": getLoginMsg, "krapnik": krapnik, "Utils": utils_1.default, "Config": config_1.default });
 
-},{"./activitys/feedBag":1,"./config/config":2,"./cookie/CookieHandler":3,"./cookie/CookieManager":4,"./coupons/coinPurchase":5,"./coupons/exchange":6,"./coupons/gcConvert":7,"./coupons/getCouponCenter":8,"./coupons/mfreecoupon":9,"./coupons/newBabelAwardCollection":10,"./coupons/purchase":11,"./coupons/receiveCoupon":12,"./coupons/receiveCoupons":13,"./coupons/receiveDayCoupon":14,"./coupons/secKillCoupon":15,"./coupons/whtieCoupon":16,"./enum/activityType":17,"./enum/couponType":18,"./enum/goodsType":19,"./game/btgoose":20,"./game/cloudpig":21,"./game/signInCenter":22,"./goods/goods":23,"./utils/utils":26}],25:[function(require,module,exports){
+},{"./activitys/guardianstar":1,"./activitys/stall":2,"./activitys/starMall":3,"./activitys/timeMachine":4,"./config/config":5,"./cookie/CookieHandler":6,"./cookie/CookieManager":7,"./coupons/coinPurchase":8,"./coupons/exchange":9,"./coupons/gcConvert":10,"./coupons/getCouponCenter":11,"./coupons/mfreecoupon":12,"./coupons/newBabelAwardCollection":13,"./coupons/purchase":14,"./coupons/receiveCoupon":15,"./coupons/receiveCoupons":16,"./coupons/receiveDayCoupon":17,"./coupons/receiveSeckillReward":18,"./coupons/secKillCoupon":19,"./coupons/whtieCoupon":20,"./enum/activityType":21,"./enum/couponType":22,"./enum/goodsType":23,"./game/btgoose":24,"./game/cloudpig":25,"./game/signInCenter":26,"./goods/goods":27,"./utils/utils":30}],29:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class FetchJsonp {
@@ -3169,7 +4583,7 @@ FetchJsonp.defaultOptions = {
     jsonpCallbackFunction: null,
 };
 
-},{}],26:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 window.jsonpBind = function (res) {
@@ -3270,7 +4684,7 @@ class Utils {
     static jsonpBind(res) {
         postMessage(res, '*');
     }
-    static outPutLog(output, log, timeFlag = true) {
+    static outPutLog(output, log, timeFlag = true, isClear = false) {
         if (output.parentElement.style.display == 'none') {
             output.parentElement.style.display = 'block';
         }
@@ -3285,6 +4699,11 @@ class Utils {
         else {
             output.value = `${output.value}\n${log}`;
         }
+        if (isClear) {
+            console.clear();
+            output.value = new Date().toLocaleString() + log;
+        }
+        console.log(log);
     }
     static random(n, m) {
         return Math.floor(Math.random() * (m - n + 1) + n);
@@ -3297,17 +4716,15 @@ class Utils {
             alert("好像没有需要复制的内容哦！");
             return;
         }
-        var oInput = document.querySelector('.oInput');
-        if (!oInput) {
-            oInput = document.createElement('input');
-            oInput.className = 'oInput';
-            document.body.appendChild(oInput);
-        }
+        var oInput = document.createElement('input');
+        oInput.className = 'oInput';
+        document.body.appendChild(oInput);
         oInput.value = text;
         oInput.select();
         document.execCommand("Copy");
         oInput.style.display = 'none';
         alert('内容已经复制到黏贴板啦');
+        document.body.removeChild(oInput);
     }
     static importFile(ext) {
         return new Promise((resolve, reject) => {
@@ -3389,8 +4806,54 @@ class Utils {
     static querySelector(dom) {
         return document.querySelector(dom);
     }
+    static request(functionId, body = {}) {
+        return fetch(`https://api.m.jd.com/client.action?functionId=${functionId}`, {
+            body: `functionId=${functionId}&body=${JSON.stringify(body)}&client=wh5&clientVersion=1.0.0`,
+            headers: {
+                "content-type": "application/x-www-form-urlencoded",
+            },
+            method: "POST",
+            credentials: "include",
+        }).then(res => res.json());
+    }
+    ;
+    static publicRequest(functionId, body = { "lat": "", "lng": "" }) {
+        return fetch(`https://api.m.jd.com/client.action`, {
+            body: `functionId=${functionId}&body=${JSON.stringify(body)}&client=wh5&clientVersion=1.0.0&sid&t=${new Date().getTime()}&appid=publicUseApi`,
+            headers: {
+                "content-type": "application/x-www-form-urlencoded",
+            },
+            method: "POST",
+            credentials: "include",
+        }).then(res => res.json());
+    }
+    static clientPost(functionId, body = {}) {
+        return fetch(`https://api.m.jd.com/api`, {
+            body: `functionId=${functionId}&body=${JSON.stringify(body)}&loginType=2&appid=jd_mp_h5`,
+            headers: {
+                "content-type": "application/x-www-form-urlencoded",
+            },
+            method: "POST",
+            credentials: "include",
+        }).then(res => res.json());
+    }
+    static post(url, body = {}) {
+        return fetch(url, {
+            body: JSON.stringify(body),
+            headers: {
+                "content-type": "application/x-www-form-urlencoded",
+            },
+            method: "POST",
+            credentials: "include",
+        }).then(res => res.json());
+    }
+    static sleep(delay) {
+        return new Promise(reslove => {
+            setTimeout(reslove, delay);
+        });
+    }
 }
 exports.default = Utils;
 exports._$ = Utils.querySelector;
 
-},{}]},{},[24]);
+},{}]},{},[28]);

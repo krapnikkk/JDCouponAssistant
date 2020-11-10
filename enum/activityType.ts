@@ -5,4 +5,8 @@ export enum activityType {
     palace = "palace",
     receiveBless = "ReceiveBless",
     feedBag = "feedBag",
+    stall = "stall",
+    timeMachine = "timeMachine",
+    starMall = "starMall",
+    guardianstar = "guardianstar",
 }
