@@ -21,7 +21,7 @@ import ReceiveCoupon from "./coupons/receiveCoupon";
 import GetCouponCenter from "./coupons/getCouponCenter";
 import Exchange from "./coupons/exchange";
 
-// import MonsterNian from "./activitys/MonsterNian";
+import MonsterNian from "./activitys/MonsterNian";
 // import BrandCitySpring from "./activitys/brandCitySpring";
 // import Palace from "./activitys/palace";
 // import ReceiveBless from "./activitys/receiveBless";
@@ -449,7 +449,7 @@ function getEntryType(): couponType | activityType | goodsType | gameType {
 
     //京东APP节假日营销活动
     if (Config.locationHref.includes("bunearth.m.jd.com")) {
-        if (Config.locationHref.includes("4PWgqmrFHunn8C38mJA712fufguU")) {
+        if (Config.locationHref.includes("2cKMj86srRdhgWcKonfExzK4ZMBy")) {
             type = activityType.monsterNian;
         } else if (Config.locationHref.includes("w6y8PYbzhgHJc8Lu1weihPReR2T")) {
             type = activityType.brandCitySpring;
@@ -547,10 +547,10 @@ function getEntryDesc(type: couponType | activityType | goodsType | gameType) {
             coupon = new ReceiveSeckillReward(null, container, outputTextArea);
             break
 
-        // case activityType.monsterNian:
-        //     activity = new MonsterNian(null, container, outputTextArea);
-        //     Config.UAFlag = true;
-        //     break;
+        case activityType.monsterNian:
+            activity = new MonsterNian(null, container, outputTextArea);
+            Config.UAFlag = true;
+            break;
         // case activityType.brandCitySpring:
         //     activity = new BrandCitySpring(null, container, outputTextArea);
         //     break;
@@ -583,7 +583,7 @@ function getEntryDesc(type: couponType | activityType | goodsType | gameType) {
         buildUAarea();
     }
     // buildRecommend();//活动推荐
-    buildActivity();
+    // buildActivity(); // 推荐活动
     if (isJDcontext) {
         // buildSensorArea();
         buildOperate();

@@ -1,10 +1,10 @@
 import Activity from "../interface/Activity";
 import Utils, { _$ } from "../utils/utils";
 import Config from "../config/config";
-
+declare var smashUtils: any;
 
 export default class MonsterNian implements Activity {
-    detailurl: string = "https://api.m.jd.com/client.action?functionId=bombnian_getTaskDetail";
+    detailurl: string = "https://api.m.jd.com/client.action?functionId=nian_getTaskDetail";
     data: any = [];
     timer: number = 1000;
     container: HTMLDivElement;
@@ -18,7 +18,7 @@ export default class MonsterNian implements Activity {
         this.outputTextarea.value = `当你看到这行文字时，说明你还没有配置好浏览器UA或者还没有登录京东帐号！`;
     }
     get(): void {
-        var postData = "functionId=bombnian_getTaskDetail&body={}&client=wh5&clientVersion=1.0.0";
+        var postData = "functionId=nian_getTaskDetail&body={}&client=wh5&clientVersion=1.0.0";
         fetch(this.detailurl, {
             method: "POST",
             mode: "cors",
@@ -32,8 +32,13 @@ export default class MonsterNian implements Activity {
         }).then((res) => {
             this.data = res.data.result;
             if(this.data){
-                this.taskToken = this.data.taskVos[1]["shoppingActivityVos"][0]["taskToken"];
-                this.outputTextarea.value = `获取数据成功\n已加购物车：${this.data.taskVos[2]["times"]}/${this.data.taskVos[2]["productInfoVos"].length}\n已逛店铺：${this.data.taskVos[3]["times"]}/${this.data.taskVos[3]["browseShopVo"].length}\n已逛会场：${this.data.taskVos[1]["times"]}/${this.data.taskVos[1]["shoppingActivityVos"].length}\n已参与互动：${this.data.taskVos[4]["times"]}/${this.data.taskVos[4]["shoppingActivityVos"].length}\n已看直播：${this.data.taskVos[5]["times"]}/${this.data.taskVos[5]["shoppingActivityVos"].length}\n已LBS定位：${this.data.taskVos[7]["times"]}/1`;
+                // this.taskToken = this.data.taskVos[1]["shoppingActivityVos"][0]["taskToken"];
+                this.outputTextarea.value = `获取数据成功\n
+                好物加购：${this.data.taskVos[5]["times"]}/${this.data.taskVos[5]["maxTimes"]}\n
+                逛逛好店：${this.data.taskVos[4]["times"]}/${this.data.taskVos[4]["maxTimes"]}\n
+                已逛会场：${this.data.taskVos[3]["times"]}/${this.data.taskVos[3]["maxTimes"]}\n
+                好玩互动：${this.data.taskVos[6]["times"]}/${this.data.taskVos[6]["maxTimes"]}\n
+                浏览活动：${this.data.taskVos[2]["times"]}/${this.data.taskVos[2]["maxTimes"]}`;
                 this.list();
             }else{
                 this.outputTextarea.value = "请先进入活动页开启红包后再开启最后任务吧~";
@@ -60,7 +65,7 @@ export default class MonsterNian implements Activity {
         <button class="product" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">好物加购</button>
         <button class="shopping" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">逛逛会场</button>
         <button class="activity" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">好玩互动</button>
-        <button class="video" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">视频直播</button>
+        <button class="viewActive" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">浏览活动</button>
         <button class="record" style="width: 120px;height:30px;background-color: #2196F3;border-radius: 5px;border: 0;color:#fff;margin:5px auto;display:block">LBS定位</button>
         </div>`;
 
@@ -71,7 +76,7 @@ export default class MonsterNian implements Activity {
         const o = _$('.shop'),
             h = _$('.help'),
             a = _$('.activity'),
-            v = _$('.video'),
+            v = _$('.viewActive'),
             r = _$('.record'),
             s = _$('.shopping'),
             i = _$('.invite'),
@@ -102,8 +107,8 @@ export default class MonsterNian implements Activity {
             this.send(this.data.taskVos[5]["shoppingActivityVos"], this.data.taskVos[5]["taskId"]);
         });
         v!.addEventListener('click', () => {
-            Utils.outPutLog(this.outputTextarea, `开始自动视频直播任务`)
-            this.send(this.data.taskVos[6]["shoppingActivityVos"], this.data.taskVos[6]["taskId"]);
+            Utils.outPutLog(this.outputTextarea, `开始自动浏览活动任务`)
+            this.send(this.data.taskVos[2]["shoppingActivityVos"], this.data.taskVos[2]["taskId"]);
         });
         r!.addEventListener('click', () => {
             Utils.outPutLog(this.outputTextarea, `开始自动LBS定位任务`)
@@ -161,11 +166,11 @@ export default class MonsterNian implements Activity {
     async send(data: any, taskId: number) {
         let self = this, length = data.length;
         for (let i = 0; i < length; i++) {
-            var postData = `functionId=bombnian_collectScore&body={"taskId":${taskId},"itemId":"${data[i]["itemId"]}"}&client=wh5&clientVersion=1.0.0`;
+            var postData = `functionId=nian_collectScore&body={"taskId":${taskId},"itemId":"${data[i]["itemId"]}"}&client=wh5&clientVersion=1.0.0`;
             // (function (index, data, len) {
-            await new Promise(resolve => {
+            await new Promise<void>(resolve => {
                 setTimeout(async () => {
-                    await fetch("https://api.m.jd.com/client.action?functionId=bombnian_collectScore", {
+                    await fetch("https://api.m.jd.com/client.action?functionId=nian_collectScore", {
                         method: "POST",
                         mode: "cors",
                         credentials: "include",
@@ -189,9 +194,9 @@ export default class MonsterNian implements Activity {
     }
 
     invite() {
-        // var postData =`functionId=bombnian_collectScore&body={"inviteId":"T0kkDJUmGX0Sdet46x7KGSqKNI-klg18GVA8f5s","taskId":1,"itemId":"ASHYV3O7TlGlOXSI"}&client=wh5&clientVersion=1.0.0`;
-        var postData = `functionId=bombnian_collectScore&body={"inviteId":"DgxlSNRnRyNRPa01oWqgYGmh6fowp7KSdvYh_P9xeptD0UnvN0zMq6o","taskId":1,"itemId":"ACTNUmK-SyjcNFWT523lDlA"}&client=wh5&clientVersion=1.0.0`;
-        fetch("https://api.m.jd.com/client.action?functionId=bombnian_collectScore", {
+        // var postData =`functionId=nian_collectScore&body={"inviteId":"T0kkDJUmGX0Sdet46x7KGSqKNI-klg18GVA8f5s","taskId":1,"itemId":"ASHYV3O7TlGlOXSI"}&client=wh5&clientVersion=1.0.0`;
+        var postData = `functionId=nian_collectScore&body={"inviteId":"DgxlSNRnRyNRPa01oWqgYGmh6fowp7KSdvYh_P9xeptD0UnvN0zMq6o","taskId":1,"itemId":"ACTNUmK-SyjcNFWT523lDlA"}&client=wh5&clientVersion=1.0.0`;
+        fetch("https://api.m.jd.com/client.action?functionId=nian_collectScore", {
             method: "POST",
             mode: "cors",
             credentials: "include",
@@ -206,14 +211,14 @@ export default class MonsterNian implements Activity {
         })
     }
     join() {
-        fetch("https://api.m.jd.com/client.action?functionId=bombnian_pk_joinGroup", {
+        fetch("https://api.m.jd.com/client.action?functionId=nian_pk_joinGroup", {
             method: "POST",
             mode: "cors",
             credentials: "include",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             },
-            body: `functionId=bombnian_pk_joinGroup&body={"inviteId":"VlU-EZopQidWJ6s2oG2sfIHInYsPApTbtntxKA1MAWPJSGYsX6Se6Dv3","confirmFlag":1}&client=wh5&clientVersion=1.0.0`
+            body: `functionId=nian_pk_joinGroup&body={"inviteId":"VlU-EZopQidWJ6s2oG2sfIHInYsPApTbtntxKA1MAWPJSGYsX6Se6Dv3","confirmFlag":1}&client=wh5&clientVersion=1.0.0`
         }).then(function (response) {
             return response.json()
         }).then((res) => {
@@ -255,14 +260,14 @@ export default class MonsterNian implements Activity {
     }
 
     raise() {
-        fetch("https://api.m.jd.com/client.action?functionId=bombnian_raise", {
+        fetch("https://api.m.jd.com/client.action?functionId=nian_raise", {
             method: "POST",
             mode: "cors",
             credentials: "include",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             },
-            body: `functionId=bombnian_raise&body={}&client=wh5&clientVersion=1.0.0`
+            body: `functionId=nian_raise&body={}&client=wh5&clientVersion=1.0.0`
         }).then(function (response) {
             return response.json()
         }).then((res) => {
@@ -276,7 +281,7 @@ export default class MonsterNian implements Activity {
 
     help() {
         Utils.outPutLog(this.outputTextarea, `操作成功！谢谢你为我的队伍助力！`);
-        fetch('https://api.m.jd.com/client.action?functionId=bombnian_pk_assistGroup',
+        fetch('https://api.m.jd.com/client.action?functionId=nian_pk_assistGroup',
             {
                 method: "POST",
                 mode: "cors",
@@ -284,11 +289,11 @@ export default class MonsterNian implements Activity {
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded"
                 },
-                body: `functionId=bombnian_pk_assistGroup&body={"confirmFlag":1,"inviteId":"XUkkFpUhDG1WJqszpW2uY-4mR3ZvVGMfViX3iMWdE4FeIvO3rYjOC-K6cox9EhXE"}&client=wh5&clientVersion=1.0.0`
+                body: `functionId=nian_pk_assistGroup&body={"confirmFlag":1,"inviteId":"XUkkFpUhDG1WJqszpW2uY-4mR3ZvVGMfViX3iMWdE4FeIvO3rYjOC-K6cox9EhXE"}&client=wh5&clientVersion=1.0.0`
             }
         ).then((res) => res.json())
             .then((json) => {
-                fetch('https://api.m.jd.com/client.action?functionId=bombnian_pk_assistGroup',
+                fetch('https://api.m.jd.com/client.action?functionId=nian_pk_assistGroup',
                     {
                         method: "POST",
                         mode: "cors",
@@ -296,7 +301,7 @@ export default class MonsterNian implements Activity {
                         headers: {
                             "Content-Type": "application/x-www-form-urlencoded"
                         },
-                        body: `functionId=bombnian_pk_assistGroup&body={"confirmFlag":1,"inviteId":"XUkkFpUhDG0XY-p35CzwPZgzlWgNooCLIHRgCJ6uCcsnnwdlDlo"}&client=wh5&clientVersion=1.0.0`
+                        body: `functionId=nian_pk_assistGroup&body={"confirmFlag":1,"inviteId":"XUkkFpUhDG0XY-p35CzwPZgzlWgNooCLIHRgCJ6uCcsnnwdlDlo"}&client=wh5&clientVersion=1.0.0`
                     }
                 ).then((res) => res.json())
                     .then((json) => {
@@ -305,7 +310,7 @@ export default class MonsterNian implements Activity {
     }
 
     group() {
-        fetch('https://api.m.jd.com/client.action?functionId=bombnian_pk_getHomeData',
+        fetch('https://api.m.jd.com/client.action?functionId=nian_pk_getHomeData',
             {
                 method: "POST",
                 mode: "cors",
@@ -313,7 +318,7 @@ export default class MonsterNian implements Activity {
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded"
                 },
-                body: `functionId=bombnian_pk_getHomeData&body={}&client=wh5&clientVersion=1.0.0`
+                body: `functionId=nian_pk_getHomeData&body={}&client=wh5&clientVersion=1.0.0`
             }
         ).then((res) => res.json())
             .then((json) => {
@@ -329,7 +334,7 @@ export default class MonsterNian implements Activity {
             return;
         }
         const inviteId = Utils.getSearchString(url, "inviteId") || url;
-        fetch('https://api.m.jd.com/client.action?functionId=bombnian_pk_assistGroup',
+        fetch('https://api.m.jd.com/client.action?functionId=nian_pk_assistGroup',
             {
                 method: "POST",
                 mode: "cors",
@@ -337,7 +342,7 @@ export default class MonsterNian implements Activity {
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded"
                 },
-                body: `functionId=bombnian_pk_assistGroup&body={"confirmFlag":1,"inviteId":"${inviteId}"}&client=wh5&clientVersion=1.0.0`
+                body: `functionId=nian_pk_assistGroup&body={"confirmFlag":1,"inviteId":"${inviteId}"}&client=wh5&clientVersion=1.0.0`
             }
         ).then((res) => res.json())
             .then((json) => {
@@ -352,7 +357,7 @@ export default class MonsterNian implements Activity {
         }
         const inviteId = Utils.getSearchString(url, "inviteId"),
             itemId = Utils.getSearchString(url, "itemId");
-        fetch('https://api.m.jd.com/client.action?functionId=bombnian_collectScore',
+        fetch('https://api.m.jd.com/client.action?functionId=nian_collectScore',
             {
                 method: "POST",
                 mode: "cors",
@@ -360,12 +365,26 @@ export default class MonsterNian implements Activity {
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded"
                 },
-                body: `functionId=bombnian_collectScore&body={"taskId":1,"inviteId":"${inviteId}","itemId":"${itemId}"}&client=wh5&clientVersion=1.0.0`
+                body: `functionId=nian_collectScore&body={"taskId":1,"inviteId":"${inviteId}","itemId":"${itemId}"}&client=wh5&clientVersion=1.0.0`
             }
         ).then((res) => res.json())
             .then((json) => {
                 Utils.outPutLog(this.outputTextarea, `助力结果：${json.data.bizMsg}`);
             });
+    }
+
+    // let extraData = {
+    //     id: "jmdd-react-smash_0",
+    //     data: {
+    //         random:this.getRnd(),
+    //     }
+    // };
+    getExtraData(args: any) {
+        return JSON.stringify(Object.assign(smashUtils.get_info(args)['data'],{"buttonid":args['id'],"sceneid":"homePageh5","appid":"50073"}));
+    }
+
+    getRnd():string{
+        return Math.floor(1e6 * Math.random()).toString();
     }
 
 }
